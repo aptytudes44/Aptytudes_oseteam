@@ -19,7 +19,7 @@ class Picking(models.Model):
                 precision_digits = self.env['decimal.precision'].precision_get(
                     'Product Unit of Measure')
                 no_quantities_done = all(
-                    float_is_zero(ml.qty_done, precision_digits=precision_digits)
+                    float_is_zero(ml.quantity, precision_digits=precision_digits)
                     for ml in picking.move_line_ids.filtered(
                         lambda m: m.state not in ('done', 'cancel')))
                 picking.print_deliveryslip_ok = False
@@ -30,7 +30,7 @@ class Picking(models.Model):
                     no_quantities_done = False
                 else:
                     for line in picking.move_ids:
-                        if line.product_uom_qty != line.quantity_done:
+                        if line.product_uom_qty != line.quantity:
                             full_delivery_slip = False
                             picking.print_deliveryslip_ok = True
                 if full_delivery_slip or (no_quantities_done and not full_delivery_slip):
