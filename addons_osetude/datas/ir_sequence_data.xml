@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- SEQUENCE POUR LES PROJETS -->
+        <record id="seq_projet" model="ir.sequence">
+            <field name="name">Project</field>
+            <field name="code">project.project</field>
+            <field name="prefix">OSE-%(y)s-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- SEQUENCE POUR LES RECLAMATIONS ET NON-CONFORMITES -->
+        <record id="seq_noncompliance" model="ir.sequence">
+            <field name="name">Noncompliance/Claim</field>
+            <field name="code">quality.control.quality.noncompliance</field>
+            <field name="prefix">QC/%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>
+

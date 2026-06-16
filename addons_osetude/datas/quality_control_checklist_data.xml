@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="val_quality_control_checklist_data_10" model="quality.control.quality.cheklist.data">
+            <field name="name">Cahier des charges</field>
+            <field name="sequence">1</field>
+            <field name="default_data" eval="True"/>
+        </record>
+
+        <record id="val_quality_control_checklist_data_20" model="quality.control.quality.cheklist.data">
+            <field name="name">Cao 3D/2d</field>
+            <field name="sequence">2</field>
+            <field name="default_data" eval="True"/>
+        </record>
+
+        <record id="val_quality_control_checklist_data_30" model="quality.control.quality.cheklist.data">
+            <field name="name">Feuille de réserves avec toutes les réserves responsabilité OSETUDE soldées</field>
+            <field name="sequence">3</field>
+            <field name="default_data" eval="True"/>
+        </record>
+
+        <record id="val_quality_control_checklist_data_40" model="quality.control.quality.cheklist.data">
+            <field name="name">Les rapports de contrôle</field>
+            <field name="sequence">4</field>
+            <field name="default_data" eval="True"/>
+        </record>
+
+        <record id="val_quality_control_checklist_data_50" model="quality.control.quality.cheklist.data">
+            <field name="name">Contrôles organismes agréés (dekra...)</field>
+            <field name="sequence">5</field>
+            <field name="default_data" eval="True"/>
+        </record>
+
+        <record id="val_quality_control_checklist_data_60" model="quality.control.quality.cheklist.data">
+            <field name="name">Notice d'utilisation</field>
+            <field name="sequence">6</field>
+            <field name="default_data" eval="True"/>
+        </record>
+
+        <record id="val_quality_control_checklist_data_70" model="quality.control.quality.cheklist.data">
+            <field name="name">Notice de maintenance</field>
+            <field name="sequence">7</field>
+            <field name="default_data" eval="True"/>
+        </record>
+
+        <record id="val_quality_control_checklist_data_80" model="quality.control.quality.cheklist.data">
+            <field name="name">Note de calcul</field>
+            <field name="sequence">8</field>
+            <field name="default_data" eval="True"/>
+        </record>
+
+        <record id="val_quality_control_checklist_data_90" model="quality.control.quality.cheklist.data">
+            <field name="name">Déclaration CE</field>
+            <field name="sequence">9</field>
+            <field name="default_data" eval="True"/>
+        </record>
+
+        <record id="val_quality_control_checklist_data_100" model="quality.control.quality.cheklist.data">
+            <field name="name">Bon de livraison</field>
+            <field name="sequence">10</field>
+            <field name="default_data" eval="True"/>
+        </record>
+
+        <record id="val_quality_control_checklist_data_110" model="quality.control.quality.cheklist.data">
+            <field name="name">Déclaration CE (éléments du commerce)</field>
+            <field name="sequence">11</field>
+            <field name="default_data" eval="True"/>
+        </record>
+
+        <record id="val_quality_control_checklist_data_120" model="quality.control.quality.cheklist.data">
+            <field name="name">Rapport de mise en service</field>
+            <field name="sequence">12</field>
+            <field name="default_data" eval="True"/>
+        </record>
+
+        <record id="val_quality_control_checklist_data_130" model="quality.control.quality.cheklist.data">
+            <field name="name">Certificat matière (CCPU)</field>
+            <field name="sequence">13</field>
+            <field name="default_data" eval="True"/>
+        </record>
+
+        <record id="val_quality_control_checklist_data_140" model="quality.control.quality.cheklist.data">
+            <field name="name">Numéro de RUS</field>
+            <field name="sequence">14</field>
+            <field name="default_data" eval="True"/>
+        </record>
+
+        <record id="val_quality_control_checklist_data_150" model="quality.control.quality.cheklist.data">
+            <field name="name">Cahier de soudure</field>
+            <field name="sequence">15</field>
+            <field name="default_data" eval="True"/>
+        </record>
+
+        <record id="val_quality_control_checklist_data_160" model="quality.control.quality.cheklist.data">
+            <field name="name">Rapport de stabilisation</field>
+            <field name="sequence">16</field>
+            <field name="default_data" eval="True"/>
+        </record>
+
+        <record id="val_quality_control_checklist_data_170" model="quality.control.quality.cheklist.data">
+            <field name="name">Délais critiques (éléments commerce, usinage, contrôle ….)</field>
+            <field name="sequence">17</field>
+            <field name="default_data" eval="True"/>
+        </record>
+    </data>
+</odoo>
+

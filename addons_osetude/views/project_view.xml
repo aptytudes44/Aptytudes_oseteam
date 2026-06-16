@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Pour ne pas passer par la creation rapide -->
+	<record id="project.open_create_project" model="ir.actions.act_window">
+	    <field name="name">Create a Project</field>
+	    <field name="res_model">project.project</field>
+	    <field name="view_mode">form</field>
+	    <field name="view_id" ref="project.project_project_view_form_simplified_footer"/>
+	    <field name="target">current</field>
+	    <field name="context">{"default_allow_billable": 0}</field>
+	</record>
+
+        <!-- Vue en liste pour les tâches par défaut -->
+        <record id="view_project_default_task_tree" model="ir.ui.view">
+            <field name="name">project.default.task.list</field>
+            <field name="model">project.default.task</field>
+            <field name="arch" type="xml">
+                <list string="Default Tasks" editable="top" create="true" delete="true">
+                    <field name="sequence" widget="handle" string="Sequence"/>
+                    <field name="name" string="Name"/>
+                    <field name="type_ressource" string="Type Ressource" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Action pour les tâches par défaut -->
+        <record id="action_project_default_task" model="ir.actions.act_window">
+            <field name="name">Default Task</field>
+            <field name="res_model">project.default.task</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_project_default_task_tree"/>
+        </record>
+
+        <!-- Menu pour accéder aux tâches par défaut -->
+        <menuitem id="project_menu_default_task"
+            name="Default task"
+            parent="project.menu_project_config"
+            action="action_project_default_task"/>
+
+        <!-- Vue en liste pour les données de la check list -->
+        <record id="view_check_list_data_tree" model="ir.ui.view">
+            <field name="name">quality.control.quality.cheklist.data.list</field>
+            <field name="model">quality.control.quality.cheklist.data</field>
+            <field name="arch" type="xml">
+                <list editable="top" string="Check List Data">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="default_data"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Action pour les données de la check list -->
+        <record id="action_check_list_data" model="ir.actions.act_window">
+            <field name="name">Check List Data</field>
+            <field name="res_model">quality.control.quality.cheklist.data</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_check_list_data_tree"/>
+        </record>
+
+        <!-- Menu pour accéder aux données de la check list -->
+        <menuitem id="project_menu_check_list_data"
+            name="Check List Data"
+            parent="project.menu_project_config"
+            action="action_check_list_data"/>
+
+        <!-- Menu pour la configuration des non-conformités -->
+        <menuitem id="noncompliance_menu"
+            name="Configuration noncompliance"
+            parent="project.menu_project_config"/>
+
+        <!-- Vue en liste pour les causes de non-conformité -->
+        <record id="view_noncompliance_cause_tree" model="ir.ui.view">
+            <field name="name">quality.control.quality.noncompliance.cause.list</field>
+            <field name="model">quality.control.quality.noncompliance.cause</field>
+            <field name="arch" type="xml">
+                <list editable="top" string="Causes">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Action pour les causes de non-conformité -->
+        <record id="action_noncompliance_cause" model="ir.actions.act_window">
+            <field name="name">Noncompliance and Claim Cause</field>
+            <field name="res_model">quality.control.quality.noncompliance.cause</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_noncompliance_cause_tree"/>
+        </record>
+
+        <!-- Menu pour accéder aux causes de non-conformité -->
+        <menuitem id="noncompliance_menu_cause"
+            name="Causes"
+            parent="noncompliance_menu"
+            action="action_noncompliance_cause"/>
+
+        <!-- Vue list pour le projet (héritée) -->
+        <record id="view_project_inherit" model="ir.ui.view">
+            <field name="name">project.project.tree</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.view_project"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='display_name']" position="attributes">
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+                
+                <xpath expr="//field[@name='sequence']" position="after">
+                    <field name="name"/>
+                    <field name="first_date_task"/>
+                    <field name="related_partner_id" optional="show"/>
+                    <field name="buyer_id" optional="hide"/>
+                    <field name="title_project"/>
+                    <field name="tools_number"/>
+                </xpath>
+                
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+            	    <attribute name="column_invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="project_state"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Vue form du projet (formulaire hérité) -->
+        <record id="edit_project_inherit" model="ir.ui.view">
+            <field name="name">project.project.form</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+            	<!-- POUR MASQUER L'ONGLET DESCRIPTION -->
+            	<xpath expr="//page[@name='description']" position="attributes">
+            		<attribute name="invisible">1</attribute>
+            	</xpath>
+                <xpath expr="//header" position="inside">
+                    <field name="project_state" widget="statusbar" clickable="true"
+                           statusbar_visible="open,close"/>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button type="object" class="btn-secondary" icon="fa-pencil-square-o"
+                            name="action_view_quotations_orders" invisible="sale_quotations_count==0">
+                        <div class="o_form_field o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="sale_quotations_count" widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                            </span>
+                            <span class="o_stat_text">Quotations</span>
+                        </div>
+                    </button>
+                    <button type="object" class="btn-secondary" icon="fa-euro-sign"
+                            name="action_view_sales_orders" invisible="sale_orders_count==0">
+                        <div class="o_form_field o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="sale_orders_count" widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                            </span>
+                            <span class="o_stat_text">Sales</span>
+                        </div>
+                    </button>
+                    <button type="object" class="btn-secondary" icon="fa-shopping-cart"
+                            name="action_view_purchase_line" invisible="purchase_lines_count==0">
+                        <div class="o_form_field o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="purchase_lines_count" widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                            </span>
+                            <span class="o_stat_text">Purchases</span>
+                        </div>
+                    </button>
+                    <button type="object" class="btn-secondary" icon="fa-pencil-square-o"
+                            name="action_view_invoices" invisible="total_invoiced==0">
+                        <div class="o_form_field o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="total_invoiced" widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                            </span>
+                            <span class="o_stat_text">Invoiced</span>
+                        </div>
+                    </button>
+                    <button class="btn-secondary" type="object" name="action_view_analytic"
+                            icon="fa-book" title="Analytic" invisible="account_analytic_count==0">
+                        <field string="Analytic" name="account_analytic_count" widget="statinfo"/>
+                    </button>
+                    <button class="btn-secondary" type="action"
+                            name="%(addons_osetude.action_report_project)d"
+                            icon="fa-print" string="Print Project"/>
+                </xpath>
+                <xpath expr="//header" position="inside">
+                    <button name="re_create_folder" type="object" string="Re Create folder"
+                            class="btn-primary" icon="fa-folder-open"
+                            groups="addons_osetude.group_osetude_manager" invisible="url_folder==False"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="replace">
+                    <div>Project : <field name="name" placeholder="Project Name" readonly="1" force_save="1"/></div>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="replace"/>
+                <xpath expr="//field[@name='partner_id']" position="replace"/>
+                <xpath expr="//page[@name='settings']" position="before">
+                    <page string="Project description">
+                        <separator string="Business reference"/>
+                        <field name="title_project" placeholder="Business reference ..."/>
+                        <group>
+                            <group>
+                                <separator string="Company information"/>
+                                <field name="create_date" readonly="1"/>
+                                <field name="response_date"/>
+                                <field name="user_id" options="{'no_open': true, 'no_create': true}" readonly="user_id==False"/>
+                                <field name="tools_number"/>
+                                <separator string="Project folder"/>
+                                <field name="url_folder"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
+                            <group>
+                                <separator string="Customer information"/>
+                                <field name="customer_reference" placeholder="Customer reference ..."/>
+                                <field name="partner_id" readonly="partner_id==False"/>
+                                <field name="buyer_id"/>
+                                <field name="phone_buyer" widget="phone"/>
+                                <field name="mail_buyer"/>
+                                <field name="responsible_business_id"/>
+                                <field name="phone_responsible_business" widget="phone"/>
+                                <field name="mail_responsible_business" widget="phone"/>
+                            </group>
+                        </group>
+                        <separator string="Note for the project"/>
+                        <field name="note"/>
+                    </page>
+                    <page string="Check list"
+                          groups="addons_osetude.group_quality_control_user,addons_osetude.group_quality_control_manager">
+                        <group>
+                            <group>
+                                <field name="date_verification"
+                                       invisible="checklist_line==[]"/>
+                            </group>
+                            <group>
+                                <field name="name_auditor"
+                                       invisible="checklist_line==[]"/>
+                            </group>
+                        </group>
+                        <button name="create_checklist_data"
+                                string="Create check list data"
+                                invisible="checklist_line!=[]"
+                                type="object"/>
+                        <field name="checklist_line">
+                            <list string="Check List" editable="bottom"
+                                  decoration-muted="checked==True">
+                                <field name="name"/>
+                                <field name="checked"/>
+                            </list>
+                        </field>
+                    </page>
+                    <page string="Noncompliance/Claim/SAV"
+                          groups="addons_osetude.group_quality_control_user,addons_osetude.group_quality_control_manager">
+                        <field name="noncompliance_line"
+                               context="{'default_partner_id':partner_id, 'default_project_id':id}">
+                            <list string="Noncompliance Claim">
+                                <field name="name"/>
+                                <field name="type"/>
+                                <field name="imputation"/>
+                                <field name="partner_id"/>
+                                <field name="state"/>
+                            </list>
+                            <form string="Noncompliance Claim">
+                                <sheet>
+                                    <h1><field name="name" readonly="1"/></h1>
+                                    <group>
+                                        <group string="Identification">
+                                            <field name="type"/>
+                                            <field name="imputation"/>
+                                            <field name="partner_id"
+                                                   invisible="imputation=='internal' or imputation==False"
+                                                   options="{'no_open': true, 'no_create': true}"
+                                                   readonly="imputation in ('customer', 'supplier')"/>
+                                            <field name="project_id" invisible="1"/>
+                                            <field name="sale_id"
+                                                   invisible="imputation!='customer'"
+                                                   domain="[('project_id','=',project_id)]"
+                                                   options="{'no_open': true, 'no_create': true}"
+                                                   readonly="imputation!='customer'"/>
+                                            <field name="purchase_id"
+                                                   invisible="imputation!='supplier'"
+                                                   options="{'no_open': true, 'no_create': true}"
+                                                   readonly="imputation!='supplier'"/>
+                                        </group>
+                                        <group string="Responsible">
+                                            <field name="state"/>
+                                            <field name="user_id" readonly="1"
+                                                   options="{'no_open': true, 'no_create': true}"/>
+                                            <field name="date_of_issue" readonly="1"/>
+                                            <field name="close_date"/>
+                                            <field name="company_id"
+                                                   invisible="1"
+                                                   options="{'no_open': true, 'no_create': true}"
+                                                   groups="base.group_multi_company"/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <group string="Description">
+                                            <field name="noncompliance_cause_id"
+                                                   options="{'no_open': true, 'no_create': true}"
+                                                   readonly="1"/>
+                                            <field name="severity_level" readonly="1"/>
+                                            <field name="noncompliant_note" readonly="1"/>
+                                            <field name="immediate_correction_note"/>
+                                        </group>
+                                        <group string="Quality control">
+                                            <field name="root_causes"/>
+                                            <field name="description_correction"/>
+                                        </group>
+                                        <group string="Cost and balance">
+                                            <field name="study" widget="monetary"/>
+                                            <field name="production" widget="monetary"/>
+                                            <field name="comment"/>
+                                        </group>
+                                        <group string="Root causes file">
+                                            <field name="root_causes_filename" invisible="1"/>
+                                            <field name="root_causes_binary" filename="root_causes_filename"/>
+                                        </group>
+                                    </group>
+                                </sheet>
+                            </form>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Vue simplifiée du projet (formulaire hérité) -->
+        <record id="project_project_view_form_simplified" model="ir.ui.view">
+            <field name="name">project.project.view.form.simplified</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.project_project_view_form_simplified"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="replace">
+                    <field name="name" string="Project Name" placeholder="e.g. Office Party" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="partner_id" readonly="not partner_id"/>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Vue filtrée des projets (héritée) -->
+        <record id="view_project_project_filter_inherit" model="ir.ui.view">
+            <field name="name">project.project.select</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.view_project_project_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="title_project"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="tools_number"/>
+                </xpath>
+                <xpath expr="//filter[@name='my_projects']" position="after">
+                    <separator/>
+                    <filter string="Project open" name="project_open"
+                            domain="[('project_state','=','open')]"/>
+                    <filter string="Project close" name="project_close"
+                            domain="[('project_state','=','close')]"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Action pour ouvrir la vue de tous les projets -->
+        <record id="project.open_view_project_all" model="ir.actions.act_window">
+            <field name="context">{'search_default_project_open': 1}</field>
+            <field name="limit">200</field>
+        </record>
+
+        <!-- Vue du projet pour la facturation (héritée) 
+        <record id="project_invoice_form_inherit" model="ir.ui.view">
+            <field name="name">Inherit project form : Invoicing Data</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="hr_timesheet.project_invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='account_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+            </field>
+        </record>-->
+         
+         
+        <!-- Vue des tâches (formulaire hérité) -->
+        <record id="view_task_form2_inherit" model="ir.ui.view">
+            <field name="name">project.task.form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="task_done" string="Task finished" type="object"
+                            class="btn-primary" icon="fa-check"
+                            invisible="state!='in_progress'"/>
+                    <field name="state" widget="statusbar" clickable="true"
+                           statusbar_visible="new,in_progress,done"/>
+                </xpath>
+                <xpath expr="//field[@name='tag_ids']" position="after">
+                    <field name="type_ressource" readonly="type_ressource==False"/>
+                    <field name="type_task" readonly="type_task==False"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+

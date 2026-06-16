@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_picking_calendar_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.calendar</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.stock_picking_calendar"/>
+        <field name="arch" type="xml">
+            <xpath expr="//calendar" position="attributes">
+                <attribute name="color">state</attribute>
+            </xpath>
+            <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- A VOIR POURQUOI ON CHANGE LE CONTEXT
+	VALEURS D'ORIGINE {'contact_display': 'partner_address', 'search_default_available': 1}
+    <record id="stock.action_picking_tree_ready" model="ir.actions.act_window">
+        <field name="name">To Do</field>
+        <field name="res_model">stock.picking</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">calendar,tree,kanban,form</field>
+        <field name="domain"/>
+        <field name="context">{'search_default_picking_type_id': [active_id], 'default_picking_type_id': active_id, 'contact_display': 'partner_address'}</field>
+        <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define a new transfer
+            </p>
+        </field>
+    </record>
+	 -->
+	<!-- A VOIR POURQUOI ON CHANGE LE CONTEXT
+	VALEURS D'ORIGINE {'contact_display': 'partner_address', 'search_default_backorder': 1} 
+    <record id="stock.action_picking_tree_backorder" model="ir.actions.act_window">
+        <field name="name">Backorders</field>
+        <field name="res_model">stock.picking</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">calendar,tree,kanban,form</field>
+        <field name="domain"/>
+        <field name="context">{'search_default_picking_type_id': [active_id], 'default_picking_type_id': active_id, 'contact_display': 'partner_address', 'search_default_backorder': 1}</field>
+        <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define a new transfer
+            </p>
+        </field>
+    </record>
+	-->
+	
+	<!-- A VOIR POURQUOI ON CHANGE LE CONTEXT
+	VALEURS D'ORIGINE {'contact_display': 'partner_address', 'search_default_late': 1}
+    <record id="stock.action_picking_tree_late" model="ir.actions.act_window">
+        <field name="name">Late Transfers</field>
+        <field name="res_model">stock.picking</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">calendar,tree,kanban,form</field>
+        <field name="domain"/>
+        <field name="context">{'search_default_picking_type_id': [active_id], 'default_picking_type_id': active_id, 'contact_display': 'partner_address', 'search_default_late': 1}</field>
+        <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define a new transfer
+            </p>
+        </field>
+    </record>
+	 -->
+	
+	<!--  A VOIR POURQUOI ON CHANGE LE CONTEXT
+	VALEURS D'ORIGINE {'contact_display': 'partner_address'}
+    <record id="stock.stock_picking_action_picking_type" model="ir.actions.act_window">
+        <field name="name">All Transfers</field>
+        <field name="res_model">stock.picking</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">calendar,tree,kanban,form</field>
+        <field name="domain"/>
+        <field name="context">{'search_default_picking_type_id': [active_id], 'default_picking_type_id': active_id, 'contact_display': 'partner_address'}</field>
+        <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define a new transfer
+            </p>
+        </field>
+    </record>
+    -->
+   
+    <record id="view_picking_form_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="set_to_draft"
+                    string="Set to draft"
+                    type="object"
+                    class="oe_highlight"
+                    invisible="state=='done'" 
+                    groups="addons_osetude.group_osetude_set_picking_draft"
+                    confirm="Are you sure you want to draft the document?"/>
+            </xpath>
+            <xpath expr="//h1" position="after">
+                <style>
+                    .h8_class{color:red;}
+                </style>
+                <div modifiers="{'invisible': [('print_deliveryslip_ok', '=', True)]}">
+                    <h8 class="h8_class">deliveryslip non printable (check the project checklist)</h8>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="project_id"/>
+            </xpath>
+            
+            <!-- ############################# LE CHAMP NAME N'EST PLUS DANS LA VUE 
+            <xpath expr="//field[@name='move_ids']/list/field[@name='name']" position="replace"/>
+            <xpath expr="//field[@name='move_ids']/list/field[@name='product_id']" position="after">
+                <field name="name" readonly="1"/>
+            </xpath>
+            -->
+            
+            <xpath expr="//notebook" position="before">
+                <group>
+                    <field name="delivery_note"/>
+                    <field name="print_deliveryslip_ok" invisible="1"/>
+                    <field name="print_satisfaction_ok" invisible="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+   
+</odoo>
+

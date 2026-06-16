@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="quality_controls_menu_root"
+        name="Quality controls"
+        web_icon="addons_osetude,static/description/icon.png"
+        active="True"
+        sequence="5"/>
+
+    <menuitem name="List of quality controls"
+        id="menu_quality_control_menu"
+        parent="quality_controls_menu_root"
+        sequence="1"
+        groups="group_quality_control_user,group_quality_control_manager"/>
+
+    <record id="view_quality_control_quality_tree" model="ir.ui.view">
+        <field name="name">quality.control.quality.list</field>
+        <field name="model">quality.control.quality</field>
+        <field name="arch" type="xml">
+            <list string="Quality controls notation" class="o_sale_order" decoration-danger="supplier_note &lt; 50"
+                                                     decoration-warning="supplier_note &gt; 49 and supplier_note &lt; 70"
+                                                     decoration-success="supplier_note &gt; 69">
+                <field name="name"/>
+                <field name="quality_year" invisible="1"/>
+                <field name="is_supplier_selection" invisible="1"/>
+                <field name="supplier_id"/>
+                <field name="supplier_type"/>
+                <field name="conformity_of_deliveries"/>
+                <field name="product_quality_services"/>
+                <field name="deadlines"/>
+                <field name="price_competitiveness"/>
+                <field name="service_quality"/>
+                <field name="supplier_note"/>
+                <field name="Comment"/>
+                <field name="corrective_actions"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_quality_control_quality_filter" model="ir.ui.view">
+        <field name="name">quality.control.quality.search</field>
+        <field name="model">quality.control.quality</field>
+        <field name="arch" type="xml">
+            <search string="Quality controls">
+                <field name="supplier_id"/>
+                <field name="quality_year"/>
+                <filter name="good_marks" string="Good marks" domain="[('supplier_note','>',49)]"/>
+                <filter name="bad_marks" string="Bad marks" domain="[('supplier_note','&lt;',50)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="By Suppliers" name="suppliers" context="{'group_by':'supplier_id'}"/>
+                    <filter string="By Years" name="years" context="{'group_by':'quality_year'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_quality_control_quality_graph">
+        <field name="name">sale.order.graph</field>
+        <field name="model">quality.control.quality</field>
+        <field name="arch" type="xml">
+            <graph string="Quality controls" stacked="False">
+                <field name="supplier_id"/>
+                <field name="quality_year"/>
+                <field name="supplier_note" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_quality_control_quality_form" model="ir.ui.view">
+        <field name="name">quality.control.quality.form</field>
+        <field name="model">quality.control.quality</field>
+        <field name="arch" type="xml">
+            <form string="Quality controls notation" class="o_sale_order">
+                <sheet>
+                    <label for="name"/>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <div>
+                        <div class="oe_stat_button" icon="fa-diamond" style="width: 130px; border: 1px solid #cccccc; text-align: center; align: right;">
+                            <span style="color: #826eae">
+                                Global mark <h1><field name="supplier_note"/> /100</h1>
+                            </span>
+                        </div>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                            <field name="supplier_id" widget="res_partner_many2one"
+                                context="{'search_default_supplier':1, 'show_address': 1}"
+                                options="{'no_quick_create':True, 'no_create_edit':True, 'always_reload': True}" modifiers="{'required': True}"/>
+                            <field name="supplier_contact_id" options="{'no_quick_create':True, 'no_create_edit':True}" modifiers="{'required': True}"/>
+                            <field name="supplier_contact_phone" widget="email" modifiers="{'invisible': ['|',('supplier_contact_id','=',False),('supplier_contact_phone','=',False)]}"/>
+                            <field name="supplier_contact_mobile" widget="email" modifiers="{'invisible': ['|',('supplier_contact_id','=',False),('supplier_contact_mobile','=',False)]}"/>
+                            <field name="supplier_contact_email" widget="email" modifiers="{'invisible': ['|',('supplier_contact_id','=',False),('supplier_contact_email','=',False)]}"/>
+                        </group>
+                        <group>
+                            <field name="quality_year" modifiers="{'required': True}"/>
+                            <field name="is_supplier_selection" modifiers="{'invisible': True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Details">
+                            <group>
+                                <group>
+                                    <field name="conformity_of_deliveries" style="width: 30%;"/>
+                                    <field name="product_quality_services" style="width: 30%;"/>
+                                    <field name="deadlines" style="width: 30%;"/>
+                                    <field name="price_competitiveness" style="width: 30%;"/>
+                                    <field name="service_quality" style="width: 30%;"/>
+                                </group>
+                                <group>
+                                    <field name="Comment" modifiers="{'invisible': [('supplier_note','>',49),
+                                        ('conformity_of_deliveries','>',9),
+                                        ('product_quality_services','>',9),
+                                        ('deadlines','>',9),
+                                        ('price_competitiveness','>',9),
+                                        ('service_quality','>',9)],
+                                        'required': ['|','|','|','|','|',('supplier_note','&lt;',50),
+                                        ('conformity_of_deliveries','&lt;',10),
+                                        ('product_quality_services','&lt;',10),
+                                        ('deadlines','&lt;',10),
+                                        ('price_competitiveness','&lt;',10),
+                                        ('service_quality','&lt;',10)]}"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Scale">
+                            <group string="Scale data">
+                                <field name="scale_filename" invisible="1"/>
+                                <field name="scale_binary" filename="scale_filename"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_view_quality_control_quality_supplier_notation" model="ir.actions.act_window">
+        <field name="name">Quality control Supplier Notation</field>
+        <field name="res_model">quality.control.quality</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'default_is_supplier_selection':'notation'}</field>
+        <field name="domain">[('is_supplier_selection','=','notation')]</field>
+        <field name="search_view_id" ref="view_quality_control_quality_filter"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Quality control
+            </p>
+        </field>
+    </record>
+    
+    <record id="open_view_quality_control_quality_supplier_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="addons_osetude.view_quality_control_quality_tree"/>
+        <field name="act_window_id" ref="action_view_quality_control_quality_supplier_notation"/>
+    </record>
+    
+    <record id="open_view_quality_control_quality_supplier_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="addons_osetude.view_quality_control_quality_form"/>
+        <field name="act_window_id" ref="action_view_quality_control_quality_supplier_notation"/>
+    </record>
+
+    <record id="open_view_quality_control_quality_supplier_graph" model="ir.actions.act_window.view">
+        <field name="sequence" eval="6"/>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="addons_osetude.view_quality_control_quality_graph"/>
+        <field name="act_window_id" ref="action_view_quality_control_quality_supplier_notation"/>
+    </record>
+
+    <record id="view_quality_control_quality_selection_tree" model="ir.ui.view">
+        <field name="name">quality.control.quality.selection.list</field>
+        <field name="model">quality.control.quality</field>
+        <field name="arch" type="xml">
+            <list string="Selection score" class="o_sale_order" decoration-danger="supplier_selection_score &lt; 50"
+                decoration-warning="supplier_selection_score &gt; 49 and supplier_selection_score &lt; 70"
+                decoration-success="supplier_selection_score &gt; 69">
+                <field name="name"/>
+                <field name="quality_year" invisible="1"/>
+                <field name="is_supplier_selection" invisible="1"/>
+                <field name="supplier_id"/>
+                <field name="supplier_type"/>
+                <field name="location"/>
+                <field name="product_quality_services"/>
+                <field name="deadlines"/>
+                <field name="price_competitiveness"/>
+                <field name="relational"/>
+                <field name="supplier_selection_score"/>
+                <field name="Comment"/>
+            </list>
+        </field>
+    </record>
+    
+    <record id="view_quality_control_quality_selection_filter" model="ir.ui.view">
+        <field name="name">quality.control.quality.selection.search</field>
+        <field name="model">quality.control.quality</field>
+        <field name="arch" type="xml">
+            <search string="Notation score">
+                <field name="supplier_id"/>
+                <field name="quality_year"/>
+                
+                <filter name="good_marks" string="Good marks" domain="[('supplier_selection_score','&gt;',49)]"/>
+                <filter name="bad_marks" string="Bad marks" domain="[('supplier_selection_score','&lt;',50)]"/>
+                
+                <group expand="0" string="Group By">
+                    <filter string="By Suppliers" name="suppliers" context="{'group_by':'supplier_id'}"/>
+                    <filter string="By Years" name="years" context="{'group_by':'quality_year'}"/>
+                </group>
+              
+            </search>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_quality_control_quality_selection_graph">
+        <field name="name">sale.order.graph</field>
+        <field name="model">quality.control.quality</field>
+        <field name="arch" type="xml">
+            <graph string="Notation score" stacked="False">
+                <field name="supplier_id"/>
+                <field name="quality_year"/>
+                <field name="supplier_note" type="measure"/>
+            </graph>
+        </field>
+    </record>
+    
+    <record id="view_quality_control_quality_selection_form" model="ir.ui.view">
+        <field name="name">quality.control.quality.form</field>
+        <field name="model">quality.control.quality</field>
+        <field name="arch" type="xml">
+            <form string="Selection score" class="o_form_view">
+                <sheet>
+                    <label for="name"/>
+                    <h1>
+                        <field name="name" force_save="1"/>
+                    </h1>
+                    <div>
+                        <div class="oe_stat_button" icon="fa-diamond" style="width: 130px; border: 1px solid #cccccc; text-align: center; align: right;">
+                            <span style="color: #826eae">
+                                Global selection score <h1><field name="supplier_selection_score"/> /100</h1>
+                            </span>
+                        </div>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                            <field name="supplier_id" widget="res_partner_many2one"
+                                context="{'search_default_supplier':1, 'show_address': 1}"
+                                options="{'no_quick_create':True, 'no_create_edit':True, 'always_reload':True}" modifiers="{'required': True}"/>
+                        </group>
+                        <group>
+                            <field name="quality_year" modifiers="{'required': True}"/>
+                            <field name="is_supplier_selection" modifiers="{'invisible': True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Details">
+                            <group>
+                                <group>
+                                    <field name="location" style="width: 30%;"/>
+                                    <field name="product_quality_services" style="width: 30%;"/>
+                                    <field name="deadlines" style="width: 30%;"/>
+                                    <field name="price_competitiveness" style="width: 30%;"/>
+                                    <field name="relational" style="width: 30%;"/>
+                                </group>
+                                <group>
+                                    <field name="Comment" modifiers="{'required': [('supplier_selection_score','&lt;',50)]}"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Scale">
+                            <group string="Scale data">
+                                <field name="scale_filename" invisible="1"/>
+                                <field name="scale_binary" filename="scale_filename"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+ 		<chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_view_quality_control_quality_supplier_selection" model="ir.actions.act_window">
+        <field name="name">Quality control Supplier Selection</field>
+        <field name="res_model">quality.control.quality</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'default_is_supplier_selection':'selection'}</field>
+        <field name="domain">[('is_supplier_selection','=','selection')]</field>
+        <field name="search_view_id" ref="view_quality_control_quality_selection_filter"/>
+        <field name="view_id" ref="view_quality_control_quality_selection_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Quality control
+            </p>
+        </field>
+    </record>
+    
+    <record id="open_view_quality_control_quality_supplier_selection_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="addons_osetude.view_quality_control_quality_selection_tree"/>
+        <field name="act_window_id" ref="action_view_quality_control_quality_supplier_selection"/>
+    </record>
+   
+    <record id="open_view_quality_control_quality_supplier_selection_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="addons_osetude.view_quality_control_quality_selection_form"/>
+        <field name="act_window_id" ref="action_view_quality_control_quality_supplier_selection"/>
+    </record>
+
+    <record id="open_view_quality_control_quality_supplier_selection_graph" model="ir.actions.act_window.view">
+        <field name="sequence" eval="6"/>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="view_quality_control_quality_selection_graph"/>
+        <field name="act_window_id" ref="action_view_quality_control_quality_supplier_selection"/>
+    </record>
+
+    <menuitem name="Supplier quality controls" id="menu_quality_control_supplier" parent="addons_osetude.menu_quality_control_menu" sequence="1"/>
+    <menuitem name="Supplier selection" id="menu_quality_control_supplier_selection" action="action_view_quality_control_quality_supplier_selection" parent="addons_osetude.menu_quality_control_supplier" sequence="2"/>
+    <menuitem name="Supplier notation" id="menu_quality_control_supplier_notation" action="action_view_quality_control_quality_supplier_notation" parent="addons_osetude.menu_quality_control_supplier" sequence="3"/>
+
+    <record id="view_quality_control_quality_noncompliance_tree" model="ir.ui.view">
+        <field name="name">quality.control.quality.noncompliance.list</field>
+        <field name="model">quality.control.quality.noncompliance</field>
+        <field name="arch" type="xml">
+            <list string="Quality controls">
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="project_id"/>
+                <field name="type"/>
+                <field name="imputation"/>
+                <field name="partner_id"/>
+                <field name="date_of_issue"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+    
+    <!-- PAS UTILISE
+    <record id="view_quality_control_quality_noncompliance_filter" model="ir.ui.view">
+        <field name="name">quality.control.quality.noncompliance.search</field>
+        <field name="model">quality.control.quality.noncompliance</field>
+        <field name="arch" type="xml">
+            <search string="Quality controls">
+                <field name="partner_id"/>
+                
+                <group expand="0" string="Group By">
+                    <filter string="By Type" name="type" context="{'group_by':'type'}"/>
+                    <filter string="By Suppliers" name="suppliers" context="{'group_by':'partner_id'}"/>
+                    <filter string="By Projects" name="projects" context="{'group_by':'project_id'}"/>
+                    <filter string="By Imputations" name="imputations" context="{'group_by':'imputation'}"/>
+                </group>
+                
+            </search>
+        </field>
+    </record>
+    -->
+    <record id="view_quality_control_quality_noncompliance_form" model="ir.ui.view">
+        <field name="name">quality.control.quality.noncompliance.form</field>
+        <field name="model">quality.control.quality.noncompliance</field>
+        <field name="arch" type="xml">
+            <form string="Quality controls" create="0">
+                <sheet>
+                    <h1><field name="name" modifiers="{'readonly': True}" force_save="1"/></h1>
+                    <group>
+                        <group string="Identification">
+                            <field name="type"/>
+                            <field name="imputation"/>
+                            <field name="partner_id"
+                                   modifiers="{'invisible': ['|',('imputation','=','internal'),('imputation','=',False)], 'required': [('imputation','in',('customer','supplier'))]}"
+                                   options="{'no_open': True, 'no_create': True}"/>
+                            <field name="project_id"/>
+                            <field name="sale_id"
+                                   modifiers="{'invisible': [('imputation','!=','customer')], 'required': [('imputation','=','customer')]}"
+                                   domain="[('project_id','=',project_id)]"
+                                   options="{'no_open': True, 'no_create': True}"/>
+                            <field name="purchase_id"
+                                   modifiers="{'invisible': [('imputation','!=','supplier')], 'required': [('imputation','=','supplier')]}"
+                                   options="{'no_open': True, 'no_create': True}"/>
+                        </group>
+                        <group string="Responsible">
+                            <field name="state"/>
+                            <field name="user_id" modifiers="{'required': True}"
+                                   options="{'no_open': True, 'no_create': True}"/>
+                            <field name="date_of_issue" modifiers="{'required': True}"/>
+                            <field name="close_date"/>
+                            <field name="company_id"
+                                   options="{'no_open': True, 'no_create': True}" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Description">
+                            <field name="noncompliance_cause_id"
+                                   options="{'no_open': True, 'no_create': True}"
+                                   modifiers="{'required': True}"/>
+                            <field name="severity_level" modifiers="{'required': True}"/>
+                            <field name="noncompliant_note" modifiers="{'required': True}"/>
+                            <field name="immediate_correction_note"/>
+                        </group>
+                        <group string="Part reserved for quality control">
+                            <field name="root_causes"/>
+                            <field name="description_correction"/>
+                            <field name="measure_effectiveness_correction" modifiers="{'invisible': True}"/>
+                        </group>
+                        <group string="Cost and balance">
+                            <field name="study" widget="monetary"/>
+                            <field name="production" widget="monetary"/>
+                            <field name="comment"/>
+                        </group>
+                        <group string="Characterization of the problem and search for root causes">
+                            <field name="root_causes_filename" invisible="1"/>
+                            <field name="root_causes_binary" filename="root_causes_filename"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_view_quality_control_all" model="ir.actions.act_window">
+        <field name="name">Quality controls</field>
+        <field name="res_model">quality.control.quality.noncompliance</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Quality control Noncompliance
+            </p>
+        </field>
+    </record>
+
+    <menuitem name="Other quality controls" id="menu_other_quality_control" parent="addons_osetude.menu_quality_control_menu" sequence="2"/>
+    <menuitem name="Complaints et NC" id="menu_quality_control_all" action="action_view_quality_control_all" parent="addons_osetude.menu_other_quality_control" sequence="1"/>
+
+    <record id="view_quality_control_quality_parameters_tree" model="ir.ui.view">
+        <field name="name">quality.control.parameters.list</field>
+        <field name="model">quality.control.parameters</field>
+        <field name="arch" type="xml">
+            <list string="Scale Files" create="0">
+                <field name="selection_binary_model_filename"/>
+                <field name="quotation_binary_model_filename"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_quality_control_parameters_form" model="ir.ui.view">
+        <field name="name">quality.control.parameters.form</field>
+        <field name="model">quality.control.parameters</field>
+        <field name="arch" type="xml">
+            <form string="Quality controls parameters" create="false">
+                <sheet>
+                    <group string="Scale Files">
+                        <field name="selection_binary_model_filename" invisible="1"/>
+                        <field name="selection_binary_model" filename="selection_binary_model_filename"/>
+                        <field name="quotation_binary_model_filename" invisible="1"/>
+                        <field name="quotation_binary_model" filename="quotation_binary_model_filename"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_view_quality_control_file_parameters" model="ir.actions.act_window">
+        <field name="name">Quality control parameters</field>
+        <field name="res_model">quality.control.parameters</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+        <field name="view_id" ref="view_quality_control_quality_parameters_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Quality control parameters
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="quality_controls_parameters_menu"
+        name="Configuration"
+        parent="quality_controls_menu_root"
+        sequence="15"/>
+
+    <menuitem name="Scale file parameters"
+        id="scale_file_parameters_menu"
+        parent="quality_controls_parameters_menu"
+        sequence="20"
+        action="action_view_quality_control_file_parameters"
+        groups="group_quality_control_user,group_quality_control_manager"/>
+</odoo>
+

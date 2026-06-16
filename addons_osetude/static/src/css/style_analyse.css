@@ -1,0 +1,527 @@
+.oe_table {
+  table-layout: fixed;
+  width: 90%;
+  *margin-left: -100px; /*ie7*/
+ }
+ 
+.oe_fix {
+  position: absolute;
+  *position: relative; /*ie7*/
+  margin-left: -470px;
+  width: 470px;
+}
+
+.oe_outer {
+  position: relative;
+}
+
+.oe_inner {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  margin-left: 470px;
+  border-top: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+}
+
+.oe_table_analyse {
+  table-layout: fixed; 
+  width: 100%;
+  *margin-left: -100px; /*ie7*/
+  border: 2px solid #ccc;
+  margin-top: -20px;
+  margin-right: 10px;
+  background-color: white;
+ }
+
+.oe_title_analyse {
+  font-size: 16px;
+  text-align: center;
+  font-weight: bold;
+  width: 470px;
+  color: #7C7BAD;
+}
+
+.oe_table_title {
+  font-size: 15px;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  color: white;
+  width: 470px;
+  background-color: #7C7BAD;
+  border: 1px solid #ccc;
+}
+
+.oe_table_analyse_project {
+  min-width: 470px;
+  max-width: 470px;
+  text-indent: 3px;
+  font-size: 12px;
+  background-color: #eae8e8;
+  border: 1px solid #ccc;
+}
+
+.oe_table_analyse_project_task {
+  min-width: 470px;
+  max-width: 470px;
+  text-indent: 30px;
+  font-size: 10px;
+  background-color: white;
+}
+
+.oe_type_task_internal {
+  background-color: #EBDEF0;
+}
+
+.oe_type_task_external {
+  background-color: #F7DC6F;
+}
+
+.oe_table_analyse_task {
+  max-height: 13px;
+  text-indent: 20px;
+  font-size: 11px;
+  background-color: white;
+  border: 1px solid #ccc;
+}
+
+.oe_table_analyse_title {
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 11px;
+  width: 33.33%;
+  background-color: #eae8e8;
+  font-style: italic;
+  border: 1px solid #ccc;
+}
+
+.oe_table_analyse_title_close {
+  border: 1px solid #7C7BAD;
+  text-align: center;
+  font-size: 11px;
+  width: 0%;
+  background-color: #7C7BAD;
+}
+
+.oe_table_analyse_week {
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 12px;
+  color: white;
+  font-style: italic;
+  width: 250px;
+  background-color: #7C7BAD;
+}
+
+.oe_table_analyse_week_today {
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 12px;
+  color: white;
+  font-weight: bold;
+  width: 250px;
+  background-color: rgba(124, 123, 173 ,0.8);
+}
+
+.oe_table_analyse_week_close {
+  border-collapse: collapse;
+  border-bottom: 1px solid red;
+  text-align: left;
+  font-size: 10px;
+  color: white;
+  max-width: 30px;
+  min-width: 30px;
+  background-color: #7C7BAD;
+}
+
+.oe_table_close {
+  background-color: #7C7BAD;
+  border-bottom: 1px solid red;
+}
+
+.oe_table_analyse_values_td {
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 13px;
+}
+
+.oe_table_total_values {
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  width: 33.33%;
+}
+
+.oe_table_legende_resource {
+  font-size: 11px;
+  text-align: right;
+  padding-right: 10px;
+}
+
+.oe_table_total_values_resource_alerte {
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+  width: 33.33%;
+  background-color: #C0392B;
+}
+
+.oe_table_total_values_resource_atelier {
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  width: 33.33%;
+  background-color: #EBF5FB;
+  border: 1px solid #ccc;
+}
+
+.oe_table_total_values_resource_planifiee_atelier {
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  width: 33.33%;
+  background-color: #D6EAF8;
+  border: 1px solid #ccc;
+}
+
+.oe_table_total_values_resource_disponible_atelier {
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  width: 33.33%;
+  background-color: #A9CCE3;
+  border: 1px solid #ccc;
+}
+
+
+
+.oe_table_total_values_resource_montage {
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  width: 33.33%;
+  background-color: #EAFAF1;
+  border: 1px solid #ccc;
+}
+
+.oe_table_total_values_resource_planifiee_montage {
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  width: 33.33%;
+  background-color: #D5F5E3;
+  border: 1px solid #ccc;
+}
+
+.oe_table_total_values_resource_disponible_montage {
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  width: 33.33%;
+  background-color: #ABEBC6;
+  border: 1px solid #ccc;
+}
+
+.oe_table_total_values_resource_etude {
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  width: 33.33%;
+  background-color: #FBEEE6;
+  border: 1px solid #ccc;
+}
+
+.oe_table_total_values_resource_planifiee_etude {
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  width: 33.33%;
+  background-color: #F6DDCC;
+  border: 1px solid #ccc;
+}
+
+.oe_table_total_values_resource_disponible_etude {
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  width: 33.33%;
+  background-color: #EDBB99;
+  border: 1px solid #ccc;
+}
+
+.oe_table_values_task {
+  font-size: 11px;
+  text-align: center;
+  font-style: italic;
+  width: 33.33%;
+  border: 1px solid #ccc;
+}
+
+.oe_table_values {
+  font-size: 11px;
+  text-align: center;
+  width: 33.33%;
+  border: 1px solid #ccc;
+}
+
+.oe_table_values_data_empty {
+  font-size: 11px;
+  text-align: center;
+  width: 33.33%;
+  color: white;
+  border: 1px solid #ccc;
+}
+
+.oe_table_values_data_empty_project {
+  font-size: 11px;
+  text-align: center;
+  width: 33.33%;
+  color: #ABB2B9;
+  background-color: #F2F3F4;
+  font-style: italic;
+  border: 1px solid #ccc;
+}
+
+.oe_table_values_data_empty_today_project_data {
+  font-size: 11px;
+  text-align: center;
+  width: 33.33%;
+  color: #ABB2B9;
+  background-color: #FFFDE1;
+  font-style: italic;
+  border: 1px solid #ccc;
+}
+
+.oe_table_values_data_empty_today {
+  font-size: 11px;
+  text-align: center;
+  width: 33.33%;
+  color: #FFFDE1;
+  background-color: #FFFDE1;
+  border: 1px solid #ccc;
+}
+
+.oe_table_values_data {
+  font-size: 11px;
+  text-align: center;
+  width: 33.33%;
+  font-weight: bold;
+  background-color: #CCD1D1;
+  border: 1px solid #ccc;
+}
+
+.oe_table_values_empty {
+  border: 1px solid #ccc;
+  background-color: white;
+}
+
+.oe_table_values_empty_jauge {
+  border: 1px solid #ccc;
+  background-color: white;
+  min-height: 10px
+  color: white;
+  min-height: 3px;
+}
+
+.oe_table_analyse_title_days {
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 11px;
+  width: 20%;
+  background-color: #eae8e8;
+  
+}
+
+.oe_table_analyse_weekdays {
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 11.5px;
+  color: white;
+  font-style: italic;
+  width: 380px;
+  background-color: #7C7BAD;
+}
+
+.oe_table_analyse_weekdays_today {
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 11.5px;
+  font-weight: bold;
+  color: white;
+  width: 380px;
+  background-color: rgba(124, 123, 173 ,0.8);
+}
+
+.oe_table_values_days {
+  font-size: 11px;
+  text-align: center;
+  width: 20%;
+}
+
+.oe_table_values_data_days {
+  font-size: 11px;
+  text-align: center;
+  width: 20%;
+  font-style: italic;
+  border: 1px solid #ccc;
+}
+
+.oe_table_values_empty_days {
+  border: 1px solid #ccc;
+  background-color: white;
+}
+
+/*background-color: #F2F3F4;*/
+.oe_table_values_data_empty_days_project {
+  font-size: 11px;
+  text-align: center;
+  width: 20%;
+  color: #eae8e8;
+  background-color: #eae8e8;
+  border: 1px solid #ccc;
+}
+
+.oe_table_values_data_days_project {
+  font-size: 11px;
+  text-align: center;
+  width: 20%;
+  font-weight: bold;
+  background-color: #F2F3F4;
+  border: 1px solid #ccc;
+}
+
+.oe_table_values_data_empty_days {
+  font-size: 11px;
+  text-align: center;
+  width: 20%;
+  color: white;
+  border: 1px solid #ccc;
+}
+
+.oe_table_values_data_empty_days_today {
+  font-size: 11px;
+  text-align: center;
+  width: 20%;
+  background-color: #FFFDE1;
+  color: #FFFDE1;
+  border: 1px solid #ccc;
+}
+
+.oe_table_total_values_resource_days {
+  font-size: 10.5px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #D4EFDF;
+  border: 1px solid #ccc;
+}
+
+.oe_table_total_values_resource_days_planified {
+  font-size: 10.5px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #D6EAF8;
+  border: 1px solid #ccc;
+}
+
+
+
+
+.oe_table_total_values_resource_days_etude_ressource {
+  font-size: 10.5px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #FBEEE6;
+  border: 1px solid #ccc;
+}
+
+.oe_table_total_values_resource_days_atelier_ressource {
+  font-size: 10.5px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #EBF5FB;
+  border: 1px solid #ccc;
+}
+
+.oe_table_total_values_resource_days_montage_ressource {
+  font-size: 10.5px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #EAFAF1;
+  border: 1px solid #ccc;
+}
+
+.oe_table_total_values_resource_days_etude_planifie {
+  font-size: 10.5px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #F6DDCC;
+  border: 1px solid #ccc;
+  border: 1px solid #ccc;
+}
+
+.oe_table_total_values_resource_days_atelier_planifie {
+  font-size: 10.5px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #D6EAF8;
+  border: 1px solid #ccc;
+}
+
+.oe_table_total_values_resource_days_montage_planifie {
+  font-size: 10.5px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #D5F5E3;
+  border: 1px solid #ccc;
+}
+
+
+.oe_table_total_values_resource_days_etude_static {
+  font-size: 10.5px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #EDBB99;
+  border: 1px solid #ccc;
+}
+
+.oe_table_total_values_resource_days_atelier_static {
+  font-size: 10.5px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #A9CCE3;
+  border: 1px solid #ccc;
+}
+
+.oe_table_total_values_resource_days_montage_static {
+  font-size: 10.5px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #ABEBC6;
+  border: 1px solid #ccc;
+}
+
+.oe_table_total_values_resource_alerte_days {
+  font-size: 10.5px;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+  background-color: #C0392B;
+  border: 1px solid #ccc;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

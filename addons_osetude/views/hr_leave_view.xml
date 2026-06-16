@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="hr_leave_view_form_inherit" model="ir.ui.view">
+        <field name="active" eval="False"/>
+        <field name="name">hr.leave.view.form</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[3]" position="after">
+                <div class="o_row o_row_readonly">
+                    <label for="manual_hour_from" modifiers="{'invisible': [('request_unit_hours', '=', False)]}"/>
+                    <field name="manual_hour_from" widget="float_time"
+                        modifiers="{
+                            'readonly': [('state', '=', 'validate')],
+                            'required': [('request_unit_hours', '=', True)],
+                            'invisible': [('request_unit_hours', '=', False)]}"/>
+                    <label for="manual_hour_to" modifiers="{'invisible': [('request_unit_hours', '=', False)]}"/>
+                    <field name="manual_hour_to" widget="float_time"
+                        modifiers="{
+                            'readonly': [('state', '=', 'validate')],
+                            'required': [('request_unit_hours', '=', True)],
+                            'invisible': [('request_unit_hours', '=', False)]}"/>
+                </div>
+            </xpath>
+            <xpath expr="//label[@for='request_hour_from']" position="replace"/>
+            <xpath expr="//field[@name='request_hour_from']" position="replace"/>
+            <xpath expr="//label[@for='request_hour_to']" position="replace"/>
+            <xpath expr="//field[@name='request_hour_to']" position="replace"/>
+        </field>
+    </record>
+</odoo>
+

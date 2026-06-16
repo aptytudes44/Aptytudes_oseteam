@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_invoice_document_inherit" inherit_id="account.report_invoice_document">
+        <!-- POUR AJOUTER LE NUMERO DE SIRET -->
+        <!-- v17 : use id='partner_vat_no_shipping' (more robust than t-if attribute match) -->
+        <xpath expr="//div[@id='partner_vat_no_shipping']" position="after">
+            <div t-if="o.partner_id.lang == 'fr_FR' and o.move_type in ('out_invoice','out_refund')">
+                <t t-if="o.partner_id.parent_id">
+                    <t t-if="o.partner_id.parent_id.siret">
+                        <t>Siret : </t><span t-field="o.partner_id.parent_id.siret"/>
+                    </t>
+                    <t t-else="">
+                        <p style="color: red;"><strong><i>The siret number is required for France</i></strong></p>
+                    </t>
+                </t>
+                <t t-else="">
+                    <t t-if="o.partner_id.siret">
+                        <t>Siret : </t><span t-field="o.partner_id.siret"/>
+                    </t>
+                    <t t-else="">
+                        <p style="color: red;"><strong><i>The siret number is required for France</i></strong></p>
+                    </t>
+                </t>
+            </div>
+        </xpath>
+
+        <!-- POUR AJOUTER LA REFERENCE PROJET -->
+        <!-- v17 field renames: date_invoice→invoice_date, date_due→invoice_date_due, origin→invoice_origin, reference→ref, type→move_type, open→posted -->
+        <xpath expr="//div[@id='informations']" position="replace">
+            <div id="informations" class="row mt32 mb32">
+                <div class="col-auto mw-100 mb-2" t-if="o.invoice_date" name="invoice_date" style="font-size: 14px;">
+                    <strong>Invoice Date:</strong>
+                    <p class="m-0" t-field="o.invoice_date"/>
+                </div>
+                <div class="col-auto mw-100 mb-2" t-if="o.invoice_date_due and o.move_type == 'out_invoice' and o.state in ('posted', 'in_payment', 'paid')" name="due_date" style="font-size: 14px;">
+                    <strong>Due Date:</strong>
+                    <p class="m-0" t-field="o.invoice_date_due"/>
+                </div>
+                <div class="col-auto mw-100 mb-2" t-if="o.invoice_origin" name="origin" style="font-size: 14px;">
+                    <strong>Source:</strong>
+                    <p class="m-0" t-field="o.invoice_origin"/>
+                </div>
+                <div class="col-auto mw-100 mb-2" t-if="o.partner_id.ref" name="customer_code">
+                    <strong>Customer Code:</strong>
+                    <p class="m-0" t-field="o.partner_id.ref"/>
+                </div>
+                <div name="reference" class="col-auto mw-100 mb-2" t-if="o.ref" style="font-size: 14px;">
+                    <strong>Reference:</strong>
+                    <p class="m-0" t-field="o.ref"/>
+                </div>
+            </div>
+            <table style="width: 100%;">
+                <tr>
+                    <td style="font-size: 14px; width: 20%;"><b>Project:</b></td>
+                    <td style="font-size: 14px;"><span t-field="o.project_id"/></td>
+                    <td style="font-size: 14px; width: 20%;"><b>Customer reference:</b></td>
+                    <td style="font-size: 14px;"><span t-field="o.name"/></td>
+                </tr>
+                <tr>
+                    <td style="font-size: 14px;"><b>Project reference:</b></td>
+                    <td style="font-size: 14px;"><span t-field="o.project_id.title_project"/></td>
+                    <td style="font-size: 14px; width: 20%;"><b>Delivery:</b></td>
+                    <td style="font-size: 14px;"><span t-field="o.picking_id"/></td>
+                </tr>
+            </table>
+            <br/>
+        </xpath>
+
+        <xpath expr="//table[@name='invoice_line_table']/thead" position="replace">
+            <thead>
+                <tr>
+                    <!-- TODO: remove in master -->
+                    <t t-set="colspan" t-value="6"/>
+                    <th class="text-left" style="background-color: #dde1e6;"><span>Description</span></th>
+                    <th class="d-none text-left" style="background-color: #dde1e6;"><span>Source Document</span></th>
+                    <th class="text-end" style="background-color: #dde1e6;"><span>Accounting type</span></th>
+                    <th class="text-end" style="background-color: #dde1e6;"><span>Quantity</span></th>
+                    <th t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}" style="background-color: #dde1e6;"><span>Unit Price</span></th>
+                    <th t-if="display_discount" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}" style="background-color: #dde1e6;">
+                        <span>Disc.(%)</span>
+                        <!-- TODO: remove in master -->
+                        <t t-set="colspan" t-value="colspan+1"/>
+                    </th>
+                    <th t-attf-class="text-left {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}" style="background-color: #dde1e6;"><span>Taxes</span></th>
+                    <th class="text-end" style="background-color: #dde1e6;">
+                        <span groups="account.group_show_line_subtotals_tax_excluded">Montant</span>
+                        <span groups="account.group_show_line_subtotals_tax_included">Total Price</span>
+                    </th>
+                </tr>
+            </thead>
+        </xpath>
+
+        <!-- POUR AJOUTER UNE COLONNE AVEC LE LIBELLE DE COMPTE COMPTABLE SUR LA FACTURE -->
+        <xpath expr="//td[@name='account_invoice_line_name']" position="after">
+            <td class="text-left"><span t-field="line.account_wording"/></td>
+        </xpath>
+
+        <!-- POUR POUVOIR TRADUIRE AMOUNT DANS LES LIGNES DE FACTURES -->
+        <xpath expr="//span[@groups='account.group_show_line_subtotals_tax_excluded']" position="replace">
+            <span groups="account.group_show_line_subtotals_tax_excluded">Montant</span>
+        </xpath>
+
+        <!-- POUR MODIFIER LE LIBELLE SOUS TOTAL HT DES SECTIONS -->
+        <xpath expr="//tr[contains(@class, 'is-subtotal')]/td/strong" position="replace">
+            <strong class="mr16">Sous Total HT</strong>
+        </xpath>
+
+        <!-- POUR MODIFIER LE LIBELLE TOTAL HT ==> A VERIFIER
+        <xpath expr="//tr[contains(@class, 'total') and not(contains(@class, 'o_total'))]/td/strong" position="replace">
+            <strong>Total HT</strong>
+        </xpath>
+        -->
+        <!-- POUR MODIFIER LE LIBELLE TOTAL TTC ==> A VERIFIER
+        <xpath expr="//div[@id='total']//tr[last()]/td[1]/strong" position="replace">
+            <strong>Total TTC</strong>
+        </xpath>
+        -->
+        
+        <!-- POUR AJOUTER LA GESTION DES BANQUES/FACTOR -->
+        <!-- v17 : o.type → o.move_type ; qrcode div may have changed -->
+        <xpath expr="//div[@id='qrcode']" position="before">
+            <span t-if="o.move_type == 'out_invoice' and o.company_bank_id">
+                <p style="font-size: 13px;"><i>Informations bancaires</i></p>
+                <span t-if="o.company_bank_id.is_factor == False">
+                    <table class="table table-sm o_main_table mb-6" style="width: 60%;">
+                        <thead>
+                            <th style="font-size: 12px;">Banque</th>
+                            <th style="font-size: 12px;">IBAN</th>
+                            <th style="font-size: 12px;">BIC</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th style="font-size: 12px;"><p t-field="o.company_bank_id.bank_id.name"/></th>
+                                <th style="font-size: 12px;"><p t-field="o.company_bank_id.bank_account_id.acc_number"/></th>
+                                <th style="font-size: 12px;"><p t-field="o.company_bank_id.bank_id.bic"/></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </span>
+                <span t-if="o.company_bank_id.is_factor == True">
+                    <div t-field="o.company_bank_id.factor_note" style="border: 1px solid #dde1e6; font-size: 12px; width: 50%; padding: 5px;"/>
+                </span>
+            </span>
+        </xpath>
+
+        <!-- POUR REDUIRE LA TAILLE DU TEXTE DES CONDITIONS -->
+        <!-- v17 : element changed from div to span[@name='payment_term'] -->
+        <xpath expr="//span[@name='payment_term']" position="replace">
+            <p t-if="o.invoice_payment_term_id" t-field="o.invoice_payment_term_id.note" style="font-size: 12px;"/>
+        </xpath>
+    </template>
+</odoo>
+

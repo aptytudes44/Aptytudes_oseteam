@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hr_expense_view_form_inherit" model="ir.ui.view">
+            <field name="name">hr.expense.view.form.inherit</field>
+            <field name="model">hr.expense</field>
+            <field name="inherit_id" ref="hr_expense.hr_expense_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='total_amount_currency']" position="before">
+                    <label for="tax_amount_currency"/>
+                    <div>
+                        <field name="manual_tax_amount"/>
+                        <field name="tax_amount_currency"
+                            invisible="tax_amount_currency == 0.0"
+                            readonly="not manual_tax_amount"/>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='tax_ids']" position="replace">
+                    <field name="tax_ids" domain="[('type_tax_use', '=', 'purchase')]" widget="many2many_tags"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+

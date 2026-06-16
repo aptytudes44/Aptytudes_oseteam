@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="external_layout_standard_inherit" inherit_id="web.external_layout_standard">
+        <xpath expr="//div[@name='moto']" position="replace">
+            <div class="col-3 mb4">
+                <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 70px;" alt="Logo"/>
+            </div>
+            <div class="col-9 text-end" style="margin-top:10px;">
+                <span t-field="company.report_header" name="moto"/>
+                <img src="/addons_osetude/static/src/img/iso_9001_2025.png" style="height: 60px;"/>
+            </div>
+        </xpath>
+
+        <xpath expr="//div[@name='company_address']" position="replace">
+            <div class="col-9" name="company_address">
+                <div>
+                    <div>OSETEAM</div>
+                    <span t-field="company.street" style="font-size: 12px;"/> - <span t-field="company.zip" style="font-size: 12px;"/> <span t-field="company.city" style="font-size: 12px;"/>
+                </div>
+                <div>
+                    <i class="fa fa-phone"></i> <span t-field="company.phone" style="font-size: 12px;"/>
+                    - <i class="fa fa-envelope-o"></i> <span t-field="company.email" style="font-size: 12px;"/>
+                </div>
+            </div>
+        </xpath>
+
+        <xpath expr="//div[contains(@t-attf-class,'o_standard_footer')]" position="replace">
+            <div t-attf-class="footer o_standard_footer o_company_#{company.id}_layout">
+                <div class="text-center" style="border-top: 1px solid black;">
+                    <div name="financial_infos">
+                        <span t-field="company.report_footer" style="font-size: 12px;"/>
+                    </div>
+                    <div t-if="report_type == 'pdf'" class="text-muted">
+                        Page: <span class="page"/>/<span class="topage"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
+

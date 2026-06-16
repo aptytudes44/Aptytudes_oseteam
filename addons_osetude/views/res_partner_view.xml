@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_partner_property_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.property.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='accounting']/group" position="after">
+                    <group>
+                        <group></group>
+                        <group string="Default company bank">
+                            <field name="company_bank_id"/>
+                        </group>
+                    </group>
+                </xpath>
+
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_view_quality_control_lines"
+                        type="object" class="oe_stat_button"
+                        icon="fa-diamond"
+                        groups="addons_osetude.group_quality_control_user,addons_osetude.group_quality_control_manager">
+                        <div class="o_form_field o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="quality_control_count"/>
+                            </span>
+                            <span class="o_stat_text">Global mark</span>
+                        </div>
+                    </button>
+
+                    <button name="action_view_quality_control_lines_selection"
+                        type="object" class="oe_stat_button"
+                        icon="fa-star"
+                        groups="addons_osetude.group_quality_control_user,addons_osetude.group_quality_control_manager">
+                        <div class="o_form_field o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="supplier_selection_score"/>
+                            </span>
+                            <span class="o_stat_text">Selection score</span>
+                        </div>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_partner_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="priority" eval="1"/>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_type']" position="after">
+                    <field name="is_subcontractor"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+

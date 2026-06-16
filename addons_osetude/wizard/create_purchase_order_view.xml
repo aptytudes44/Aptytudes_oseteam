@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_create_purchase_epdm" model="ir.ui.view">
+            <field name="name">Create purchase order</field>
+            <field name="type">form</field>
+            <field name="model">create.purchase_order</field>
+            <field name="arch" type="xml">
+                <form string="Create Purchase Order">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="supplier_id" required="1"/>
+                                <field name="reception_desired_on" required="1"/>
+                            </group>
+                            <group>
+                                <field name="order_id" readonly="1"/>
+                            </group>
+                        </group>
+                        <field name="order_purchase_product_line">
+                            <list string="Order purchase lines" editable="bottom" create="0">
+                                <field name="sale_order_purchase_line_id" invisible="1"/>
+                                <field name="product_id" invisible="1"/>
+                                <field name="name" invisible="1"/>
+                                <field name="product_uom_qty"/>
+                                <field name="product_order_qty" invisible="1"/>
+                            </list>
+                        </field>
+                    </sheet>
+                    <footer>
+                        <button name="create_purchase_order" string="Create purchase" type="object" class="btn-primary"/>
+                        or
+                        <button special="cancel" string="Close" type="object" class="btn btn-secondary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_create_purchase_order" model="ir.actions.act_window">
+            <field name="name">Create Purchase Order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">create.purchase_order</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
+

@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<odoo>
+	<data>
+
+		<record id="view_timesheet_analyse_osetude_form" model="ir.ui.view">
+        	<field name="name">Resources planning</field>
+            <field name="model">report.resource.planning.osetude</field>
+            <field name="arch" type="xml">
+            	<form string="Timesheet analyse" create="0" edit="0" delete="0" style="width: 100%; height: 900px;">
+	            	<script type="text/javascript">
+						$(document).click(function(event) { 
+							 var IdProject = $(event.target).context.id.split(' ')[0];
+							 var TaskList = document.getElementsByClassName(IdProject+'_project_task');
+							 if ($(event.target).context.className === 'fa fa-chevron-circle-right') {
+						  	   if (IdProject) {
+						      		document.getElementById($(event.target).context.id.split(' ')[0]+' open').style.display = 'inline';
+						      		document.getElementById($(event.target).context.id.split(' ')[0]+' close').style.display = 'none';
+
+							      	for (var i = 0; TaskList.length > i; i++) {
+									     TaskList[i].setAttribute("style", "visibility: visible;");
+									}
+						      		
+						      	}
+						     }
+						    if ($(event.target).context.className === 'fa fa-arrow-circle-down') {
+						        if (IdProject) {
+						        	document.getElementById($(event.target).context.id.split(' ')[0]+' close').style.display = 'inline';
+						        	document.getElementById($(event.target).context.id.split(' ')[0]+' open').style.display = 'none';
+						        	
+							      	for (var i = 0; TaskList.length > i; i++) {
+									     TaskList[i].setAttribute("style", "visibility: collapse;");
+									}
+						        }
+						     }
+						});
+					</script>
+            		<field name="structure"/>
+            	</form>
+            </field>
+       </record>
+
+		<record id="view_wizard_timesheet_analyse" model="ir.ui.view">
+        	<field name="name">Resources planning</field>
+            <field name="model">report.ressource.planning.osetude.periode</field>
+            <field name="arch" type="xml">
+            	<form string="Timesheet analyse">
+            		<sheet>
+	            		<group>
+	            			<group>
+	            				<field name="report_type" required="1"/>
+	            				<field name="type_ressource" required="1"/>
+	            			</group>
+	            			<group>
+	            				<field name="type_task" widget="many2many_tags" 
+	            				                        options="{'no_open': True, 'no_create': True}" 
+	            				                        placeholder="Select the tasks to display"/>
+	            			</group>
+	            		</group>
+            		</sheet>
+            		<footer>
+            			<button name="compute_resource_planning" icon="fa-calendar" string="Create Resource Planning" type="object" class="btn-primary"/>
+            			or
+            			<button special="cancel" string="Close" type="object" class="btn btn-secondary"/>
+            		</footer>
+            	</form>
+            </field>
+       </record>
+	
+        <record id="action_timesheet_analyse_osetude_periode" model="ir.actions.act_window">
+            <field name="name">Resources planning</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">report.ressource.planning.osetude.periode</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        
+        <menuitem id="menu_action_timesheet_analyse_osetude"
+            name="Resources planning"
+            action="action_timesheet_analyse_osetude_periode"
+            parent="project.menu_project_report"
+            groups="addons_osetude.group_ressource_planning_manager"
+            sequence="10"/>
+
+
+<!-- RESOURCE PLANNING SETTING -->
+
+		<record id="view_resource_planning_osetude_setting_tree" model="ir.ui.view">
+        	<field name="name">Resources planning Setting</field>
+            <field name="model">report.resource.planning.osetude.setting</field>
+            <field name="arch" type="xml">
+            	<tree string="Timesheet analyse setting">
+            		<field name="name"/>
+            	</tree>
+            </field>
+       </record>
+       
+		<record id="view_resource_planning_osetude_setting_form" model="ir.ui.view">
+        	<field name="name">Resources planning Setting</field>
+            <field name="model">report.resource.planning.osetude.setting</field>
+            <field name="arch" type="xml">
+            	<form string="Timesheet analyse setting">
+            		<header>
+            			<button name="create_period" icon="fa-calendar" type="object" string="Create period" class="btn-primary"/>
+            		</header>
+            		<sheet>
+            			<label for="name"/>
+ 						<h1>
+            				<field name="name"/>
+            			</h1>
+            			<group>
+            				<group>
+            					<field name="date_start" required="1"/>
+            					<field name="default_hours_atelier" widget="float_time"/>
+            					<field name="default_hours_montage" widget="float_time"/>
+            					<field name="default_hours_etude" widget="float_time"/>
+            				</group>
+            				<group><field name="date_end" required="1"/></group>
+            			</group>
+            			<notebook>
+            				<page string="Setting Lines" attrs="{'invisible': [('setting_line','=',[])]}">
+            					<field name="setting_line">
+	            					<tree string="Setting Lines" limit="53" editable="bottom" decoration-muted="amount==0.0" decoration-success="amount>0.0">
+	            						<field name="name" readonly="1"/>
+	            						<field name="year" readonly="1"/>
+	            						<field name="amount" required="1" widget="float_time" string="Atelier"/>
+	            						<field name="amount3" required="1" widget="float_time"/>
+	            						<field name="amount2" required="1" widget="float_time"/>
+	            					</tree>
+            					</field>
+            				</page>
+            			</notebook>
+            		</sheet>
+            		
+            	</form>
+            </field>
+       </record>
+
+        <record id="action_view_resourcet_planning_setting" model="ir.actions.act_window">
+            <field name="name">Resources planning Setting</field>
+            <field name="res_model">report.resource.planning.osetude.setting</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_project_obx_history_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Resource Planning Setting
+                </p>
+            </field>
+        </record>
+       
+        <menuitem id="resource_planning_setting_menu"
+            name="Resource planning setting"
+            action="action_view_resourcet_planning_setting"
+            groups="addons_osetude.group_ressource_planning_manager"
+            parent="project.menu_project_config"/>
+            
+	</data>
+</odoo>

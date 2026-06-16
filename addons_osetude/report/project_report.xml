@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Déclaration du rapport QWeb -->
+        <report
+            id="report_project"
+            string="Project Report"
+            model="project.project"
+            report_type="qweb-pdf"
+            name="addons_osetude.report_project_template"
+            file="addons_osetude.report_project"
+            print_report_name="%(object.name)s"
+            paperformat="addons_osetude.paper_format_project"
+        />
+
+        <!-- Action de rapport (obligatoire pour le bouton) -->
+        <record id="action_report_project" model="ir.actions.report">
+            <field name="name">Project Report</field>
+            <field name="model">project.project</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">addons_osetude.report_project_template</field>
+            <field name="binding_model_id" ref="model_project_project"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>
+

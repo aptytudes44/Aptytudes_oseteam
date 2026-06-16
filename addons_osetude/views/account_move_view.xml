@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- VIEW INVOICE SEARCH -->
+        <record id="view_account_invoice_filter_inherit" model="ir.ui.view">
+            <field name="name">account.move.select</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="project_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- VIEW INVOICE TREE -->
+        <record id="invoice_tree_inherit" model="ir.ui.view">
+            <field name="name">account.move.tree</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="project_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- VIEW INVOICE FORM -->
+        <record id="invoice_form_inherit" model="ir.ui.view">
+            <field name="name">account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_bank_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <!-- Ajouter project_id et company_bank_id dans other_info -->
+                <xpath expr="//field[@name='invoice_date_due']" position="after">
+                    <field name="project_id"/>
+                    <field name="title_project" modifiers="{'readonly': True}"/>
+                    <field name="company_bank_id"/>
+                    <field name="picking_id" options="{'no_create': True}"/>
+                </xpath>
+
+                <!-- Libellé interne du compte comptable sur les lignes -->
+                <xpath expr="//field[@name='invoice_line_ids']//field[@name='account_id']" position="after">
+                    <field name="account_wording" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- VIEW ACCOUNT JOURNAL FORM -->
+        <record id="view_account_bank_journal_form_inherit" model="ir.ui.view">
+            <field name="name">account.bank.journal.form</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='bank_id']" position="after">
+                    <field name="is_factor"/>
+                    <field name="factor_note"
+                           modifiers="{'invisible': [('is_factor','=',False)]}"
+                           colspan="2" nolabel="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_purchase_order_filter_inherit" model="ir.ui.view">
+            <field name="name">request.quotation.select</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="account_analytic_id" string="Compte Analytique"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase_order_tree_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.tree</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="account_analytic_id" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase_order_form_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/list/field[@name='product_id']" position="attributes">
+                    <attribute name="options">{'no_create': true, 'no_open': true}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="dest_address_id"/>
+                </xpath>
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="account_analytic_id" options="{'no_create': True, 'no_open': True}"/>
+                </xpath>
+
+                <xpath expr="//field[@name='partner_ref']" position="after">
+                    <field name="partner_ref_note"/>
+                </xpath>
+
+                <xpath expr="//page[1]" position="after">
+                    <page string="Technical document">
+                        <div>
+                            <field name="print_technical_document"/> <label for="print_technical_document"/>
+                        </div>
+                        <field name="technical_document"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        
+    </data>
+</odoo>
+

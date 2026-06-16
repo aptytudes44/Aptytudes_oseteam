@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_sales_order_filter_inherit" model="ir.ui.view">
+            <field name="name">sale.order.list.select</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="project_id"/>
+                    <field name="title_project"/>
+                </xpath>
+                <xpath expr="//filter[@name='customer']" position="after">
+                    <filter string="Project" name="project" domain="[]" context="{'group_by':'project_id'}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_quotation_tree_inherit" model="ir.ui.view">
+            <field name="name">sale.order.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="project_id"/>
+                    <field name="title_project"/>
+                </xpath>
+                <xpath expr="//field[@name='amount_total']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="before">
+                    <field name="amount_untaxed" sum="Total"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="view_order_tree_inherit" model="ir.ui.view">
+            <field name="name">sale.order.tree.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="decoration-danger">approval_deadline &lt; current_date and approval_deadline!=False and sale_purchase_create==False</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="project_id"/>
+                    <field name="title_project"/>
+                </xpath>
+                <xpath expr="//field[@name='amount_total']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_status']" position="before">
+                    <field name="amount_untaxed" sum="Total"/>
+                    <field name="still_billed" sum="Total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="approval_deadline"/>
+                    <field name="sale_purchase_create" invisible="1"/>
+                    <button name="" class="oe_stat_button" icon="fa-ambulance" string="Purchase Order" invisible="sale_purchase_create==False"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_status']" position="before">
+                    <field name="order_realisation_state" invisible="state=='draft'" string="Planifications"/>
+                </xpath>
+            </field>
+        </record>
+		
+		
+        <record id="view_order_form_custom_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/list/field[@name='product_id']" position="attributes">
+                    <attribute name="options">{'no_open': True, 'no_create': True}</attribute>
+                </xpath>
+                
+                <!-- A REVOIR
+                <xpath expr="//field[@name='order_line']/form/group/group/field[@name='product_id']" position="attributes">
+                    <attribute name="options">{'no_open': True, 'no_create': True}</attribute>
+                </xpath>
+                 -->
+                 
+                <xpath expr="//field[@name='tax_totals']" position="after">
+                    <div class="d-flex float-end" colspan="2" invisible="state in ('draft','sent','cancel')">
+                        <label for="still_billed"/>
+                        <div>
+                           <field name="still_billed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </div>
+                    </div>
+                </xpath>
+                	
+		<xpath expr="//field[@name='project_id']" position="replace"/>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="project_id"/>
+                    <field name="client_order_ref"/>
+                    <field name="responsible_business_id"/>
+                    <field name="phone_responsible_business" invisible="1"/>
+                    <field name="mail_responsible_business" invisible="1"/>
+                    <field name="order_realisation_state" invisible="state == 'draft'"/>
+                </xpath>
+                
+                <xpath expr="//field[@name='order_line']" position="before">
+                    <group>
+                    	<field name="title_project" class="fw-bold"/>
+                    </group>
+                </xpath>
+
+                <xpath expr="//field[@name='note']" position="after">
+                    <field name="comment_not" class="oe_inline" placeholder="Additional note..."/>
+                </xpath>
+                
+
+                <xpath expr="//field[@name='order_line']/list/field[@name='purchase_price']" position="attributes">
+                    <attribute name="context">{'purchase_price': purchase_price}</attribute>
+                </xpath>
+                
+                
+                <xpath expr="//field[@name='order_line']/list/field[@name='tax_id']" position="before">
+                    <field name="margin_sale_line" required="1" context="{'margin_sale_line': margin_sale_line}"/>
+                </xpath>
+                
+                
+                <xpath expr="//field[@name='order_line']/list/field[@name='price_unit']" position="attributes">
+                    <attribute name="context">{'price_unit': price_unit}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_order']" position="after">
+                    <field name="approval_deadline"/>
+                </xpath>
+                
+                <xpath expr="//button[@id='action_confirm']" position="attributes">
+                    <attribute name="confirm">Are you sure you want to confirm the quote on order?</attribute>
+                </xpath>
+                
+                <xpath expr="//button[@name='action_confirm']" position="attributes">
+                    <attribute name="confirm">Are you sure you want to confirm the quote on order?</attribute>
+                </xpath>
+                
+                <xpath expr="//notebook/page[@name='order_lines']" position="after">
+                    <page string="Purchases orders" invisible="state in ('draft','sent')">
+                        <button name="action_create_purchase_order" string="Create purchase order"
+                                type="object"
+                                icon="fa-ambulance"
+                                groups="addons_osetude.group_osetude_create_purchase_sale"/>
+                        <button name="open_sale_purchase" string="Open purchases orders"
+                                type="object"
+                                icon="fa-folder-open-o"
+                                invisible="not sale_order_purchase_ids"/>
+                        <field name="sale_purchase_create" invisible="1"/>
+                        <field name="sale_order_purchase_ids" create="0">
+                            <list string="Sale Order Purchase"
+                                    decoration-info="qty_received&lt;qty_ordered and state not in ('draft','sent')"
+                                    decoration-it="qty_received&lt;qty_ordered and state in ('draft','sent')"
+                                    decoration-success="qty_received==qty_ordered">
+                                <field name="name"/>
+                                <field name="partner_id"/>
+                                <field name="qty_ordered"/>
+                                <field name="qty_received"/>
+                                <field name="qty_to_receive" invisible="qty_to_receive == 0"/>
+                                <field name="state"/>
+                            </list>
+                        </field>
+                    </page>
+                    
+                    <page string="Project tasks" invisible="0">
+                        <field name="project_task_ids">
+                            <list string="Project tasks" create="0" decoration-info="type_task == 'internal' and state != 'done'"
+                                    decoration-warning="type_task == 'external' and state != 'done'"
+                                    decoration-it="state == 'new'"
+                                    decoration-bf="state == 'in_progress' and effective_hours &lt;= allocated_hours"
+                                    decoration-muted="state == 'done'"
+                                    decoration-danger="effective_hours > allocated_hours">
+                                <field name="name"/>
+                                <field name="effective_hours"/>
+                                <field name="remaining_hours"/>
+                                <field name="allocated_hours"/>
+                                <field name="progress" widget="progressbar" invisible="0"/>
+                                <field name="type_task" invisible="1"/>
+                                <field name="state"/>
+                            </list>
+                            <form string="Project tasks">
+                                <header>
+                                    <button name="task_done" string="Task finished" type="object" class="oe_highlight"/>
+                                    <field name="state" widget="statusbar" statusbar_visible="new,in_progress,done"/>
+                                </header>
+                                <div class="oe_title pr-0">
+                                    <h1 class="d-flex flex-row justify-content-between">
+                                        <field name="priority" widget="priority" class="mr-3"/>
+                                        <field name="name" class="o_task_name text-truncate" readonly="1"/>
+                                    </h1>
+                                    <field name="project_id" invisible="1"/>
+                                </div>
+                                <notebook>
+                                    <page string="Timesheet Activities">
+                                        <group>
+                                            <group>
+                                                <field name="allocated_hours" widget="float_time"/>
+                                            </group>
+                                            <group>
+                                                <field name="progress" widget="progressbar"/>
+                                                <field name="type_task" required="1"/>
+                                            </group>
+                                        </group>
+                                        <field name="timesheet_ids" readonly="1">
+                                            <list editable="bottom" string="Timesheet Activities" default_order="date">
+                                                <field name="date"/>
+                                                <field name="user_id" invisible="1"/>
+                                                <field name="employee_id" required="1"/>
+                                                <field name="name"/>
+                                                <field name="unit_amount" widget="timesheet_uom"/>
+                                                <field name="project_id" invisible="1"/>
+                                            </list>
+                                        </field>
+                                        <group class="oe_subtotal_footer oe_right" name="project_hours">
+                                            <field name="effective_hours" widget="float_time"/>
+                                            <field name="remaining_hours" widget="float_time" class="oe_subtotal_footer_separator"/>
+                                        </group>
+                                    </page>
+                                </notebook>
+                            </form>
+                        </field>
+                    </page>
+                    
+                    <page string="Order Progress" invisible="state == 'draft'">
+                        <field name="order_progress_line">
+                            <list string="Order progress line" editable="bottom">
+                                <field name="name" required="1" readonly="0"/>
+                                <field name="validate"/>
+                                <field name="validation_date"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
+                
+                <xpath expr="//page[@name='other_information']" position="after">
+                    <page string="Check list" class="fw-bold text-danger"
+                          groups="addons_osetude.group_quality_control_user,addons_osetude.group_quality_control_manager"
+                          invisible="not project_id">
+                        <group>
+                            <group><field name="date_verification_project" invisible="not checklist_line_project"/></group>
+                            <group><field name="name_auditor_project" invisible="not checklist_line_project"/></group>
+                        </group>
+                        <button name="create_checklist_project_data"
+                                string="Create check list data"
+                                invisible="checklist_line_project"
+                                type="object"/>
+                        <field name="checklist_line_project">
+                            <list string="Check List" editable="bottom" decoration-muted="checked == True">
+                                <field name="name"/>
+                                <field name="checked"/>
+                            </list>
+                        </field>
+                    </page>
+                    <page string="Noncompliance/Claim/SAV" class="fw-bold text-danger"
+                          groups="addons_osetude.group_quality_control_user,addons_osetude.group_quality_control_manager"
+                          invisible="not project_id">
+                        <field name="noncompliance_line_project" context="{'default_partner_id':partner_id, 'default_project_id':id}">
+                            <list string="Noncompliance Claim">
+                                <field name="name"/>
+                                <field name="type"/>
+                                <field name="imputation"/>
+                                <field name="partner_id"/>
+                                <field name="state"/>
+                            </list>
+                            <form string="Noncompliance Claim">
+                                <sheet>
+                                    <label for="name" string="Record of Internal noncompliance" style="font-style: italic; font-size: 11px;" invisible="type != 'noncompliance'"/>
+                                    <label for="name" string="Record of Claim" style="font-style: italic; font-size: 11px;" invisible="type != 'claim'"/>
+                                    <label for="name" string="Record of SAV" style="font-style: italic; font-size: 11px;" invisible="type != 'after_sales_service'"/>
+                                    <label for="name" string="Record ..." style="font-style: italic; font-size: 11px;" invisible="type != False"/>
+                                    <h1><field name="name" readonly="1"/></h1>
+                                    <group>
+                                        <group string="Identification">
+                                            <field name="type"/>
+                                            <field name="imputation"/>
+                                            <field name="partner_id"
+                                            	   invisible="imputation == 'internal' or imputation == False"
+                                            	   required="imputation in ('customer','supplier')"
+                                                   options="{'no_open': True, 'no_create': True}"/>
+                                            <field name="project_id" invisible="1"/>
+                                            <field name="sale_id"
+                                                   invisible="imputation != 'customer'"
+                                                   required="imputation == 'customer'"
+                                                   domain="[('project_id','=',project_id)]"
+                                                   options="{'no_open': True, 'no_create': True}"/>
+                                            <field name="purchase_id"
+                                                   invisible="imputation != 'supplier'"
+                                                   required="imputation == 'supplier'"
+                                                   options="{'no_open': True, 'no_create': True}"/>
+                                        </group>
+                                        <group string="Responsible">
+                                            <field name="state"/>
+                                            <field name="user_id" required="1" options="{'no_open': True, 'no_create': True}"/>
+                                            <field name="date_of_issue" required="1"/>
+                                            <field name="close_date"/>
+                                            <field name="company_id" options="{'no_open': True, 'no_create': True}" groups="base.group_multi_company"/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <group string="Description">
+                                            <field name="noncompliance_cause_id" options="{'no_open': True, 'no_create': True}" required="1"/>
+                                            <field name="severity_level" required="1"/>
+                                            <field name="noncompliant_note" required="1"/>
+                                            <field name="immediate_correction_note"/>
+                                        </group>
+                                        <group string="Part reserved for quality control">
+                                            <field name="root_causes"/>
+                                            <field name="description_correction"/>
+                                            <field name="measure_effectiveness_correction"/>
+                                        </group>
+                                        <group string="Cost and balance">
+                                            <field name="study" widget="monetary"/>
+                                            <field name="production" widget="monetary"/>
+                                            <field name="comment"/>
+                                        </group>
+                                        <group string="Characterization of the problem and search for root causes">
+                                            <field name="root_causes_filename" invisible="1"/>
+                                            <field name="root_causes_binary" filename="root_causes_filename"/>
+                                        </group>
+                                    </group>
+                                </sheet>
+                            </form>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="sale_order_form_quote_inherit" model="ir.ui.view">
+            <field name="active" eval="False"/>
+            <field name="name">sale.order.form.payment</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_management.sale_order_form_quote"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='sale_order_option_ids']" position="replace">
+                    <field name="sale_order_option_ids" widget="section_and_note_one2many">
+                        <list string="Sales Quotation Template Lines" editable="bottom">
+                            <control>
+                                <create string="Add a product"/>
+                                <create string="Add a section" context="{'default_display_type': 'line_section'}"/>
+                                <create string="Add a note" context="{'default_display_type': 'line_note'}"/>
+                            </control>
+                            <field name="sequence" widget="handle"/>
+                            <field name="display_type" invisible="1"/>
+                            <field name="product_id" required="not display_type"/>
+                            <field name="name" widget="section_and_note_text"/>
+                            <field name="quantity" required="not display_type"/>
+                            <field name="uom_id" groups="uom.group_uom" required="not display_type"/>
+                            <field name="price_unit" required="not display_type"/>/>
+                            <field name="discount" groups="sale.group_discount_per_so_line"/>
+                            <button name="button_add_to_order"
+                                    class="oe_link"
+                                    icon="fa-shopping-cart"
+                                    string="Add to order lines"
+                                    type="object"/>
+                        </list>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+

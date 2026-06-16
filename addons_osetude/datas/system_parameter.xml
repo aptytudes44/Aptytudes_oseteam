@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Path for create project folder -->
+        <record id="seq_folder_projet" model="ir.config_parameter">
+            <field name="key">path_url_project_folder</field>
+            <field name="value">/tmp/Odoo/OSETUDE/</field>
+        </record>
+
+        <!-- Path for create project folder -->
+        <record id="seq_model_folder_projet" model="ir.config_parameter">
+            <field name="key">path_url_model_folder</field>
+            <field name="value">/home/applylog/aptytudes_osetude/addons_osetude/folder</field>
+        </record>
+    
+    	<!-- GENERATION DE L''ENREGISTREMENT UNIQUE POUR LA TABLE DES BAREMES DE CONTROLE QUALITE -->
+		<record id="scale_1" model="quality.control.parameters">
+            <field name="selection_binary_model_filename">selection_binary_model_filename</field>
+        </record>
+
+    </data>
+</odoo>

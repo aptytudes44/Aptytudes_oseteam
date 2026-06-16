@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_delivery_document_inherit_sale_stock_inherit" inherit_id="stock.report_delivery_document">
+        <!-- Ajouter compte analytique avant le h2 -->
+        <xpath expr="//h2" position="before">
+            <br/>
+        </xpath>
+
+        <!-- Ajouter compte analytique dans le titre -->
+        <xpath expr="//h2/span[@t-field='o.name']" position="after">
+            <span t-if="o.sale_id.account_analytic_id">
+                / <span t-field="o.sale_id.account_analytic_id.name"/>
+            </span>
+        </xpath>
+
+        <!-- Remplacer thead table des mouvements (non done) -->
+        <xpath expr="//table[@name='stock_move_table']/thead" position="replace">
+            <thead>
+                <tr>
+                    <th><strong>Product</strong></th>
+                    <th><strong>Description</strong></th>
+                    <th class="text-center"><strong>Scheduled Date</strong></th>
+                    <th class="text-center"><strong>Demand</strong></th>
+                    <th class="text-center"><strong>Done</strong></th>
+                </tr>
+            </thead>
+        </xpath>
+
+        <!-- Remplacer thead table des move lines (done) -->
+        <xpath expr="//table[@name='stock_move_line_table']/thead" position="replace">
+            <thead>
+                <tr>
+                    <th><strong>Product</strong></th>
+                    <th><strong>Description</strong></th>
+                    <th class="text-center"><strong>Lot/Serial</strong></th>
+                    <th class="text-center"><strong>Demand</strong></th>
+                    <th class="text-center"><strong>Delivered</strong></th>
+                </tr>
+            </thead>
+        </xpath>
+    </template>
+</odoo>
+
