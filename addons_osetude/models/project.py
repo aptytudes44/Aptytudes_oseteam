@@ -43,16 +43,17 @@ class Task(models.Model):
         return self.write({'state': 'done'})
 
     def write(self, vals):
-        for task in self:
-            timesheet_ids = self.env['account.analytic.line'].search(
-                [('task_id', '=', task.id)])
-            if timesheet_ids:
-                if vals.get('state') == 'remove':
+        if 'state' in vals:
+            for task in self:
+                timesheet_ids = self.env['account.analytic.line'].search(
+                    [('task_id', '=', task.id)])
+                if timesheet_ids:
+                    if vals.get('state') == 'remove':
+                        vals['state'] = 'new'
+                    if vals.get('new'):
+                        vals['state'] = 'in_progress'
+                else:
                     vals['state'] = 'new'
-                if vals.get('new'):
-                    vals['state'] = 'in_progress'
-            else:
-                vals['state'] = 'new'
         return super(Task, self).write(vals)
 
     def _compute_display_name(self):
@@ -92,6 +93,11 @@ class Project(models.Model):
     _inherit = "project.project"
     _description = "Project"
     _order = 'name desc, id desc'
+
+    def _default_name(self):
+        return _('New project')
+
+    name = fields.Char(default=_default_name)
 
     def url_folder_project(self):
         path = self.env['ir.config_parameter'].sudo().search(
