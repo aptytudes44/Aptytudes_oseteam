@@ -11,3 +11,4 @@ from . import hr_expense
 #from . import hr_leave
 from . import satisfaction_survey
 from . import account
+from . import res_users

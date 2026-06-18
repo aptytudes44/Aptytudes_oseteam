@@ -70,6 +70,7 @@ Custom tools for OSETEAM projects and management
         'web.assets_backend': [
             ('prepend', 'addons_osetude/static/src/css/style.css'),  # Utilisation de tuple pour spécifier l'ordre
             ('prepend', 'addons_osetude/static/src/css/style_analyse.css'),
+            'addons_osetude/static/src/js/user_menu_preferences.js',
         ],
         'web.assets_qweb': [
             'addons_osetude/static/src/xml/*.xml',  # Décommentez si vous avez des templates QWeb
