@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Osetude Theme',
+    'name': 'Aptytudes Theme',
     'version': '18.0.1.0.0',
     'website': 'https://www.applylog.com',
     'category': 'Theme/Backend',
@@ -16,7 +16,7 @@ Thème backend custom pour OSETEAM.
     'data': [],
     'assets': {
         'web.assets_backend': [
-            'osetude_theme/static/src/css/form_inputs.css',
+            'aptytudes_theme/static/src/css/form_inputs.css',
         ],
     },
     'installable': True,
