@@ -100,7 +100,7 @@
                     confirm="Are you sure you want to draft the document?"/>
             </xpath>
             <xpath expr="//h1" position="after">
-                <div class="alert alert-warning" role="alert" invisible="print_deliveryslip_ok">
+                <div class="alert alert-warning" role="alert" invisible="print_deliveryslip_ok or not project_id">
                     deliveryslip non printable (check the project checklist)
                 </div>
             </xpath>
