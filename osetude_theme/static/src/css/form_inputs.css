@@ -13,3 +13,27 @@
 .o_form_view .o_field_many2one_selection .o_external_button {
     visibility: visible !important;
 }
+
+/* Trait gris en bas des champs, toujours visible (pas seulement au survol/focus) */
+/* uniquement dans les vues form (pas dans les listes/kanban imbriqués, ex: one2many) */
+.o_form_view .o_field_widget .o_input {
+    border-bottom: 1px solid #ccc !important;
+}
+
+.o_form_view .o_list_renderer .o_field_widget .o_input,
+.o_form_view .o_kanban_view .o_field_widget .o_input {
+    border-bottom: none !important;
+}
+
+/* Bouton de bascule position du chatter (module web_chatter_position) :
+   fond blanc, bordure et icône violet, comme le bouton "Nouveau" */
+.o_chatter_position_button {
+    background-color: #fff !important;
+    border: 1px solid var(--bs-primary, #71639e) !important;
+    color: var(--bs-primary, #71639e) !important;
+}
+
+.o_chatter_position_button:hover {
+    background-color: var(--bs-primary, #71639e) !important;
+    color: #fff !important;
+}
