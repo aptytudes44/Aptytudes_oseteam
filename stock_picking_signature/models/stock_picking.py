@@ -1,3 +1,5 @@
+import uuid
+
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 import logging
@@ -11,6 +13,7 @@ class StockPicking(models.Model):
         copy=False,
         index=True,
         readonly=True,
+        default=lambda self: str(uuid.uuid4()),
     )
 
     signature_picking = fields.Binary(
@@ -51,13 +54,6 @@ class StockPicking(models.Model):
         for picking in self:
             picking.signature_status = 'signe' if picking.signed else 'non_signe'
             
-    @api.model
-    def create(self, vals):
-        picking = super().create(vals)
-        if not picking.access_token:
-            picking.access_token = self.env['ir.config_parameter'].sudo().get_param('database.uuid') + '-' + str(picking.id)
-        return picking
-
     def action_send_signature_link(self):
         """Ouvre la fenêtre de messagerie avec un bouton 'Signer' dans l'email"""
         self.ensure_one()
@@ -93,11 +89,11 @@ class StockPicking(models.Model):
             return False
         return {
             'type': 'ir.actions.act_url',
-            'url': f'/stock/picking/{self.id}/sign',
+            'url': f'/stock/picking/{self.id}/sign?access_token={self.access_token}',
             'target': 'new',
         }
 
     def get_signature_link(self):
         self.ensure_one()
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        return f"{base_url}/stock/picking/{self.id}/sign"
+        return f"{base_url}/stock/picking/{self.id}/sign?access_token={self.access_token}"

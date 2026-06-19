@@ -10,7 +10,7 @@ class StockPickingPortal(http.Controller):
         document = request.env[model].browse(document_id).sudo().exists()
         if not document:
             raise MissingError("Document not found")
-        if access_token and document.access_token != access_token:
+        if not access_token or not document.access_token or access_token != document.access_token:
             raise AccessError("Invalid access token")
         return document
 
@@ -57,7 +57,7 @@ class StockPickingPortal(http.Controller):
         # ✅ Redirige vers la page de confirmation avec le bon ID
         return {
             'force_refresh': True,
-            'redirect_url': f'/stock/picking/{picking_id}/sign/confirmation',
+            'redirect_url': f'/stock/picking/{picking_id}/sign/confirmation?access_token={access_token}',
         }
 
     @http.route('/stock/picking/<int:picking_id>/sign/confirmation', type='http', auth='public', website=True)
