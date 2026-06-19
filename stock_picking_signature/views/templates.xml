@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Template principal pour la page de signature -->
+    <template id="stock_picking_portal_template" name="Stock Picking Signature Template">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4">
+                <!-- Logo et en-tête -->
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <t t-if="picking.company_id and picking.company_id.logo">
+                        <img t-att-src="image_data_uri(picking.company_id.logo)" style="max-height: 80px; margin-bottom: 10px;"/>
+                    </t>
+                    <h2>Bon de Livraison <t t-esc="picking.name"/></h2>
+                    <!-- Client en gras et centré -->
+                    <p><strong>Client :</strong> <t t-esc="(picking.partner_id.commercial_partner_id or picking.partner_id).name if picking.partner_id else ''"/></p>
+                    <div style="text-align: left; margin-bottom: 20px; max-width: 70%; margin-left: auto; margin-right: auto;">
+                        <span><strong>Document d'origine :</strong> <t t-esc="picking.origin or 'N/A'"/></span>
+                        <span style="margin-left: 20px;">
+                            <strong>Date de livraison planifiée :</strong>
+                            <t t-esc="picking.scheduled_date and picking.scheduled_date.strftime('%d/%m/%Y') or 'Non spécifiée'"/>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Tableau des lignes du BL (moins large et centré) -->
+                <div class="table-responsive mb-4" style="max-width: 70%; margin: 0 auto;">
+                    <table class="table table-sm table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="text-align: left; padding: 8px;">Produit</th>
+                                <th style="text-align: left; padding: 8px;">Description</th>
+                                <th style="text-align: center; padding: 8px;">Commande</th>
+                                <th style="text-align: center; padding: 8px;">Livraison</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="picking.move_ids" t-as="move">
+                                <tr>
+                                    <td style="padding: 8px;"><t t-esc="move.product_id.name if move.product_id else ''"/></td>
+                                    <td style="padding: 8px;"><t t-esc="move.description_picking or ''"/></td>
+                                    <td style="text-align: center; padding: 8px;">
+                                        <t t-esc="move.product_uom_qty"/>&#160;<t t-esc="move.product_uom.name or ''"/>
+                                    </td>
+                                    <td style="text-align: center; padding: 8px;">
+                                        <t t-esc="move.quantity"/>&#160;<t t-esc="move.product_uom.name or ''"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Afficher les champs de signature SI le document est déjà signé -->
+                <t t-if="picking.signed">
+                    <div class="mb-4" style="text-align: center; padding: 20px; background-color: #f8f9fa; border-radius: 5px; max-width: 70%; margin: 0 auto;">
+                        <h4>Document déjà signé</h4>
+                        <p><strong>Signé par :</strong> <t t-esc="picking.signed_by"/></p>
+                        <p><strong>Date de signature :</strong> <t t-esc="picking.signature_date"/></p>
+                        <t t-if="picking.signature_picking">
+                            <p><strong>Signature :</strong></p>
+                            <img
+                                t-att-src="'data:image/png;base64,' + picking.signature_picking.decode('utf-8')"
+                                style="max-width: 300px; border: 1px solid #ddd; margin-top: 10px;"
+                            />
+                        </t>
+                    </div>
+                </t>
+
+                <!-- Bouton "Signer le document" UNIQUEMENT si le document n'est PAS signé -->
+                <t t-if="not picking.signed">
+                    <div class="d-flex justify-content-center gap-1 d-print-none mb-4">
+                        <a role="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_sign_picking">
+                            <i class="fa fa-check"></i> Signer le document
+                        </a>
+                    </div>
+                </t>
+            </div>
+
+            <!-- Modale de signature -->
+            <t t-if="not picking.signed">
+                <div role="dialog" class="modal fade" id="modal_sign_picking">
+                    <div class="modal-dialog">
+                        <form
+                            id="sign_picking"
+                            method="POST"
+                            action="/stock/picking/{{ picking.id }}/sign/submit"
+                            class="js_accept_json modal-content js_website_submit_form"
+                            data-csrf_token="{{ csrf_token }}"
+                        >
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}"/>
+                            <input type="hidden" name="access_token" value="{{ picking.access_token }}"/>
+                            <header class="modal-header">
+                                <h4 class="modal-title">Valider la réception</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </header>
+                            <main class="modal-body">
+                                <span>
+                                    En signant, vous confirmez la réception du bon de livraison
+                                    <b>{{ picking.name }}</b>.
+                                </span>
+                                <!-- Widget officiel de signature -->
+                                <t t-call="portal.signature_form">
+                                    <t t-set="call_url" t-value="'/stock/picking/' + str(picking.id) + '/sign/submit'"/>
+                                    <t t-set="default_name" t-value="(picking.partner_id.commercial_partner_id or picking.partner_id).name if picking.partner_id else ''"/>
+                                </t>
+                            </main>
+                        </form>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Template de confirmation -->
+    <template id="signature_confirmation" name="Signature Confirmation">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4" style="text-align: center; padding: 40px; max-width: 600px; margin: 0 auto;">
+                <!-- Logo -->
+                <t t-if="picking.company_id and picking.company_id.logo">
+                    <img t-att-src="image_data_uri(picking.company_id.logo)" style="max-height: 80px; margin-bottom: 20px;"/>
+                </t>
+
+                <!-- Message de succès -->
+                <div class="alert alert-success" role="alert" style="margin-bottom: 20px;">
+                    <h4 class="alert-heading">Signature validée !</h4>
+                    <p>
+                        Votre signature pour le bon de livraison <strong><t t-esc="picking.name"/></strong> a été enregistrée avec succès.
+                    </p>
+                </div>
+
+                <!-- Détails de la signature -->
+                <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 20px;">
+                    <p><strong>Signé par :</strong> <t t-esc="picking.signed_by"/></p>
+                    <p><strong>Date de signature :</strong> <t t-esc="picking.signature_date"/></p>
+                    <t t-if="picking.signature_picking">
+                        <p><strong>Signature :</strong></p>
+                        <img
+                            t-att-src="'data:image/png;base64,' + picking.signature_picking.decode('utf-8')"
+                            style="max-width: 300px; border: 1px solid #ddd; margin-top: 10px;"
+                        />
+                    </t>
+                </div>
+
+                <!-- Boutons d'action -->
+                <div class="d-flex justify-content-center gap-2">
+                    <a href="/" class="btn btn-primary">
+                        <i class="fa fa-home me-1"></i> Retour à l'accueil
+                    </a>
+                    <a t-attf-href="/stock/picking/{{ picking.id }}/sign" class="btn btn-secondary">
+                        <i class="fa fa-file me-1"></i> Retour au bon de livraison
+                    </a>
+                    <a href="#" class="btn btn-info" onclick="window.print()">
+                        <i class="fa fa-print me-1"></i> Imprimer
+                    </a>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

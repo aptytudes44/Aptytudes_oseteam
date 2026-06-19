@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="view_stock_picking_form_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="after">
+                <widget
+                    name="web_ribbon"
+                    title="Signé"
+                    bg_color="bg-success"
+                    invisible="not signed"/>
+            </xpath>
+            <xpath expr="//header//button[last()]" position="after">
+                <button
+                    name="action_send_signature_link"
+                    string="Envoyer le lien de signature"
+                    type="object"
+                    class="btn-primary"
+                    groups="base.group_user"
+                    invisible="picking_type_code != 'outgoing' or signed == True"
+                />
+                <button
+                    name="action_preview_signature"
+                    string="Aperçu"
+                    type="object"
+                    class="btn-secondary"
+                    groups="base.group_user"
+                    invisible="picking_type_code != 'outgoing'"
+                />
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="signature_page" string="Signature">
+                    <group>
+                        <field name="signature_date" string="Date de signature" readonly="1"/>
+                        <field name="signed_by" string="Nom du signataire" readonly="1"/>
+                        <field name="signature_picking" string="Signature" widget="image" readonly="1" style="max-width: 300px; max-height: 150px;"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_stock_picking_signature_list_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.signature.list.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="after">
+                <field
+                    name="signature_status"
+                    string="Signature"
+                    widget="badge"
+                    decoration-success="signed==True"
+                    decoration-muted="signed==False"
+                    column_invisible="context.get('restricted_picking_type_code') not in ('outgoing', False)"
+                />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_picking_internal_search_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.internal.search.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='reception']" position="before">
+                <filter name="signe" string="Signé" domain="[('signed', '=', True)]"/>
+                <filter name="non_signe" string="Non signé" domain="[('signed', '=', False)]"/>
+                <separator/>
+            </xpath>
+        </field>
+    </record>
+    
+</odoo>
