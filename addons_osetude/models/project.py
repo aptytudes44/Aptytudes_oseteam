@@ -323,7 +323,7 @@ class Project(models.Model):
     mail_buyer = fields.Char(related='buyer_id.email', string="Mail buyer")
     responsible_business_id = fields.Many2one('res.partner', string="Responsible business")
     
-    related_partner_id = fields.Many2one(related='partner_id')
+    related_partner_id = fields.Many2one(related='partner_id', string="Customer")
     
     phone_responsible_business = fields.Char(
         related='responsible_business_id.mobile', string="Phone responsible")

@@ -941,6 +941,7 @@ msgstr "Devise"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_project_obx_history__customer
+#: model:ir.model.fields,field_description:addons_osetude.field_project_project__related_partner_id
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_project_obx_history_filter
 #: selection:quality.control.quality.noncompliance,imputation:0
 msgid "Customer"
