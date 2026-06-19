@@ -200,7 +200,7 @@
                     </button>
                     <button class="btn-secondary" type="object" name="action_view_pickings"
                             icon="fa-truck" title="Delivery Orders" invisible="picking_count==0">
-                        <field string="BLs" name="picking_count" widget="statinfo"/>
+                        <field string="Delivery" name="picking_count" widget="statinfo"/>
                     </button>
                     <button class="btn-secondary" type="action"
                             name="%(addons_osetude.action_report_project)d"

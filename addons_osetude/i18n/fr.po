@@ -538,8 +538,8 @@ msgstr "Bons de livraison"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
-msgid "BLs"
-msgstr "BLs"
+msgid "Delivery"
+msgstr "Livraisons"
 
 #. module: addons_osetude
 #: code:addons/addons_osetude/models/project.py:250
