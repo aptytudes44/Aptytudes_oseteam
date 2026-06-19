@@ -459,7 +459,7 @@ msgstr "Libellé du type de compte"
 
 #. module: addons_osetude
 #: code:addons/addons_osetude/models/project.py:276
-#, python-format
+#. odoo-python
 msgid "Accounts invoices"
 msgstr ""
 
@@ -522,8 +522,28 @@ msgid "Analytic"
 msgstr "Analytique"
 
 #. module: addons_osetude
+#: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
+msgid "Delivery Orders"
+msgstr "Bons de livraison"
+
+#. module: addons_osetude
+#: model:ir.model.fields,field_description:addons_osetude.field_project_project__picking_count
+msgid "Delivery Orders Count"
+msgstr "Nombre de bons de livraison"
+
+#. module: addons_osetude
+#: code:addons/addons_osetude/models/project.py:263
+msgid "Delivery orders"
+msgstr "Bons de livraison"
+
+#. module: addons_osetude
+#: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
+msgid "BLs"
+msgstr "BLs"
+
+#. module: addons_osetude
 #: code:addons/addons_osetude/models/project.py:250
-#, python-format
+#. odoo-python
 msgid "Analytic Account"
 msgstr "Compte Analytique"
 
@@ -559,7 +579,7 @@ msgstr "Etes-vous sûr de vouloir mettre le document en brouillon ?"
 
 #. module: addons_osetude
 #: code:addons/addons_osetude/models/sale_order.py:276
-#, python-format
+#. odoo-python
 msgid "At least one line should be filled."
 msgstr ""
 
@@ -586,7 +606,7 @@ msgstr ""
 #. module: addons_osetude
 #: code:addons/addons_osetude/analyse/report_timesheet_analyse_osetude.py:146
 #: code:addons/addons_osetude/analyse/report_timesheet_analyse_osetude.py:286
-#, python-format
+#. odoo-python
 msgid "Aucun projet à afficher sur le planning !\n"
 "- Pas de projets avec une commande de vente.\n"
 "- Pas de tâches avec des heures plannifiées."
@@ -1035,10 +1055,10 @@ msgstr "Bon de livraison N°"
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
 #: model_terms:ir.ui.view,arch_db:addons_osetude.report_saleorder_document_inherit
 #: model_terms:ir.ui.view,arch_db:addons_osetude.report_saleorder_document_inherit_sale_management_inherit
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_check_list_data tree
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_noncompliance cause_tree
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_check_list_data
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_noncompliance
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_project_default_task tree
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_project_default_task
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_quality_control_quality_noncompliance_form
 msgid "Description"
 msgstr ""
@@ -1066,7 +1086,7 @@ msgstr "Détails"
 
 #. module: addons_osetude
 #: code:addons/addons_osetude/models/project.py:112
-#, python-format
+#. odoo-python
 msgid "Directory %s can not be created %s"
 msgstr "Le répertoire %s n'a pas été créé %s"
 
@@ -1156,7 +1176,7 @@ msgstr "Fichier"
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_project_project__first_date_task
 msgid "First date task"
-msgstr ""
+msgstr "Date de première tâche"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality__message_follower_ids
@@ -1583,12 +1603,12 @@ msgstr "Type d'Activités à Venir"
 
 #. module: addons_osetude
 #: code:addons/addons_osetude/models/quality_control_quality.py:112
-#, python-format
+#. odoo-python
 msgid "No scale parameters found !"
 msgstr "Pas de barêmes paramétrés"
 
 #. module: addons_osetude
-#: model:ir.actions.act_window,name:addons_osetude.action_noncompliance cause
+#: model:ir.actions.act_window,name:addons_osetude.action_noncompliance
 msgid "Noncompilance and Claim Cause"
 msgstr ""
 
@@ -1614,7 +1634,7 @@ msgstr "Non-conformités/Réclamations/SAV"
 #: code:addons/addons_osetude/models/res_partner.py:85
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_quality_control_quality_selection_filter
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_quality_control_quality_selection_graph
-#, python-format
+#. odoo-python
 msgid "Notation score"
 msgstr "Notation fournisseurs"
 
@@ -1991,13 +2011,13 @@ msgstr "Ligne de commande d'achat"
 #: code:addons/addons_osetude/models/sale_order.py:96
 #: code:addons/addons_osetude/wizard/create_purchase_order.py:71
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality_noncompliance__purchase_id
-#, python-format
+#. odoo-python
 msgid "Purchase order"
 msgstr "Commande d'achat"
 
 #. module: addons_osetude
 #: code:addons/addons_osetude/models/project.py:179
-#, python-format
+#. odoo-python
 msgid "Purchase order line"
 msgstr ""
 
@@ -2040,7 +2060,7 @@ msgstr "Contrôle qualité"
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality__name
 #: model:ir.model.fields,field_description:addons_osetude.field_res_partner__quality_control_count
 #: model:ir.model.fields,field_description:addons_osetude.field_res_users__quality_control_count
-#, python-format
+#. odoo-python
 msgid "Quality control"
 msgstr "Contrôle qualité"
 
@@ -2262,7 +2282,7 @@ msgstr ""
 
 #. module: addons_osetude
 #: code:addons/addons_osetude/analyse/report_timesheet_analyse_osetude.py:1027
-#, python-format
+#. odoo-python
 msgid "Resource planning"
 msgstr ""
 
@@ -2690,20 +2710,20 @@ msgstr "Champ technique utilisé à des fins ergonomiques"
 
 #. module: addons_osetude
 #: code:addons/addons_osetude/models/sale_order.py:283
-#, python-format
+#. odoo-python
 msgid "The Sales Order cannot be created because you did not enter some employees that entered timesheets on this project. Please list all the relevant employees before creating the Sales Order.\n"
 "Missing employee(s): %s"
 msgstr ""
 
 #. module: addons_osetude
 #: code:addons/addons_osetude/models/sale_order.py:271
-#, python-format
+#. odoo-python
 msgid "The project is already linked to a sales order item."
 msgstr ""
 
 #. module: addons_osetude
 #: code:addons/addons_osetude/models/sale_order.py:288
-#, python-format
+#. odoo-python
 msgid "The sales order cannot be created because some timesheets of this project are already linked to another sales order."
 msgstr ""
 
@@ -2902,32 +2922,32 @@ msgstr "Année"
 
 #. module: addons_osetude
 #: code:addons/addons_osetude/models/sale_order.py:361
-#, python-format
+#. odoo-python
 msgid "You cannot change the type of an optional product line. Instead you should delete the current line and create a new line of the proper type."
 msgstr ""
 
 #. module: addons_osetude
 #: code:addons/addons_osetude/models/sale_order.py:259
-#, python-format
+#. odoo-python
 msgid "You cannot delete a purchase line with a pending order!"
 msgstr ""
 
 #. module: addons_osetude
 #: code:addons/addons_osetude/models/stock_picking.py:86
-#, python-format
+#. odoo-python
 msgid "You cannot validate a transfer if check-list is not OK !"
 msgstr "Vous ne pouvez pas valider ce bon de livraison tant que la 'Check list' du projet est incomplète"
 
 #. module: addons_osetude
 #: code:addons/addons_osetude/wizard/create_purchase_order.py:19
 #: code:addons/addons_osetude/wizard/create_purchase_order.py:40
-#, python-format
+#. odoo-python
 msgid "You must enter purchasing lines to be able to generate a price request!"
 msgstr "Vous devez ajouter des lignes d'achats pour pouvoir générer une demande de prix !"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_picking_form_inherit
-msgid "deliveryslip non printable ( check the project checklist )"
+msgid "deliveryslip non printable (check the project checklist)"
 msgstr "Bon de livraison en anomalie ( vérifier la 'Check list' du projet )"
 
 #. module: addons_osetude

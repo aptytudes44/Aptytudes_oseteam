@@ -35,7 +35,7 @@ class Picking(models.Model):
                             picking.print_deliveryslip_ok = True
                 if full_delivery_slip or (no_quantities_done and not full_delivery_slip):
                     if picking.project_id:
-                        checklist_ok = all(
+                        checklist_ok = bool(picking.project_id.checklist_line) and all(
                             line.checked for line in picking.project_id.checklist_line)
                         if (checklist_ok
                                 and picking.project_id.date_verification

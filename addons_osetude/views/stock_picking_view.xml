@@ -100,11 +100,8 @@
                     confirm="Are you sure you want to draft the document?"/>
             </xpath>
             <xpath expr="//h1" position="after">
-                <style>
-                    .h8_class{color:red;}
-                </style>
-                <div modifiers="{'invisible': [('print_deliveryslip_ok', '=', True)]}">
-                    <h8 class="h8_class">deliveryslip non printable (check the project checklist)</h8>
+                <div class="alert alert-warning" role="alert" invisible="print_deliveryslip_ok">
+                    deliveryslip non printable (check the project checklist)
                 </div>
             </xpath>
             <xpath expr="//field[@name='origin']" position="after">

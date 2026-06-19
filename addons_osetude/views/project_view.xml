@@ -123,7 +123,7 @@
                 
                 <xpath expr="//field[@name='sequence']" position="after">
                     <field name="name"/>
-                    <field name="first_date_task"/>
+                    <field name="first_date_task" optional="hide"/>
                     <field name="related_partner_id" optional="show"/>
                     <field name="buyer_id" optional="hide"/>
                     <field name="title_project"/>
@@ -198,6 +198,10 @@
                             icon="fa-book" title="Analytic" invisible="account_analytic_count==0">
                         <field string="Analytic" name="account_analytic_count" widget="statinfo"/>
                     </button>
+                    <button class="btn-secondary" type="object" name="action_view_pickings"
+                            icon="fa-truck" title="Delivery Orders" invisible="picking_count==0">
+                        <field string="BLs" name="picking_count" widget="statinfo"/>
+                    </button>
                     <button class="btn-secondary" type="action"
                             name="%(addons_osetude.action_report_project)d"
                             icon="fa-print" string="Print Project"/>
@@ -247,16 +251,16 @@
                         <group>
                             <group>
                                 <field name="date_verification"
-                                       invisible="checklist_line==[]"/>
+                                       invisible="not checklist_line"/>
                             </group>
                             <group>
                                 <field name="name_auditor"
-                                       invisible="checklist_line==[]"/>
+                                       invisible="not checklist_line"/>
                             </group>
                         </group>
                         <button name="create_checklist_data"
                                 string="Create check list data"
-                                invisible="checklist_line!=[]"
+                                invisible="checklist_line"
                                 type="object"/>
                         <field name="checklist_line">
                             <list string="Check List" editable="bottom"
