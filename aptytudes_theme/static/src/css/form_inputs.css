@@ -2,6 +2,7 @@
 /* (et pas dans les listes/kanban éditables imbriqués dans une vue form, ex: one2many) */
 .o_form_view .o_required_modifier .o_input {
     background-color: #d4d4ec !important;
+    border-radius: 4px !important;
 }
 
 .o_form_view .o_list_renderer .o_required_modifier .o_input,
