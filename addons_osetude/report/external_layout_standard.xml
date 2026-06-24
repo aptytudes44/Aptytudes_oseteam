@@ -7,7 +7,6 @@
             </div>
             <div class="col-9 text-end" style="margin-top:10px;">
                 <span t-field="company.report_header" name="moto"/>
-                <img src="/addons_osetude/static/src/img/iso_9001_2025.png" style="height: 60px;"/>
             </div>
         </xpath>
 
