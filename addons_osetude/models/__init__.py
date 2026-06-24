@@ -12,3 +12,5 @@ from . import hr_expense
 from . import satisfaction_survey
 from . import account
 from . import res_users
+from . import res_company
+from . import base_document_layout

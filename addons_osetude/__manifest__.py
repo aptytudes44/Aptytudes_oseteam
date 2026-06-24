@@ -40,7 +40,8 @@ Custom tools for OSETEAM projects and management
         'datas/ir_sequence_data.xml',
 
         # Rapports
-        #'report/external_layout_standard.xml',
+        #'report/external_layout_standard.xml',  # DISABLED: xpaths V12 incompatibles V18
+        'report/footer_logo_iso.xml',
         'report/report_paper_format.xml',
         'report/project_report.xml',
         'report/project_report_templates.xml',
@@ -60,6 +61,7 @@ Custom tools for OSETEAM projects and management
         'views/quality_control_quality_view.xml',
         'views/hr_expense_views.xml',
         'views/account_view.xml',
+        'views/res_company_view.xml',
         'views/hr_leave_view.xml',
         'views/satisfaction_survey_view.xml',
 

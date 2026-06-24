@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="external_layout_standard_footer_iso" inherit_id="web.external_layout_standard">
+        <xpath expr="//div[contains(@t-attf-class,'footer')]/div[hasclass('o_footer_content')]" position="inside">
+            <div t-if="company.logo_iso" class="text-center w-100 order-first">
+                <img t-att-src="image_data_uri(company.logo_iso)" style="max-height: 55px;" alt="Logo ISO"/>
+                <div t-if="company.logo_iso_text" t-field="company.logo_iso_text" style="font-size: 11px;"/>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="external_layout_bubble_footer_iso" inherit_id="web.external_layout_bubble">
+        <xpath expr="//div[contains(@t-attf-class,'o_footer_content')]/div[hasclass('border-top')]" position="before">
+            <div t-if="company.logo_iso" class="text-center">
+                <img t-att-src="image_data_uri(company.logo_iso)" style="max-height: 55px;" alt="Logo ISO"/>
+                <div t-if="company.logo_iso_text" t-field="company.logo_iso_text" style="font-size: 11px;"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>
