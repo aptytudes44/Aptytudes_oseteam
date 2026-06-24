@@ -12,24 +12,23 @@
             <field name="body_html" type="html">
 <div style="margin: 0px; padding: 0px;">
     <p style="margin: 0px; padding: 0px; font-size: 13px;">
-        Bonjour {{ object.partner_id.name or '' }},<br/><br/>
-        Veuillez signer le bon de livraison <strong>{{ object.name }}</strong>
-        {% if object.origin %}
-            (<strong>Commande {{ object.origin }}</strong>)
-        {% endif %}
+        Bonjour <t t-out="object.partner_id.name or ''"/>,<br/><br/>
+        Veuillez signer le bon de livraison <strong><t t-out="object.name"/></strong>
+        <t t-if="object.origin">
+            (<strong>Commande <t t-out="object.origin"/></strong>)
+        </t>
         en cliquant sur le bouton ci-dessous :<br/><br/>
-        <a href="{{ base_url }}/stock/picking/{{ object.id }}/sign?access_token={{ object.access_token }}"
+        <a t-attf-href="{{ object.get_base_url() }}/stock/picking/{{ object.id }}/sign?access_token={{ object.access_token }}"
            style="background-color: #875A7B; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">
             Signer le bon de livraison
         </a><br/><br/>
         Ou copiez ce lien dans votre navigateur :
-        <a href="{{ base_url }}/stock/picking/{{ object.id }}/sign?access_token={{ object.access_token }}">
-            {{ base_url }}/stock/picking/{{ object.id }}/sign?access_token={{ object.access_token }}
+        <a t-attf-href="{{ object.get_base_url() }}/stock/picking/{{ object.id }}/sign?access_token={{ object.access_token }}">
+            <t t-out="object.get_base_url()"/>/stock/picking/<t t-out="object.id"/>/sign?access_token=<t t-out="object.access_token"/>
         </a><br/><br/>
         Cordialement,
-        <!-- ✅ Utilisation directe de user.signature (comme dans l'exemple natif) -->
         <t t-if="user.signature">
-            <br />
+            <br/>
             <t t-out="user.signature or ''"/>
         </t>
     </p>

@@ -20,7 +20,7 @@
                     type="object"
                     class="btn-primary"
                     groups="base.group_user"
-                    invisible="picking_type_code != 'outgoing' or signed == True"
+                    invisible="picking_type_code != 'outgoing' or signed == True or state == 'done'"
                 />
                 <button
                     name="action_preview_signature"
