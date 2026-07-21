@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_delivery_document_custom_signature" inherit_id="stock.report_delivery_document">
+        <xpath expr="//div[@name='signature']" position="replace">
+            <t t-if="o.signed">
+                <div class="mt32 ml64 mr4" name="custom_signature">
+                    <div style="text-align: right; margin-top: 20px;">
+                        <p style="margin-bottom: 2px; font-size: 13px;">
+                            <strong>Signé par :</strong> <span t-esc="o.signed_by or ''"/>
+                        </p>
+                        <p style="margin-bottom: 5px; font-size: 13px;">
+                            <strong>Le :</strong>
+                            <span t-esc="o.signature_date and o.signature_date.strftime('%d/%m/%Y') or ''"/>
+                        </p>
+                        <t t-if="o.signature_picking">
+                            <img
+                                t-att-src="'data:image/png;base64,' + o.signature_picking.decode('utf-8')"
+                                style="max-height: 2.5cm; max-width: 5cm; margin-top: 5px;"
+                            />
+                        </t>
+                    </div>
+                </div>
+            </t>
+            <t t-if="not o.signed"/>
+        </xpath>
+    </template>
+    
+</odoo>

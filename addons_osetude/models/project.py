@@ -43,16 +43,17 @@ class Task(models.Model):
         return self.write({'state': 'done'})
 
     def write(self, vals):
-        for task in self:
-            timesheet_ids = self.env['account.analytic.line'].search(
-                [('task_id', '=', task.id)])
-            if timesheet_ids:
-                if vals.get('state') == 'remove':
+        if 'state' in vals:
+            for task in self:
+                timesheet_ids = self.env['account.analytic.line'].search(
+                    [('task_id', '=', task.id)])
+                if timesheet_ids:
+                    if vals.get('state') == 'remove':
+                        vals['state'] = 'new'
+                    if vals.get('new'):
+                        vals['state'] = 'in_progress'
+                else:
                     vals['state'] = 'new'
-                if vals.get('new'):
-                    vals['state'] = 'in_progress'
-            else:
-                vals['state'] = 'new'
         return super(Task, self).write(vals)
 
     def _compute_display_name(self):
@@ -92,6 +93,11 @@ class Project(models.Model):
     _inherit = "project.project"
     _description = "Project"
     _order = 'name desc, id desc'
+
+    def _default_name(self):
+        return _('New project')
+
+    name = fields.Char(default=_default_name)
 
     def url_folder_project(self):
         path = self.env['ir.config_parameter'].sudo().search(
@@ -167,14 +173,14 @@ class Project(models.Model):
 
     def action_view_purchase_line(self):
         purchase_lines = self.env['purchase.order.line'].search(
-            [('order_id.account_analytic_id', '=', self.analytic_account_id.id)])
+            [('order_id.account_analytic_id', '=', self.account_id.id)])
         ids = [l.id for l in purchase_lines if l.order_id.state in ('purchase', 'done')]
         if ids:
             return {
                 'name': _("Purchase order line"),
                 'type': 'ir.actions.act_window',
                 'res_model': 'purchase.order.line',
-                'view_mode': 'tree,form',
+                'view_mode': 'list,form',
                 'context': "{'search_default_groupby_product': 1}",
                 'domain': [('id', 'in', ids)],
                 'target': 'current',
@@ -229,14 +235,14 @@ class Project(models.Model):
 
     def action_view_analytic(self):
         analytic = self.env['account.analytic.account'].search(
-            [('id', '=', self.analytic_account_id.id)])
+            [('id', '=', self.account_id.id)])
         ids = analytic.ids
         if ids:
             return {
                 'name': _("Analytic Account"),
                 'type': 'ir.actions.act_window',
                 'res_model': 'account.analytic.account',
-                'view_mode': 'tree',
+                'view_mode': 'list',
                 'domain': [('id', 'in', ids)],
                 'target': 'current',
             }
@@ -265,10 +271,26 @@ class Project(models.Model):
                 'name': _("Accounts invoices"),
                 'type': 'ir.actions.act_window',
                 'res_model': 'account.move',
-                'view_mode': 'tree,form',
+                'view_mode': 'list,form',
                 'domain': [('id', 'in', invoices.ids)],
                 'target': 'current',
             }
+
+    def _compute_picking_count(self):
+        for project in self:
+            project.picking_count = self.env['stock.picking'].search_count(
+                [('project_id', '=', project.id)])
+
+    def action_view_pickings(self):
+        pickings = self.env['stock.picking'].search([('project_id', '=', self.id)])
+        return {
+            'name': _("Delivery orders"),
+            'type': 'ir.actions.act_window',
+            'res_model': 'stock.picking',
+            'view_mode': 'list,form',
+            'domain': [('id', 'in', pickings.ids)],
+            'target': 'current',
+        }
 
     def create_checklist_data(self):
         data_ids = self.env['quality.control.quality.cheklist.data'].search(
@@ -301,7 +323,7 @@ class Project(models.Model):
     mail_buyer = fields.Char(related='buyer_id.email', string="Mail buyer")
     responsible_business_id = fields.Many2one('res.partner', string="Responsible business")
     
-    related_partner_id = fields.Many2one(related='partner_id')
+    related_partner_id = fields.Many2one(related='partner_id', string="Customer")
     
     phone_responsible_business = fields.Char(
         related='responsible_business_id.mobile', string="Phone responsible")
@@ -325,6 +347,8 @@ class Project(models.Model):
         compute='_compute_analytic_count', string="Analytic Count")
     total_invoiced = fields.Float(
         compute='_compute_account_invoice_amount', string="Total invoiced")
+    picking_count = fields.Integer(
+        compute='_compute_picking_count', string="Delivery Orders Count")
     currency_id = fields.Many2one(
         related='company_id.currency_id', string="Currency")
     checklist_line = fields.One2many(

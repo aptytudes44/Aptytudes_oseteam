@@ -36,15 +36,15 @@
                 </xpath>
 
                 <!-- Ajouter project_id et company_bank_id dans other_info -->
-                <xpath expr="//field[@name='invoice_date_due']" position="after">
+                <xpath expr="//div[@name='due_date']" position="after">
                     <field name="project_id"/>
-                    <field name="title_project" modifiers="{'readonly': True}"/>
+                    <field name="title_project" readonly="1"/>
                     <field name="company_bank_id"/>
                     <field name="picking_id" options="{'no_create': True}"/>
                 </xpath>
 
                 <!-- Libellé interne du compte comptable sur les lignes -->
-                <xpath expr="//field[@name='invoice_line_ids']//field[@name='account_id']" position="after">
+                <xpath expr="//field[@name='invoice_line_ids']/list/field[@name='account_id']" position="after">
                     <field name="account_wording" optional="hide"/>
                 </xpath>
             </field>
@@ -59,8 +59,8 @@
                 <xpath expr="//field[@name='bank_id']" position="after">
                     <field name="is_factor"/>
                     <field name="factor_note"
-                           modifiers="{'invisible': [('is_factor','=',False)]}"
-                           colspan="2" nolabel="1"/>
+                           invisible="not is_factor"
+                           nolabel="1"/>
                 </xpath>
             </field>
         </record>

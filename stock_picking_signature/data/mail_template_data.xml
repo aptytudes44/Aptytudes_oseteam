@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="mail_template_signature_link" model="mail.template">
+            <field name="name">Expédition : Signature des BL en ligne</field>
+            <field name="model_id" ref="model_stock_picking"/>
+            <field name="template_category">base_template</field>
+            <field name="description">Template pour envoyer un lien de signature de bon de livraison aux clients.</field>
+            <field name="subject">[{{ object.company_id.name }}] - Signature du bon de livraison {{ object.name }}</field>
+            <field name="email_from">{{ object.company_id.email or user.email }}</field>
+            <field name="lang">{{ object.partner_id.lang or object.lang or '' }}</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        Bonjour <t t-out="object.partner_id.name or ''"/>,<br/><br/>
+        Veuillez signer le bon de livraison <strong><t t-out="object.name"/></strong>
+        <t t-if="object.origin">
+            (<strong>Commande <t t-out="object.origin"/></strong>)
+        </t>
+        en cliquant sur le bouton ci-dessous :<br/><br/>
+        <a t-attf-href="{{ object.get_base_url() }}/stock/picking/{{ object.id }}/sign?access_token={{ object.access_token }}"
+           style="background-color: #875A7B; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">
+            Signer le bon de livraison
+        </a><br/><br/>
+        Ou copiez ce lien dans votre navigateur :
+        <a t-attf-href="{{ object.get_base_url() }}/stock/picking/{{ object.id }}/sign?access_token={{ object.access_token }}">
+            <t t-out="object.get_base_url()"/>/stock/picking/<t t-out="object.id"/>/sign?access_token=<t t-out="object.access_token"/>
+        </a><br/><br/>
+        Cordialement,
+        <t t-if="user.signature">
+            <br/>
+            <t t-out="user.signature or ''"/>
+        </t>
+    </p>
+</div>
+            </field>
+        </record>
+    </data>
+</odoo>

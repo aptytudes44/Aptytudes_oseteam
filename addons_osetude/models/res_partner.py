@@ -35,7 +35,7 @@ class Partner(models.Model):
                 'name': _("Quality control"),
                 'type': 'ir.actions.act_window',
                 'res_model': 'quality.control.quality',
-                'view_mode': 'tree,form',
+                'view_mode': 'list,form',
                 'context': {
                     'default_supplier_id': vals,
                     'default_is_supplier_selection': 'notation',
@@ -52,7 +52,7 @@ class Partner(models.Model):
                 'name': _("Notation score"),
                 'type': 'ir.actions.act_window',
                 'res_model': 'quality.control.quality',
-                'view_mode': 'tree,form',
+                'view_mode': 'list,form',
                 'context': {
                     'default_supplier_id': vals,
                     'default_is_supplier_selection': 'selection',
