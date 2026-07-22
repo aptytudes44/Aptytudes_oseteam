@@ -99,8 +99,8 @@
                     groups="addons_osetude.group_osetude_set_picking_draft"
                     confirm="Are you sure you want to draft the document?"/>
             </xpath>
-            <xpath expr="//h1" position="after">
-                <div class="alert alert-warning" role="alert" invisible="print_deliveryslip_ok or not project_id">
+            <xpath expr="//label[@for='partner_id']/parent::div" position="before">
+                <div class="alert alert-warning" role="alert" colspan="2" invisible="print_deliveryslip_ok or not project_id">
                     deliveryslip non printable (check the project checklist)
                 </div>
             </xpath>

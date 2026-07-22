@@ -36,8 +36,17 @@
                     <group>
                         <field name="signature_date" string="Date de signature" readonly="1"/>
                         <field name="signed_by" string="Nom du signataire" readonly="1"/>
-                        <field name="signature_picking" string="Signature" widget="image" readonly="1" style="max-width: 300px; max-height: 150px;"/>
+                        <field name="signature_picking" string="Signature" widget="image" readonly="1" style="max-width: 300px; max-height: 150px;" invisible="not signed"/>
                     </group>
+                    <button
+                        name="action_reset_signature"
+                        string="Supprimer la signature"
+                        icon="fa-trash"
+                        type="object"
+                        class="btn-secondary"
+                        confirm="Voulez-vous vraiment supprimer la signature de ce bon de livraison ?"
+                        invisible="not signed"
+                    />
                 </page>
             </xpath>
         </field>

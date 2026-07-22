@@ -11,7 +11,7 @@
                         </p>
                         <p style="margin-bottom: 5px; font-size: 13px;">
                             <strong>Le :</strong>
-                            <span t-esc="o.signature_date and o.signature_date.strftime('%d/%m/%Y') or ''"/>
+                            <span t-field="o.signature_date" t-options="{'widget': 'datetime'}"/>
                         </p>
                         <t t-if="o.signature_picking">
                             <img

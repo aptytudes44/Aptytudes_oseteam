@@ -5,31 +5,42 @@
         <t t-call="portal.portal_layout">
             <div class="container mt-4">
                 <!-- Logo et en-tête -->
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <t t-if="picking.company_id and picking.company_id.logo">
-                        <img t-att-src="image_data_uri(picking.company_id.logo)" style="max-height: 80px; margin-bottom: 10px;"/>
+                <div style="text-align: center; margin-bottom: 4px;">
+                    <t t-if="picking.company_id.logo_iso">
+                        <img t-att-src="image_data_uri(picking.company_id.logo_iso)" style="max-height: 80px; margin-bottom: 10px;" alt="Logo ISO"/>
                     </t>
                     <h2>Bon de Livraison <t t-esc="picking.name"/></h2>
                     <!-- Client en gras et centré -->
-                    <p><strong>Client :</strong> <t t-esc="(picking.partner_id.commercial_partner_id or picking.partner_id).name if picking.partner_id else ''"/></p>
-                    <div style="text-align: left; margin-bottom: 20px; max-width: 70%; margin-left: auto; margin-right: auto;">
-                        <span><strong>Document d'origine :</strong> <t t-esc="picking.origin or 'N/A'"/></span>
-                        <span style="margin-left: 20px;">
+                    <p style="font-size: 18px; margin-bottom: 0;"><strong>Client :</strong> <t t-esc="(picking.partner_id.commercial_partner_id or picking.partner_id).name if picking.partner_id else ''"/></p>
+                    <p t-if="picking.partner_id" style="margin-top: 0; margin-bottom: 14px;">
+                        <strong style="font-size: 17px;">Adresse de livraison :</strong><br/>
+                        <t t-if="picking.partner_id.street"><t t-esc="picking.partner_id.street"/><br/></t>
+                        <t t-if="picking.partner_id.street2"><t t-esc="picking.partner_id.street2"/><br/></t>
+                        <t t-esc="' '.join(filter(None, [picking.partner_id.zip, picking.partner_id.city]))"/>
+                        <t t-if="picking.partner_id.country_id"><t t-esc="' (' + picking.partner_id.country_id.name + ')'"/></t>
+                    </p>
+                    <div style="display: flex; align-items: baseline; margin-bottom: 0; max-width: 90%; margin-left: auto; margin-right: auto;">
+                        <span style="min-width: 0; flex-shrink: 1;"><strong>Document d'origine :</strong> <t t-esc="picking.origin or 'N/A'"/></span>
+                        <span style="flex: 1; min-width: 0; text-align: center;">
                             <strong>Date de livraison planifiée :</strong>
                             <t t-esc="picking.scheduled_date and picking.scheduled_date.strftime('%d/%m/%Y') or 'Non spécifiée'"/>
+                        </span>
+                        <span style="min-width: 0; flex-shrink: 1; text-align: right;">
+                            <strong>Responsable :</strong>
+                            <t t-esc="picking.signature_requested_by_id.name or ''"/>
                         </span>
                     </div>
                 </div>
 
                 <!-- Tableau des lignes du BL (moins large et centré) -->
-                <div class="table-responsive mb-4" style="max-width: 70%; margin: 0 auto;">
-                    <table class="table table-sm table-bordered">
+                <div class="table-responsive mb-4" style="max-width: 90%; margin: 0 auto;">
+                    <table class="table table-sm table-bordered" style="table-layout: fixed;">
                         <thead class="table-light">
                             <tr>
-                                <th style="text-align: left; padding: 8px;">Produit</th>
-                                <th style="text-align: left; padding: 8px;">Description</th>
-                                <th style="text-align: center; padding: 8px;">Commande</th>
-                                <th style="text-align: center; padding: 8px;">Livraison</th>
+                                <th style="text-align: left; padding: 8px; width: 20%;">Produit</th>
+                                <th style="text-align: left; padding: 8px; width: 45%;">Description</th>
+                                <th style="text-align: center; padding: 8px; width: 17.5%;">Qté commandées</th>
+                                <th style="text-align: center; padding: 8px; width: 17.5%;">Qté à livrer</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,13 +64,13 @@
                 <t t-if="picking.signed">
                     <div class="mb-4" style="text-align: center; padding: 20px; background-color: #f8f9fa; border-radius: 5px; max-width: 70%; margin: 0 auto;">
                         <h4>Document déjà signé</h4>
-                        <p><strong>Signé par :</strong> <t t-esc="picking.signed_by"/></p>
-                        <p><strong>Date de signature :</strong> <t t-esc="picking.signature_date"/></p>
+                        <p><strong>Signé par :</strong> <t t-esc="picking.signed_by"/> <strong>Pour :</strong> <t t-esc="(picking.partner_id.commercial_partner_id or picking.partner_id).name if picking.partner_id else ''"/></p>
+                        <p><strong>Date de signature :</strong> <span t-field="picking.signature_date"/></p>
                         <t t-if="picking.signature_picking">
                             <p><strong>Signature :</strong></p>
                             <img
                                 t-att-src="'data:image/png;base64,' + picking.signature_picking.decode('utf-8')"
-                                style="max-width: 300px; border: 1px solid #ddd; margin-top: 10px;"
+                                style="max-width: 300px; margin-top: 10px;"
                             />
                         </t>
                     </div>
@@ -67,6 +78,7 @@
 
                 <!-- Bouton "Signer le document" UNIQUEMENT si le document n'est PAS signé -->
                 <t t-if="not picking.signed">
+                    <h6 class="text-center" style="font-weight: normal;">Signature du responsable</h6>
                     <div class="d-flex justify-content-center gap-1 d-print-none mb-4">
                         <a role="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_sign_picking">
                             <i class="fa fa-check"></i> Signer le document
@@ -94,12 +106,12 @@
                             </header>
                             <main class="modal-body">
                                 <span>
-                                    En signant, vous confirmez la réception du bon de livraison
-                                    <b>{{ picking.name }}</b>.
+                                    En signant, vous validez la réception du bon de livraison
+                                    <b><t t-esc="picking.name"/></b>.
                                 </span>
                                 <!-- Widget officiel de signature -->
                                 <t t-call="portal.signature_form">
-                                    <t t-set="call_url" t-value="'/stock/picking/' + str(picking.id) + '/sign/submit'"/>
+                                    <t t-set="call_url" t-value="'/stock/picking/' + str(picking.id) + '/sign/submit?access_token=' + picking.access_token"/>
                                     <t t-set="default_name" t-value="(picking.partner_id.commercial_partner_id or picking.partner_id).name if picking.partner_id else ''"/>
                                 </t>
                             </main>
@@ -114,11 +126,6 @@
     <template id="signature_confirmation" name="Signature Confirmation">
         <t t-call="portal.portal_layout">
             <div class="container mt-4" style="text-align: center; padding: 40px; max-width: 600px; margin: 0 auto;">
-                <!-- Logo -->
-                <t t-if="picking.company_id and picking.company_id.logo">
-                    <img t-att-src="image_data_uri(picking.company_id.logo)" style="max-height: 80px; margin-bottom: 20px;"/>
-                </t>
-
                 <!-- Message de succès -->
                 <div class="alert alert-success" role="alert" style="margin-bottom: 20px;">
                     <h4 class="alert-heading">Signature validée !</h4>
@@ -129,27 +136,21 @@
 
                 <!-- Détails de la signature -->
                 <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 20px;">
-                    <p><strong>Signé par :</strong> <t t-esc="picking.signed_by"/></p>
-                    <p><strong>Date de signature :</strong> <t t-esc="picking.signature_date"/></p>
+                    <p><strong>Signé par :</strong> <t t-esc="picking.signed_by"/> <strong>Pour :</strong> <t t-esc="(picking.partner_id.commercial_partner_id or picking.partner_id).name if picking.partner_id else ''"/></p>
+                    <p><strong>Date de signature :</strong> <span t-field="picking.signature_date"/></p>
                     <t t-if="picking.signature_picking">
                         <p><strong>Signature :</strong></p>
                         <img
                             t-att-src="'data:image/png;base64,' + picking.signature_picking.decode('utf-8')"
-                            style="max-width: 300px; border: 1px solid #ddd; margin-top: 10px;"
+                            style="max-width: 300px; margin-top: 10px;"
                         />
                     </t>
                 </div>
 
                 <!-- Boutons d'action -->
                 <div class="d-flex justify-content-center gap-2">
-                    <a href="/" class="btn btn-primary">
-                        <i class="fa fa-home me-1"></i> Retour à l'accueil
-                    </a>
                     <a t-attf-href="/stock/picking/{{ picking.id }}/sign?access_token={{ picking.access_token }}" class="btn btn-secondary">
                         <i class="fa fa-file me-1"></i> Retour au bon de livraison
-                    </a>
-                    <a href="#" class="btn btn-info" onclick="window.print()">
-                        <i class="fa fa-print me-1"></i> Imprimer
                     </a>
                 </div>
             </div>
