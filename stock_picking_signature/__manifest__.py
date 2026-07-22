@@ -4,7 +4,7 @@
     'summary': 'Add online signature to delivery orders',
     'description': 'Allows customers to sign delivery orders online, like quotations.',
     'author': 'APPLYLOG',
-    'depends': ['base', 'stock', 'web', 'mail', 'portal'],
+    'depends': ['base', 'stock', 'web', 'mail', 'portal', 'addons_osetude'],
     'data': [
         'data/mail_template_data.xml',
         'views/stock_picking_views.xml',

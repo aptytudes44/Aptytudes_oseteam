@@ -38,6 +38,13 @@ class StockPicking(models.Model):
         readonly=True,
     )
 
+    signature_requested_by_id = fields.Many2one(
+        'res.users',
+        string="Lien envoyé par",
+        copy=False,
+        readonly=True,
+    )
+
     signature_status = fields.Selection(
         selection=[
             ('non_signe', 'Non signé'),
@@ -64,6 +71,8 @@ class StockPicking(models.Model):
         template = self.env.ref('stock_picking_signature.mail_template_signature_link', raise_if_not_found=False)
         if not template:
             raise UserError("Le template de mail 'Livraison : Signature des BL en ligne' n'existe pas.")
+
+        self.signature_requested_by_id = self.env.user
 
         return {
             'type': 'ir.actions.act_window',
@@ -97,3 +106,11 @@ class StockPicking(models.Model):
         self.ensure_one()
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         return f"{base_url}/stock/picking/{self.id}/sign?access_token={self.access_token}"
+
+    def action_reset_signature(self):
+        self.write({
+            'signed': False,
+            'signed_by': False,
+            'signature_date': False,
+            'signature_picking': False,
+        })

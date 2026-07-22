@@ -245,7 +245,7 @@ msgid "<span groups=\"account.group_show_line_subtotals_tax_excluded\">Amount</s
 msgstr ""
 
 #. module: addons_osetude
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "<span> planned hours</span>"
 msgstr "<span> heures planifiées</span>"
 
@@ -502,7 +502,7 @@ msgid "Add to order lines"
 msgstr "Ajouter aux lignes de commande"
 
 #. module: addons_osetude
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Additional note..."
 msgstr "Note complémentaire"
 
@@ -568,7 +568,7 @@ msgid "Approval deadline"
 msgstr "Date limite d'appro"
 
 #. module: addons_osetude
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Are you sure you want to confirm the quote on order?"
 msgstr "Etes vous sûrs de vouloir confirmer le devis en commande ?"
 
@@ -714,7 +714,7 @@ msgstr "Caractérisation du problème et recherche des causes racines"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Check List"
 msgstr ""
 
@@ -731,7 +731,7 @@ msgstr ""
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Check list"
 msgstr ""
 
@@ -831,7 +831,7 @@ msgstr "Actions correctives"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_quality_control_quality_noncompliance_form
 msgid "Cost and balance"
 msgstr "Coût et solde"
@@ -859,7 +859,7 @@ msgstr "Créer un bon de commande depuis le projet"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Create check list data"
 msgstr "Initialiser la Check List"
 
@@ -885,7 +885,7 @@ msgstr "Créer des demandes d'achats dans les ventes"
 
 #. module: addons_osetude
 #: model:ir.model,name:addons_osetude.model_create_purchase_order
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Create purchase order"
 msgstr "Créer la commande d'achat"
 
@@ -1058,7 +1058,7 @@ msgstr "Bon de livraison N°"
 #: model_terms:ir.ui.view,arch_db:addons_osetude.report_saleorder_document_inherit_sale_management_inherit
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_check_list_data
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_noncompliance
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_project_default_task
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_quality_control_quality_noncompliance_form
 msgid "Description"
@@ -1303,7 +1303,7 @@ msgstr ""
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_quality_control_quality_noncompliance_form
 msgid "Identification"
 msgstr ""
@@ -1615,7 +1615,7 @@ msgstr ""
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Noncompliance Claim"
 msgstr "Non-conformités / Réclamations"
 
@@ -1627,7 +1627,7 @@ msgstr "Non-conrormité/Réclamation"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Noncompliance/Claim/SAV"
 msgstr "Non-conformités/Réclamations/SAV"
 
@@ -1722,13 +1722,13 @@ msgid "Open"
 msgstr "Ouvert"
 
 #. module: addons_osetude
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Open purchases orders"
 msgstr "Afficher les commandes"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_sale_order__order_progress_line
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Order Progress"
 msgstr "Avancement réalisation"
 
@@ -1739,7 +1739,7 @@ msgid "Order Reference"
 msgstr "Référence commande"
 
 #. module: addons_osetude
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Order progress line"
 msgstr "Avancement de la commande"
 
@@ -1777,7 +1777,7 @@ msgstr ""
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_quality_control_quality_noncompliance_form
 msgid "Part reserved for quality control"
 msgstr "Partie réservée au contrôle qualité"
@@ -1955,7 +1955,7 @@ msgstr "Projet ouvert"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_sale_order__project_task_ids
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Project tasks"
 msgstr "Tâches projet"
 
@@ -2023,7 +2023,7 @@ msgid "Purchase order line"
 msgstr ""
 
 #. module: addons_osetude
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Purchases orders"
 msgstr "Commandes d'achats"
 
@@ -2169,7 +2169,7 @@ msgstr "Réception désirée le"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Record ..."
 msgstr "Fiche ..."
 
@@ -2180,18 +2180,18 @@ msgstr ""
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Record of Claim"
 msgstr "Fiche de Réclamation"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Record of Internal noncompliance"
 msgstr "Fiche de Non-conformité interne"
 
 #. module: addons_osetude
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Record of SAV"
 msgstr "Fiche de SAV"
 
@@ -2310,7 +2310,7 @@ msgstr "Date de réponse"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_quality_control_quality_noncompliance_form
 msgid "Responsible"
 msgstr "Responsable"
@@ -2370,7 +2370,7 @@ msgstr "Avancement de la commande"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_sale_order__sale_order_purchase_ids
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Sale Order Purchase"
 msgstr ""
 
@@ -2681,7 +2681,7 @@ msgid "Task date"
 msgstr ""
 
 #. module: addons_osetude
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_task_form2_inherit
 msgid "Task finished"
 msgstr ""
@@ -2700,7 +2700,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:addons_osetude.field_purchase_order__technical_document
 #: model:ir.model.fields,field_description:addons_osetude.field_sale_order__technical_document
 #: model_terms:ir.ui.view,arch_db:addons_osetude.purchase_order_form_inherit
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Technical document"
 msgstr "Document technique"
 
@@ -2734,7 +2734,7 @@ msgid "Third Party Concerned"
 msgstr "Tiers Concerné"
 
 #. module: addons_osetude
-#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_inherit
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Timesheet Activities"
 msgstr "Activités de la feuille de temps"
 
