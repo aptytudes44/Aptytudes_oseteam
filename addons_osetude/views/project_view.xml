@@ -202,14 +202,12 @@
                             icon="fa-truck" title="Delivery Orders" invisible="picking_count==0">
                         <field string="Delivery" name="picking_count" widget="statinfo"/>
                     </button>
+                    <button name="re_create_folder" type="object" class="btn-secondary"
+                            icon="fa-folder-open" string="Re Create folder"
+                            groups="addons_osetude.group_recreate_folder_project"/>
                     <button class="btn-secondary" type="action"
                             name="%(addons_osetude.action_report_project)d"
                             icon="fa-print" string="Print Project"/>
-                </xpath>
-                <xpath expr="//header" position="inside">
-                    <button name="re_create_folder" type="object" string="Re Create folder"
-                            class="btn-primary" icon="fa-folder-open"
-                            groups="addons_osetude.group_osetude_manager" invisible="url_folder==False"/>
                 </xpath>
                 <xpath expr="//field[@name='name']" position="replace">
                     <div>Project : <field name="name" placeholder="Project Name" readonly="1" force_save="1"/></div>
