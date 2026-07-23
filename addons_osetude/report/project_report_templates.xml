@@ -52,7 +52,7 @@
                         <td colspan="4" style="font-size: 15px;"><b>Note for the project : </b></td>
                     </tr>
                     <tr>
-                        <td colspan="4" style="font-size: 15px; height: 150px; border: 1px solid gray; vertical-align: top;"><span t-field="doc.note"/></td>
+                        <td colspan="4" style="font-size: 15px; height: 150px; border: 1px solid gray; vertical-align: top; padding-top: 8px; padding-left: 8px;"><span t-field="doc.note"/></td>
                     </tr>
                 </table>
             </div>

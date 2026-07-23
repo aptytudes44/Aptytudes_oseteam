@@ -27,6 +27,19 @@ class IrActionsReport(models.Model):
     _description = 'Report Action'
     _inherit = 'ir.actions.report'
 
+    def _build_wkhtmltopdf_args(self, paperformat_id, landscape, specific_paperformat_args=None, set_viewport_size=False):
+        # Certains rapports (ex: addons_osetude.report_project) n'utilisent pas le wrapper
+        # standard <div class="article"> : le HTML transmis à wkhtmltopdf n'a alors ni
+        # <head> ni <meta charset>, et wkhtmltopdf devine mal l'encodage (mojibake sur les
+        # caractères accentués). On force donc explicitement l'UTF-8 en ligne de commande.
+        command_args = super()._build_wkhtmltopdf_args(
+            paperformat_id, landscape,
+            specific_paperformat_args=specific_paperformat_args,
+            set_viewport_size=set_viewport_size,
+        )
+        command_args.extend(['--encoding', 'utf-8'])
+        return command_args
+
     # v16 : render_qweb_pdf → _render_qweb_pdf
     def _render_qweb_pdf(self, report_ref, res_ids=None, data=None):
         res = super(IrActionsReport, self)._render_qweb_pdf(report_ref, res_ids, data)
