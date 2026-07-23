@@ -117,6 +117,11 @@ class Project(models.Model):
             shutil.copytree(url_model, url + str(date_val.year) + '/' + self.name)
         except OSError as error:
             raise UserError(_("Directory %s can not be created %s") % (url, error))
+        else:
+            self.env.user._bus_send('simple_notification', {
+                'type': 'success',
+                'message': _("Dossier du projet %s recréé avec succès.") % self.name,
+            })
 
     def create_folder(self, date_val, project):
         url = self.url_folder_project()
@@ -125,6 +130,12 @@ class Project(models.Model):
             shutil.copytree(url_model, url + str(date_val.year) + '/' + project.name)
         except OSError as error:
             _logger.info("ERROR ########## %s - %s", url, error)
+            raise UserError(_("Le dossier du projet %s n'a pas pu être créé : %s") % (project.name, error))
+        else:
+            self.env.user._bus_send('simple_notification', {
+                'type': 'success',
+                'message': _("Dossier du projet %s créé avec succès.") % project.name,
+            })
 
     @api.model_create_multi
     def create(self, vals_list):
