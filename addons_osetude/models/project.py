@@ -109,14 +109,43 @@ class Project(models.Model):
             [('key', '=', 'path_url_model_folder')]).value
         return path_model
 
+    def _get_folder_size(self, path):
+        if not os.path.isdir(path):
+            return 0
+        total = 0
+        for root, dirs, files in os.walk(path):
+            for name in files:
+                try:
+                    total += os.path.getsize(os.path.join(root, name))
+                except OSError:
+                    pass
+        return total
+
     def re_create_folder(self):
         url = self.url_folder_project()
         url_model = self.url_model_folder_project()
         date_val = self.create_date
+        dest = url + str(date_val.year) + '/' + self.name
+        template_size = self._get_folder_size(url_model)
+        dest_size = self._get_folder_size(dest)
+        if dest_size > template_size:
+            self.env.user._bus_send('simple_notification', {
+                'type': 'warning',
+                'message': _(
+                    "Dossier du projet %s non recréé : des documents sont déjà présents (%.1f Mo)."
+                ) % (self.name, dest_size / (1024 * 1024)),
+            })
+            return
+        if os.path.isdir(dest):
+            shutil.rmtree(dest)
         try:
-            shutil.copytree(url_model, url + str(date_val.year) + '/' + self.name)
+            shutil.copytree(url_model, dest)
         except OSError as error:
-            raise UserError(_("Directory %s can not be created %s") % (url, error))
+            self.env.user._bus_send('simple_notification', {
+                'type': 'danger',
+                'message': _("Dossier du projet %s non créé : %s") % (self.name, error),
+            })
+            return
         else:
             self.env.user._bus_send('simple_notification', {
                 'type': 'success',
