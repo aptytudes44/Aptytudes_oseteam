@@ -65,3 +65,17 @@ class PurchaseOrderLine(models.Model):
         if self.order_id.account_analytic_id:
             analytic_id = self.order_id.account_analytic_id.id
             self.analytic_distribution = {str(analytic_id): 100}
+
+    analytic_account_display_name = fields.Char(
+        compute='_compute_analytic_account_display_name',
+        string="Analytic Account")
+
+    @api.depends('analytic_distribution')
+    def _compute_analytic_account_display_name(self):
+        AnalyticAccount = self.env['account.analytic.account']
+        for line in self:
+            ids = []
+            for key in (line.analytic_distribution or {}):
+                if key.isdigit():
+                    ids.append(int(key))
+            line.analytic_account_display_name = ', '.join(AnalyticAccount.browse(ids).mapped('name'))

@@ -40,14 +40,14 @@ Custom tools for OSETEAM projects and management
         'datas/ir_sequence_data.xml',
 
         # Rapports
-        #'report/external_layout_standard.xml',  # DISABLED: xpaths V12 incompatibles V18
+        #'report/external_layout_standard.xml',  # DISABLED: structure core web.external_layout_standard incompatible (adresse société recalculée via company.company_details, classes moto/o_standard_footer absentes) — nécessite réécriture complète, pas juste l'ajout de street2
         'report/footer_logo_iso.xml',
         'report/report_paper_format.xml',
         'report/project_report.xml',
         'report/project_report_templates.xml',
-        #'report/sale_report_templates.xml',
-        #'report/invoice_report_template.xml',
-        #'report/purchase_report_templates.xml',
+        'report/sale_report_templates.xml',
+        'report/invoice_report_template.xml',
+        'report/purchase_report_templates.xml',
         'report/report_deliveryslip.xml',
 
         # Vues

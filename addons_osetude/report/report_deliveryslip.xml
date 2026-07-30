@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="report_delivery_document_inherit_sale_stock_inherit" inherit_id="stock.report_delivery_document">
+        <!-- Cartouche : référence client, projet, note -->
+        <xpath expr="//h2" position="before">
+            <div id="custom_informations">
+                <div t-if="o.sale_id">
+                    <strong>Customer Reference: </strong><span t-field="o.sale_id.client_order_ref"/>
+                </div>
+                <div t-if="o.project_id">
+                    <strong>Project: </strong><span t-field="o.project_id.name"/>
+                </div>
+                <div t-if="o.project_id and o.project_id.title_project">
+                    <strong>Project reference: </strong><span t-field="o.project_id.title_project"/>
+                </div>
+                <div t-if="o.delivery_note">
+                    <strong>Note: </strong><span t-field="o.delivery_note"/>
+                </div>
+                <br/>
+            </div>
+        </xpath>
+
+        <!-- Libellé "Delivery form #" / "Receipt #" devant le nom du document -->
+        <xpath expr="//h2/span[@t-field='o.name']" position="before">
+            <t t-if="o.picking_type_code=='outgoing'">Delivery form # </t>
+            <t t-if="o.picking_type_code=='incoming'">Receipt # </t>
+        </xpath>
+
+        <!-- Mention réclamations sous 15 jours (bons de livraison sortants) -->
+        <xpath expr="//div[hasclass('page')]" position="inside">
+            <div style="font-size: 13px;" t-if="o.picking_type_code=='outgoing'">
+                <p><i>Complaints can only be accepted within 15 days of receipt of this delivery note.</i></p>
+            </div>
+        </xpath>
+
         <!-- Remplacer thead table des mouvements (non done) -->
         <xpath expr="//table[@name='stock_move_table']/thead" position="replace">
             <thead>
