@@ -42,6 +42,7 @@ Custom tools for OSETEAM projects and management
         # Rapports
         #'report/external_layout_standard.xml',  # DISABLED: structure core web.external_layout_standard incompatible (adresse société recalculée via company.company_details, classes moto/o_standard_footer absentes) — nécessite réécriture complète, pas juste l'ajout de street2
         'report/footer_logo_iso.xml',
+        'report/footer_text_center.xml',
         'report/report_paper_format.xml',
         'report/project_report.xml',
         'report/project_report_templates.xml',
