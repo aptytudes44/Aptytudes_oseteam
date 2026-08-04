@@ -47,7 +47,7 @@ Custom tools for OSETEAM projects and management
         'report/project_report.xml',
         'report/project_report_templates.xml',
         'report/sale_report_templates.xml',
-        'report/invoice_report_template.xml',
+        #'report/invoice_report_template.xml',
         'report/purchase_report_templates.xml',
         'report/report_deliveryslip.xml',
 
@@ -68,12 +68,15 @@ Custom tools for OSETEAM projects and management
 
         # Assistants
         'wizard/create_purchase_order_view.xml',
+        'wizard/add_purchase_lines_bulk_view.xml',
     ],
     'assets': {
         'web.assets_backend': [
             ('prepend', 'addons_osetude/static/src/css/style.css'),  # Utilisation de tuple pour spécifier l'ordre
             ('prepend', 'addons_osetude/static/src/css/style_analyse.css'),
             'addons_osetude/static/src/js/user_menu_preferences.js',
+            'addons_osetude/static/src/js/no_product_name_in_description.js',
+            'addons_osetude/static/src/js/product_column_width.js',
         ],
         'web.assets_qweb': [
             'addons_osetude/static/src/xml/*.xml',  # Décommentez si vous avez des templates QWeb

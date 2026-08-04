@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_add_purchase_lines_bulk" model="ir.ui.view">
+            <field name="name">purchase.order.add.lines.bulk.form</field>
+            <field name="model">purchase.order.add.lines.bulk</field>
+            <field name="arch" type="xml">
+                <form string="Ajouter un produit en masse">
+                    <group>
+                        <field name="order_id" invisible="1"/>
+                        <field name="product_id"/>
+                        <field name="line_count"/>
+                        <field name="product_qty"/>
+                        <field name="account_analytic_id" options="{'no_create': True}"/>
+                    </group>
+                    <footer>
+                        <button name="action_add_lines" string="Ajouter" type="object" class="btn-primary"/>
+                        <button special="cancel" string="Annuler" type="object"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_add_purchase_lines_bulk" model="ir.actions.act_window">
+            <field name="name">Ajouter un produit en masse</field>
+            <field name="res_model">purchase.order.add.lines.bulk</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_order_id': active_id}</field>
+        </record>
+
+        <record id="purchase_order_form_add_bulk_button" model="ir.ui.view">
+            <field name="name">purchase.order.form.add.bulk.button</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <!-- Masqué temporairement (fonctionnalité en pause, à reprendre plus tard) -->
+                    <button name="%(action_add_purchase_lines_bulk)d" string="Ajouter un produit en masse"
+                            type="action" class="btn-secondary"
+                            invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

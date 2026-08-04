@@ -4,20 +4,18 @@
 
     <template id="external_layout_standard_footer_center" inherit_id="web.external_layout_standard">
         <xpath expr="//div[hasclass('o_footer_content')]" position="replace">
-            <div class="o_footer_content border-top pt-2 text-center">
-                <div t-field="company.report_footer"/>
-                <div t-if="report_type == 'pdf' and display_name_in_footer" t-out="o.name" class="text-muted"/>
-                <div t-if="report_type == 'pdf'" class="text-muted">Page <span class="page"/> / <span class="topage"/></div>
+            <div class="o_footer_content border-top pt-1 d-flex justify-content-between align-items-center">
+                <div class="flex-grow-1 text-center" t-field="company.report_footer"/>
+                <div t-if="report_type == 'pdf'" class="text-muted text-nowrap ms-2">Page <span class="page"/> / <span class="topage"/></div>
             </div>
         </xpath>
     </template>
 
     <template id="external_layout_folder_footer_center" inherit_id="web.external_layout_folder">
         <xpath expr="//div[hasclass('o_footer_content')]" position="replace">
-            <div class="o_footer_content border-top pt-2 text-center">
-                <div t-field="company.report_footer"/>
-                <div t-if="report_type == 'pdf' and display_name_in_footer" t-out="o.name" class="text-muted"/>
-                <div t-if="report_type == 'pdf'" class="text-muted">Page <span class="page"/> / <span class="topage"/></div>
+            <div class="o_footer_content border-top pt-1 d-flex justify-content-between align-items-center">
+                <div class="flex-grow-1 text-center" t-field="company.report_footer"/>
+                <div t-if="report_type == 'pdf'" class="text-muted text-nowrap ms-2">Page <span class="page"/> / <span class="topage"/></div>
             </div>
         </xpath>
     </template>
@@ -27,10 +25,9 @@
          et on l'ajoute en en-tête près du logo, comme les autres thèmes. -->
     <template id="external_layout_boxed_footer_no_tagline" inherit_id="web.external_layout_boxed">
         <xpath expr="//div[hasclass('o_footer_content')]" position="replace">
-            <div class="o_footer_content border-top pt-2 text-center">
-                <div t-field="company.report_footer"/>
-                <div t-if="report_type == 'pdf' and display_name_in_footer" t-out="o.name" class="text-muted"/>
-                <div t-if="report_type == 'pdf'" class="text-muted">Page <span class="page"/> / <span class="topage"/></div>
+            <div class="o_footer_content border-top pt-1 d-flex justify-content-between align-items-center">
+                <div class="flex-grow-1 text-center" t-field="company.report_footer"/>
+                <div t-if="report_type == 'pdf'" class="text-muted text-nowrap ms-2">Page <span class="page"/> / <span class="topage"/></div>
             </div>
         </xpath>
         <xpath expr="//img[hasclass('o_company_logo_big')]" position="after">
@@ -40,10 +37,9 @@
 
     <template id="external_layout_bold_footer_no_tagline" inherit_id="web.external_layout_bold">
         <xpath expr="//div[hasclass('o_footer_content')]" position="replace">
-            <div class="o_footer_content border-top pt-2 text-center">
-                <div t-field="company.report_footer"/>
-                <div t-if="report_type == 'pdf' and display_name_in_footer" t-out="o.name" class="text-muted"/>
-                <div t-if="report_type == 'pdf'" class="text-muted">Page <span class="page"/> / <span class="topage"/></div>
+            <div class="o_footer_content border-top pt-1 d-flex justify-content-between align-items-center">
+                <div class="flex-grow-1 text-center" t-field="company.report_footer"/>
+                <div t-if="report_type == 'pdf'" class="text-muted text-nowrap ms-2">Page <span class="page"/> / <span class="topage"/></div>
             </div>
         </xpath>
         <xpath expr="//img[hasclass('o_company_logo_big')]" position="after">

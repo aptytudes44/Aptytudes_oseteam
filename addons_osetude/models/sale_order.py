@@ -112,6 +112,12 @@ class SaleOrder(models.Model):
                     'name': data.id,
                 })
 
+    def action_print_quotation(self):
+        # Réintroduit le bouton "Print" présent en V12 (méthode print_quotation) :
+        # imprime le devis et le passe à l'état "sent" s'il était encore en brouillon.
+        self.filtered(lambda s: s.state == 'draft').write({'state': 'sent'})
+        return self.env.ref('sale.action_report_saleorder').report_action(self)
+
     def action_confirm(self):
         res = super(SaleOrder, self).action_confirm()
         for pick in self.picking_ids:
@@ -138,7 +144,7 @@ class SaleOrder(models.Model):
         related='project_id.name_auditor', string="Name of auditor", readonly=False)
     noncompliance_line_project = fields.One2many(
         related='project_id.noncompliance_line', string='Noncompliance Lines', readonly=False)
-    title_project = fields.Char(related="project_id.name", string='Business reference')
+    title_project = fields.Char(related="project_id.title_project", string='Business reference')
     comment_not = fields.Text('Comment')
     responsible_business_id = fields.Many2one('res.partner', string="Responsible business")
     phone_responsible_business = fields.Char(
@@ -184,6 +190,58 @@ class SaleOrderLine(models.Model):
                 self.price_unit - self.purchase_price) / self.purchase_price * 100
 
     margin_sale_line = fields.Integer('Margin %')
+
+    @api.depends('product_id', 'linked_line_id', 'linked_line_ids')
+    def _compute_name(self):
+        # Si une description existe déjà (saisie à la main), on la garde telle quelle.
+        lines_with_name = self.filtered('name')
+        for line in lines_with_name:
+            line.name = line.name
+        super(SaleOrderLine, self - lines_with_name)._compute_name()
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        lines = super().create(vals_list)
+        lines._strip_leaked_product_name()
+        return lines
+
+    def write(self, vals):
+        res = super().write(vals)
+        if 'product_id' in vals or 'name' in vals:
+            self._strip_leaked_product_name()
+        return res
+
+    def _strip_leaked_product_name(self):
+        # Filet de sécurité : le navigateur peut parfois envoyer une sauvegarde avec une
+        # description dont le début est le nom d'un produit (résidu d'un décalage de timing
+        # entre le changement de produit et l'enregistrement). On le retire, qu'il soit collé
+        # avec un saut de ligne ("Nom\nReste") ou juste un espace ("Nom Reste").
+        Product = self.env['product.product']
+        for line in self:
+            name = line.name or ''
+            if not name:
+                continue
+            first_segment = name.split('\n', 1)[0]
+            words = first_segment.split(' ')
+            matched_len = None
+            for nb_words in range(min(len(words), 6), 0, -1):
+                candidate = ' '.join(words[:nb_words])
+                if Product.search([('display_name', '=', candidate)], limit=1):
+                    matched_len = len(candidate)
+                    break
+            if matched_len is None:
+                continue
+            remainder = name[matched_len:].lstrip('\n').lstrip(' ')
+            if remainder != name:
+                line.name = remainder
+
+
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
+
+    def get_product_multiline_description_sale(self):
+        # Ne jamais préfixer par le nom du produit : uniquement la description de vente.
+        return self.description_sale or ''
 
 
 class SaleOrderPurchaseLine(models.Model):

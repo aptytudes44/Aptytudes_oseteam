@@ -34,8 +34,14 @@
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="dest_address_id"/>
                 </xpath>
-                <xpath expr="//field[@name='origin']" position="after">
+                <!-- Analytique par défaut déplacé après "Arrivée prévue" (au lieu d'ici) -->
+                <xpath expr="//div[@name='date_planned_div']" position="after">
                     <field name="account_analytic_id" options="{'no_create': True, 'no_open': True}"/>
+                </xpath>
+                <!-- Projet prend l'ancien emplacement de Analytique par défaut (après Origine) -->
+                <xpath expr="//field[@name='project_id']" position="replace"/>
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="project_id" groups="project.group_project_user"/>
                 </xpath>
 
                 <xpath expr="//field[@name='partner_ref']" position="after">

@@ -1831,6 +1831,41 @@ msgid "Price competitiveness"
 msgstr "Compétitivité prix"
 
 #. module: addons_osetude
+#: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
+msgid "Print"
+msgstr "Imprimer"
+
+#. module: addons_osetude
+#: model_terms:ir.ui.view,arch_db:addons_osetude.report_saleorder_document_inherit
+msgid "Pro-Forma Invoice No."
+msgstr "Facture Pro forma N°"
+
+#. module: addons_osetude
+#: model_terms:ir.ui.view,arch_db:addons_osetude.report_saleorder_document_inherit
+msgid "Quotation No."
+msgstr "Devis N°"
+
+#. module: addons_osetude
+#: model_terms:ir.ui.view,arch_db:addons_osetude.report_purchaseorder_document_inherit
+msgid "Request for Quotation N°"
+msgstr "Demande de prix N°"
+
+#. module: addons_osetude
+#: model_terms:ir.ui.view,arch_db:addons_osetude.report_purchaseorder_document_inherit
+msgid "Purchase Order N°"
+msgstr "Commande N°"
+
+#. module: addons_osetude
+#: model_terms:ir.ui.view,arch_db:addons_osetude.report_purchaseorder_document_inherit
+msgid "Cancelled Purchase Order N°"
+msgstr "Commande annulée N°"
+
+#. module: addons_osetude
+#: model_terms:ir.ui.view,arch_db:addons_osetude.report_saleorder_document_inherit
+msgid "Order No."
+msgstr "Commande N°"
+
+#. module: addons_osetude
 #: model:ir.actions.report,name:addons_osetude.action_report_project
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
 msgid "Print Project"

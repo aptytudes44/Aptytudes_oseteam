@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- DESACTIVE (31/07/2026) : tableau des produits optionnels du devis
     <template id="report_saleorder_document_inherit_sale_management_inherit" inherit_id="sale_management.report_saleorder_document_inherit_sale_management">
         <xpath expr="//table[@name='table_optional_products']" position="replace">
             <table class="table table-sm">
@@ -59,9 +60,10 @@
             </table>
         </xpath>
     </template>
+    -->
 
     <template id="report_saleorder_document_inherit" inherit_id="sale.report_saleorder_document">
-        <!-- GESTION DES ADRESSES -->
+        <!-- DESACTIVE (31/07/2026) : GESTION DES ADRESSES
         <xpath expr="//t[@t-set='address']" position="replace">
             <table style="width: 100%;">
                 <thead>
@@ -80,80 +82,87 @@
             </table>
             <br/>
         </xpath>
+        -->
 
-        <!-- GESTION DU CARTOUCHE -->
-        <xpath expr="//div[@id='informations']" position="replace">
-            <div class="row mt32 mb32" id="informations">
-                <div class="col-auto mw-100 mb-2" style="font-size: 14px;">
-                    <strong>Your reference:</strong>
-                    <p class="m-0" t-field="doc.client_order_ref"/>
-                </div>
-                <!-- v17 : confirmation_date removed → use date_order for all states -->
-                <div t-if="doc.date_order and doc.state not in ['draft','sent']" class="col-auto mw-100 mb-2" style="font-size: 14px;">
-                    <strong>Date Ordered:</strong>
-                    <p class="m-0" t-field="doc.date_order"/>
-                </div>
-                <div t-if="doc.date_order and doc.state in ['draft','sent']" class="col-auto mw-100 mb-2" style="font-size: 14px;">
-                    <strong>Quotation Date:</strong>
-                    <p class="m-0" t-field="doc.date_order"/>
-                </div>
-                <div name="payment_term" t-if="doc.payment_term_id" class="col-auto mw-100 mb-2" style="font-size: 14px;">
-                    <strong>Payment Terms:</strong>
-                    <p class="m-0" t-field="doc.payment_term_id"/>
-                </div>
-                <div t-if="doc.validity_date and doc.state in ['draft', 'sent']" class="col-auto mw-100 mb-2" style="font-size: 14px;">
-                    <strong>Expiration Date:</strong>
-                    <p class="m-0" t-field="doc.validity_date" style="font-size: 14px;"/>
-                </div>
-            </div>
-            <table></table>
-            <table style="width: 100%; border-spacing: 5px;">
-                <tr style="border-top: 1px solid #dde1e6;">
-                    <td style="font-size: 14px;"><b>Salesperson:</b></td>
-                    <td style="font-size: 14px;"><span t-field="doc.user_id"/></td>
-                    <td style="font-size: 14px;"><b>Responsible business:</b></td>
-                    <td style="font-size: 14px;"><span t-field="doc.responsible_business_id"/></td>
-                </tr>
-                <tr>
-                    <td style="font-size: 14px;"><b>Phone:</b></td>
-                    <td style="font-size: 14px;"><span t-field="doc.user_id.phone"/></td>
-                    <td style="font-size: 14px;"><b>Phone:</b></td>
-                    <td style="font-size: 14px;"><span t-field="doc.phone_responsible_business"/></td>
-                </tr>
-                <tr style="border-bottom: 1px solid #dde1e6;">
-                    <td style="font-size: 14px;"><b>Email:</b></td>
-                    <td style="font-size: 14px;"><span t-field="doc.user_id.partner_id.email"/></td>
-                    <td style="font-size: 14px;"><b>Email:</b></td>
-                    <td style="font-size: 14px;"><span t-field="doc.mail_responsible_business"/></td>
-                </tr>
-            </table>
-            <br/>
-            <table style="width: 100%;">
-                <tr>
-                    <td style="font-size: 14px; width: 20%;"><b>Project:</b></td>
-                    <td style="font-size: 14px;"><span t-field="doc.project_id"/></td>
-                </tr>
-                <tr>
-                    <td style="font-size: 14px;"><b>Project reference:</b></td>
-                    <td style="font-size: 14px;"><span t-field="doc.project_id.title_project"/></td>
-                </tr>
-            </table>
-            <br/>
+        <!-- REMPLACE "#" PAR "N°" DANS LE TITRE (Devis N°/Commande N°/Facture Pro forma N°) -->
+        <xpath expr="//t[@t-set='layout_document_title']" position="replace">
+            <t t-set="layout_document_title">
+                <span t-if="is_proforma">Pro-Forma Invoice No. </span>
+                <span t-elif="doc.state in ['draft','sent']">Quotation No. </span>
+                <span t-else="">Order No. </span>
+                <span t-field="doc.name">SO0000</span>
+            </t>
         </xpath>
 
-        <!-- MODIFICATION ENTETE DE LA LISTE DES ARTICLES -->
-        <!-- v17 : drop style attribute filter (may have changed) -->
+        <!-- Masque le "Salesperson" natif du cartouche Odoo (doublon avec notre "Vendeur :" ajouté juste en dessous) -->
+        <xpath expr="//div[@id='informations']/div[@t-if='doc.user_id.name']" position="attributes">
+            <attribute name="t-if">False</attribute>
+        </xpath>
+
+        <!-- GESTION DU CARTOUCHE : ajouté APRES le cartouche standard d'Odoo (Votre référence /
+             Date du devis / Echéance / Vendeur), pas en remplacement, pour garder ces champs
+             natifs et compléter avec Vendeur/Contact client côte à côte, puis Affaire. Aucun
+             cadre/bordure (border:none partout, comme le cartouche natif). -->
+        <xpath expr="//div[@id='informations']" position="after">
+            <div class="row" style="border-top: 2px solid #dde1e6; border-bottom: 2px solid #dde1e6; padding-top: 4px; padding-bottom: 4px; margin: 0;">
+                <div class="col-6">
+                    <div><strong>Vendeur :</strong> <span t-field="doc.user_id"/></div>
+                    <div><strong>Téléphone :</strong> <span t-field="doc.user_id.phone"/></div>
+                    <div><strong>Email:</strong> <span t-field="doc.user_id.partner_id.email"/></div>
+                </div>
+                <div class="col-6">
+                    <div><strong>Contact client :</strong> <span t-field="doc.responsible_business_id"/></div>
+                    <div><strong>Téléphone :</strong> <span t-field="doc.phone_responsible_business"/></div>
+                    <div><strong>Email:</strong> <span t-field="doc.mail_responsible_business"/></div>
+                </div>
+            </div>
+            <div class="row" style="margin: 8px 0 0 0;">
+                <div class="col-12">
+                    <div><strong>Affaire :</strong> <span t-field="doc.project_id"/></div>
+                    <div><strong>Référence affaire :</strong> <span t-field="doc.project_id.title_project"/></div>
+                </div>
+            </div>
+        </xpath>
+
+        <!-- Répète l'entête du tableau des articles sur chaque page : Odoo force
+             "display: table-row-group" sur le thead (empêche la répétition), on remet
+             la valeur standard "table-header-group" qui la réactive. -->
+        <xpath expr="//table[contains(@class,'o_main_table')]/thead" position="attributes">
+            <attribute name="style">display: table-header-group</attribute>
+        </xpath>
+
+        <!-- Libellés des colonnes en gras (un xpath par colonne, un xpath multi-match
+             ne s'applique qu'au 1er élément trouvé en héritage de vue Odoo). Inclut aussi
+             la colonne "Disc.%" qui n'apparaît que si une remise existe sur une ligne. -->
+        <xpath expr="//th[@name='th_description']" position="attributes">
+            <attribute name="style">font-weight: bold</attribute>
+        </xpath>
+        <xpath expr="//th[@name='th_quantity']" position="attributes">
+            <attribute name="style">font-weight: bold</attribute>
+        </xpath>
+        <xpath expr="//th[@name='th_priceunit']" position="attributes">
+            <attribute name="style">font-weight: bold</attribute>
+        </xpath>
+        <xpath expr="//th[@name='th_discount']" position="attributes">
+            <attribute name="style">font-weight: bold</attribute>
+        </xpath>
+        <xpath expr="//th[@name='th_taxes']" position="attributes">
+            <attribute name="style">font-weight: bold</attribute>
+        </xpath>
+        <xpath expr="//th[@name='th_subtotal']" position="attributes">
+            <attribute name="style">font-weight: bold</attribute>
+        </xpath>
+
+        <!-- DESACTIVE (31/07/2026) : MODIFICATION ENTETE DE LA LISTE DES ARTICLES (v17 : drop style attribute filter ; 2x TODO remove in master)
         <xpath expr="//table[contains(@class,'o_main_table')]/thead" position="replace">
             <thead>
                 <tr>
-                    <!-- TODO: remove in master -->
                     <t t-set="colspan" t-value="5"/>
                     <th class="text-left" style="background-color: #dde1e6;">Description</th>
                     <th class="text-end" style="background-color: #dde1e6;">Quantity</th>
                     <th class="text-end" style="background-color: #dde1e6;">Unit Price</th>
                     <th t-if="display_discount" class="text-end" style="background-color: #dde1e6;" groups="sale.group_discount_per_so_line">
                         <span>Disc.(%)</span>
-                        <!-- TODO: remove in master -->
                         <t t-set="colspan" t-value="colspan+1"/>
                     </th>
                     <th class="text-end" style="background-color: #dde1e6;">Taxes</th>
@@ -164,8 +173,9 @@
                 </tr>
             </thead>
         </xpath>
+        -->
 
-        <!-- POUR AJOUTER LA SIGNATURE -->
+        <!-- DESACTIVE (31/07/2026) : POUR AJOUTER LA SIGNATURE
         <xpath expr="//div[@name='total']" position="after">
             <div t-if="doc.state in ['draft','sent']">
                 <br/>
@@ -176,28 +186,32 @@
                 </div>
             </div>
         </xpath>
+        -->
 
-        <!-- POUR MODIFIER LE LIBELLE SOUS TOTAL HT DES SECTIONS -->
+        <!-- DESACTIVE (31/07/2026) : POUR MODIFIER LE LIBELLE SOUS TOTAL HT DES SECTIONS
         <xpath expr="//tr[@class='is-subtotal text-end']/td/strong" position="replace">
             <strong class="mr16">Sous Total HT</strong>
         </xpath>
+        -->
 
-        <!-- POUR AJOUTER LA NOTE SUPPLEMENTAIRE -->
+        <!-- DESACTIVE (31/07/2026) : POUR AJOUTER LA NOTE SUPPLEMENTAIRE
         <xpath expr="//span[@name='order_note']" position="after">
             <p t-field="doc.comment_not"/>
         </xpath>
+        -->
 
-        <!-- POUR AJOUTER LE DOSSIER TECHNIQUE -->
+        <!-- DESACTIVE (31/07/2026) : POUR AJOUTER LE DOSSIER TECHNIQUE
         <xpath expr="//div[hasclass('page')]" position="after">
             <span t-if="doc.print_technical_document == true">
                 <p style="page-break-before:always;"><span t-out="doc.technical_document"/></p>
             </span>
         </xpath>
+        -->
 
-        <!-- POUR REDUIRE LA TAILLE DU TEXTE DES CONDITIONS -->
+        <!-- DESACTIVE (31/07/2026) : POUR REDUIRE LA TAILLE DU TEXTE DES CONDITIONS
         <xpath expr="//p[@t-if='not is_html_empty(doc.payment_term_id.note)']" position="attributes">
             <attribute name="style">font-size: 12px;</attribute>
         </xpath>
+        -->
     </template>
 </odoo>
-

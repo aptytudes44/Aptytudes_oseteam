@@ -217,7 +217,11 @@
                 <xpath expr="//page[@name='settings']" position="before">
                     <page string="Project description">
                         <separator string="Business reference"/>
-                        <field name="title_project" placeholder="Business reference ..."/>
+                        <group>
+                            <group>
+                                <field name="title_project" nolabel="1" placeholder="Business reference ..."/>
+                            </group>
+                        </group>
                         <group>
                             <group>
                                 <separator string="Company information"/>

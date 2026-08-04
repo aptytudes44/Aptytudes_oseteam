@@ -79,3 +79,21 @@ class PurchaseOrderLine(models.Model):
                 if key.isdigit():
                     ids.append(int(key))
             line.analytic_account_display_name = ', '.join(AnalyticAccount.browse(ids).mapped('name'))
+
+    def _get_product_purchase_description(self, product_lang):
+        # Ne jamais préfixer par le nom du produit : uniquement la description d'achat.
+        return product_lang.description_purchase or ''
+
+    description_only = fields.Text(
+        string='Description only', compute='_compute_description_only')
+
+    @api.depends('name', 'product_id')
+    def _compute_description_only(self):
+        for line in self:
+            name = line.name or ''
+            product_name = line.product_id.display_name if line.product_id else False
+            if product_name and name.split('\n', 1)[0] == product_name:
+                parts = name.split('\n', 1)
+                line.description_only = parts[1] if len(parts) > 1 else ''
+            else:
+                line.description_only = name
