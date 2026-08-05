@@ -46,6 +46,11 @@ class Picking(models.Model):
             else:
                 picking.print_deliveryslip_ok = True
 
+    def _compute_calendar_display_name(self):
+        for picking in self:
+            parts = [p for p in (picking.origin, picking.partner_id.name) if p]
+            picking.calendar_display_name = ' - '.join(parts) or picking.name
+
     def _compute_print_satisfaction_ok(self):
         for picking in self:
             if picking.picking_type_id.code == 'outgoing':
@@ -69,3 +74,7 @@ class Picking(models.Model):
         'Print deliveryslip ok ?', compute='_compute_print_delivery_slip_ok')
     print_satisfaction_ok = fields.Boolean(
         'Print satisfaction_ok ?', compute='_compute_print_satisfaction_ok')
+    calendar_display_name = fields.Char(
+        'Calendar title', compute='_compute_calendar_display_name',
+        help="Titre affiché sur les événements de la vue calendrier "
+             "(document d'origine + fournisseur), sans toucher à display_name.")

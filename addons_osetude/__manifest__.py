@@ -65,6 +65,7 @@ Custom tools for OSETEAM projects and management
         'views/res_company_view.xml',
         'views/hr_leave_view.xml',
         'views/satisfaction_survey_view.xml',
+        'views/product_view.xml',
 
         # Assistants
         'wizard/create_purchase_order_view.xml',

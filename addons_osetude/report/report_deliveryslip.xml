@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Nom du fichier PDF = uniquement le numéro du BL (ex: OSE-L-260462.pdf).
+         print_report_name est un champ traduit (stocké par langue) : il faut
+         l'écrire explicitement pour fr_FR, sinon seule la valeur en_US change
+         et la traduction française existante (non identique) reste inchangée. -->
+    <record id="stock.action_report_delivery" model="ir.actions.report">
+        <field name="print_report_name">object.name</field>
+    </record>
+    <record id="stock.action_report_delivery" model="ir.actions.report" context="{'lang': 'fr_FR'}">
+        <field name="print_report_name">object.name</field>
+    </record>
+
     <template id="report_delivery_document_inherit_sale_stock_inherit" inherit_id="stock.report_delivery_document">
         <!-- Cartouche : référence client, projet, note -->
         <xpath expr="//h2" position="before">
@@ -33,31 +44,6 @@
             </div>
         </xpath>
 
-        <!-- Remplacer thead table des mouvements (non done) -->
-        <xpath expr="//table[@name='stock_move_table']/thead" position="replace">
-            <thead>
-                <tr>
-                    <th><strong>Product</strong></th>
-                    <th><strong>Description</strong></th>
-                    <th class="text-center"><strong>Scheduled Date</strong></th>
-                    <th class="text-center"><strong>Demand</strong></th>
-                    <th class="text-center"><strong>Done</strong></th>
-                </tr>
-            </thead>
-        </xpath>
-
-        <!-- Remplacer thead table des move lines (done) -->
-        <xpath expr="//table[@name='stock_move_line_table']/thead" position="replace">
-            <thead>
-                <tr>
-                    <th><strong>Product</strong></th>
-                    <th><strong>Description</strong></th>
-                    <th class="text-center"><strong>Lot/Serial</strong></th>
-                    <th class="text-center"><strong>Demand</strong></th>
-                    <th class="text-center"><strong>Delivered</strong></th>
-                </tr>
-            </thead>
-        </xpath>
     </template>
 </odoo>
 

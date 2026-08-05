@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Nom du fichier PDF = uniquement le numéro du devis (ex: OSE-V-260503-01.pdf).
+         print_report_name est un champ traduit (stocké par langue) : il faut
+         l'écrire explicitement pour fr_FR, sinon seule la valeur en_US change
+         et la traduction française existante (non identique) reste inchangée. -->
+    <record id="sale.action_report_saleorder" model="ir.actions.report">
+        <field name="print_report_name">object.name</field>
+    </record>
+    <record id="sale.action_report_saleorder" model="ir.actions.report" context="{'lang': 'fr_FR'}">
+        <field name="print_report_name">object.name</field>
+    </record>
+
     <!-- DESACTIVE (31/07/2026) : tableau des produits optionnels du devis
     <template id="report_saleorder_document_inherit_sale_management_inherit" inherit_id="sale_management.report_saleorder_document_inherit_sale_management">
         <xpath expr="//table[@name='table_optional_products']" position="replace">
@@ -213,5 +224,31 @@
             <attribute name="style">font-size: 12px;</attribute>
         </xpath>
         -->
+    </template>
+
+    <!-- Ajoute les colonnes Quantité et Montant total HT au tableau des produits
+         optionnels du devis (le template standard sale_management n'a que
+         Description / Disc.% / Prix unitaire). Insertion ciblée à côté des
+         colonnes existantes plutôt que remplacement de toute la table, pour
+         rester robuste si le cœur Odoo fait évoluer sa structure. -->
+    <template id="report_saleorder_document_option_columns_inherit" inherit_id="sale_management.report_saleorder_document_inherit_sale_management">
+        <xpath expr="//td[@name='th_option_name']" position="after">
+            <td name="th_option_quantity" class="text-end">Quantité</td>
+        </xpath>
+        <xpath expr="//td[@name='th_option_price_unit']" position="after">
+            <td name="th_option_total" class="text-end">Montant total HT</td>
+        </xpath>
+        <xpath expr="//td[@name='td_option_name']" position="after">
+            <td name="td_option_quantity" class="text-end">
+                <span t-field="option.quantity"/>
+            </td>
+        </xpath>
+        <xpath expr="//td[@name='td_option_price_unit']" position="after">
+            <td name="td_option_total" class="text-end">
+                <strong>
+                    <t t-out="option.quantity * option.price_unit" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                </strong>
+            </td>
+        </xpath>
     </template>
 </odoo>

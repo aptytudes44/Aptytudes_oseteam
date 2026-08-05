@@ -122,6 +122,7 @@ class SaleOrder(models.Model):
         res = super(SaleOrder, self).action_confirm()
         for pick in self.picking_ids:
             pick.write({'project_id': self.project_id.id})
+        self._fill_generic_product_delivery_description()
         self.env['sale.order.progress'].create({'order_id': self.id, 'name': 'customer_waiting'})
         self.env['sale.order.progress'].create({'order_id': self.id, 'name': 'study_to_be_done'})
         self.env['sale.order.progress'].create({'order_id': self.id, 'name': 'study_in_progress'})
@@ -131,9 +132,28 @@ class SaleOrder(models.Model):
         self.env['sale.order.progress'].create({'order_id': self.id, 'name': 'to_bill'})
         return res
 
+    def _fill_generic_product_delivery_description(self):
+        """Reprend sur le mouvement de stock (description_picking, affichée
+        sous le produit sur le BL) le champ description de la ligne du devis
+        (sale.order.line.name) pour les lignes utilisant un produit générique
+        (product.template.bl_generic_product) — le nom du produit lui-même
+        n'étant pas parlant, c'est la description saisie sur la ligne qui
+        doit apparaître sur le bon de livraison."""
+        for order in self:
+            for line in order.order_line:
+                if line.display_type or not line.product_id.product_tmpl_id.bl_generic_product:
+                    continue
+                if not line.name or line.name == line.product_id.name:
+                    continue
+                moves = self.env['stock.move'].search([('sale_line_id', '=', line.id)])
+                moves.write({'description_picking': line.name})
+
     # --- Fields ---
     # EXISTE DEJA"
-    project_id = fields.Many2one('project.project', string="Project", domain="[]", check_company=False)
+    # copy=True explicite : le module core sale_project met ce champ en copy=False
+    # (évite de dupliquer le projet auto-créé lors d'une simple duplication de devis) ;
+    # ici une révision doit au contraire conserver le projet lié.
+    project_id = fields.Many2one('project.project', string="Project", domain="[]", check_company=False, copy=True)
     project_task_ids = fields.One2many(
         related='project_id.task_ids', string='Project tasks', readonly=False)
     checklist_line_project = fields.One2many(
@@ -146,6 +166,9 @@ class SaleOrder(models.Model):
         related='project_id.noncompliance_line', string='Noncompliance Lines', readonly=False)
     title_project = fields.Char(related="project_id.title_project", string='Business reference')
     comment_not = fields.Text('Comment')
+    # Le cœur Odoo met client_order_ref en copy=False (une référence client est censée
+    # être propre à chaque document) ; ici une révision doit au contraire la conserver.
+    client_order_ref = fields.Char(copy=True)
     responsible_business_id = fields.Many2one('res.partner', string="Responsible business")
     phone_responsible_business = fields.Char(
         related='responsible_business_id.mobile', string="Phone responsible")

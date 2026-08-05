@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Ouvre directement la vue calendrier au lieu de la liste sur le menu Réceptions
+         (action dédiée aux réceptions, sans impact sur Livraisons/Transferts internes) -->
+    <record id="stock.action_picking_tree_incoming" model="ir.actions.act_window">
+        <field name="view_mode">calendar,list,kanban,form,activity</field>
+    </record>
+
     <record id="stock_picking_calendar_inherit" model="ir.ui.view">
         <field name="name">stock.picking.calendar</field>
         <field name="model">stock.picking</field>
@@ -7,9 +13,18 @@
         <field name="arch" type="xml">
             <xpath expr="//calendar" position="attributes">
                 <attribute name="color">state</attribute>
+                <attribute name="create_name_field">calendar_display_name</attribute>
             </xpath>
             <xpath expr="//field[@name='picking_type_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
+            </xpath>
+            <!-- Filtre statut, en plus du filtre fournisseur déjà natif (partner_id filters="1") -->
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="filters">1</attribute>
+            </xpath>
+            <!-- Champ requis pour afficher n° commande + fournisseur comme titre d'événement -->
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="calendar_display_name"/>
             </xpath>
         </field>
     </record>
@@ -85,6 +100,17 @@
     </record>
     -->
    
+    <record id="vpicktree_ref_affaire_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.list.ref.affaire.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="project_id" string="Réf. Affaire" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="view_picking_form_inherit" model="ir.ui.view">
         <field name="name">stock.picking.form</field>
         <field name="model">stock.picking</field>
