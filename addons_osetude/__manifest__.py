@@ -77,7 +77,6 @@ Custom tools for OSETEAM projects and management
             ('prepend', 'addons_osetude/static/src/css/style_analyse.css'),
             'addons_osetude/static/src/js/user_menu_preferences.js',
             'addons_osetude/static/src/js/no_product_name_in_description.js',
-            'addons_osetude/static/src/js/product_column_width.js',
         ],
         'web.assets_qweb': [
             'addons_osetude/static/src/xml/*.xml',  # Décommentez si vous avez des templates QWeb
