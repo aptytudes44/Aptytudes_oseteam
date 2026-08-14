@@ -28,13 +28,17 @@
             <attribute name="t-field">line.description_only</attribute>
         </xpath>
 
-        <!-- Colonne "Référence interne" (projet) en 1ère position -->
+        <!-- Colonne "Référence interne" (projet) en 1ère position.
+             Reprend la répartition analytique de la LIGNE (line.analytic_distribution
+             via analytic_account_display_name), pas le projet d'entête de commande :
+             toutes les lignes d'une commande fournisseur ne sont pas forcément sur le
+             même projet (comportement V12 : line.account_analytic_id.name). -->
         <xpath expr="//th[@name='th_description']" position="before">
             <th name="th_internal_ref"><strong>Référence interne</strong></th>
         </xpath>
         <xpath expr="//td[@id='product']" position="before">
             <td>
-                <span t-if="o.project_id" t-field="o.project_id.name"/>
+                <span t-field="line.analytic_account_display_name"/>
             </td>
         </xpath>
 
@@ -70,11 +74,11 @@
         </xpath>
 
         <!-- REMPLACE "#" PAR "N°" DANS LE TITRE, et pour une commande confirmée :
-             "Confirmation du Bon de commande N°<n° commande> / <n° projet>" -->
+             "Bon de commande N°<n° commande> / <n° projet>" -->
         <xpath expr="//t[@t-set='layout_document_title']" position="replace">
             <t t-set="layout_document_title">
                 <t t-if="o.state in ['draft', 'sent', 'to approve']">Request for Quotation N°<span t-field="o.name"/></t>
-                <t t-if="o.state in ['purchase', 'done']">Confirmation du Bon de commande N°<span t-field="o.name"/><t t-if="o.project_id"> / <span t-field="o.project_id.name"/></t></t>
+                <t t-if="o.state in ['purchase', 'done']">Bon de commande N°<span t-field="o.name"/><t t-if="o.project_id"> / <span t-field="o.project_id.name"/></t></t>
                 <t t-if="o.state == 'cancel'">Cancelled Purchase Order N°<span t-field="o.name"/></t>
             </t>
         </xpath>

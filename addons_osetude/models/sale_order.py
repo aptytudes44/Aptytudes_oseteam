@@ -94,10 +94,12 @@ class SaleOrder(models.Model):
             }
 
     def _compute_sale_order_purchase_ids(self):
+        # v17 : account_analytic_id retire de purchase.order.line, remplace par
+        # analytic_distribution (JSON) — meme correction que project.py.
         for sale in self:
             if sale.project_id and sale.state not in ('draft', 'sent'):
                 purchase_orders = self.env['purchase.order'].search(
-                    [('account_analytic_id', '=', sale.project_id.account_id.id)])
+                    [('order_line.analytic_distribution', 'in', sale.project_id.account_id.ids)])
                 sale.sale_order_purchase_ids = purchase_orders
             else:
                 sale.sale_order_purchase_ids = False
@@ -265,6 +267,30 @@ class ProductProduct(models.Model):
     def get_product_multiline_description_sale(self):
         # Ne jamais préfixer par le nom du produit : uniquement la description de vente.
         return self.description_sale or ''
+
+
+class SaleOrderOption(models.Model):
+    _inherit = "sale.order.option"
+
+    product_id = fields.Many2one('product.product', 'Product', required=False, domain=[('sale_ok', '=', True)])
+    price_unit = fields.Float('Unit Price', required=False)
+    uom_id = fields.Many2one('uom.uom', 'Unit of Measure', required=False)
+    quantity = fields.Float('Quantity', default=1, required=False)
+    display_type = fields.Selection([
+        ('line_section', "Section"),
+        ('line_note', "Note")], default=False, help="Technical field for UX purpose.")
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('display_type', self.default_get(['display_type'])['display_type']):
+                vals.update(product_id=False, price_unit=0, discount=0, uom_id=False, quantity=0)
+        return super().create(vals_list)
+
+    def write(self, values):
+        if 'display_type' in values and self.filtered(lambda line: line.display_type != values.get('display_type')):
+            raise UserError(_("You cannot change the type of an optional product line. Instead you should delete the current line and create a new line of the proper type."))
+        return super().write(values)
 
 
 class SaleOrderPurchaseLine(models.Model):

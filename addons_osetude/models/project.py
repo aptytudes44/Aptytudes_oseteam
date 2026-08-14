@@ -200,12 +200,12 @@ class Project(models.Model):
             project.url_folder = str(url) + str(project.name)
 
     def _compute_purchase_line_count(self):
-        # v17 : account_analytic_id removed from purchase.order.line
-        # → search via purchase.order header's account_analytic_id (custom field)
+        # v17 : account_analytic_id retire de purchase.order.line, remplace par
+        # analytic_distribution (JSON {analytic_account_id: pourcentage}).
         for project in self:
             amount = 0.0
             purchase_lines = self.env['purchase.order.line'].search(
-                [('order_id.account_analytic_id', '=', project.account_id.id)])
+                [('analytic_distribution', 'in', project.account_id.ids)])
             for line in purchase_lines:
                 if line.order_id.state in ('purchase', 'done'):
                     amount += line.price_subtotal
@@ -213,7 +213,7 @@ class Project(models.Model):
 
     def action_view_purchase_line(self):
         purchase_lines = self.env['purchase.order.line'].search(
-            [('order_id.account_analytic_id', '=', self.account_id.id)])
+            [('analytic_distribution', 'in', self.account_id.ids)])
         ids = [l.id for l in purchase_lines if l.order_id.state in ('purchase', 'done')]
         if ids:
             return {

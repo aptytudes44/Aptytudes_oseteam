@@ -41,8 +41,8 @@
                 <xpath expr="//field[@name='amount_total']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
-                <xpath expr="//field[@name='state']" position="before">
-                    <field name="amount_untaxed" sum="Total"/>
+                <xpath expr="//field[@name='amount_untaxed']" position="attributes">
+                    <attribute name="optional">show</attribute>
                 </xpath>
             </field>
         </record>
@@ -349,7 +349,6 @@
         </record>
         
         <record id="sale_order_form_quote_inherit" model="ir.ui.view">
-            <field name="active" eval="False"/>
             <field name="name">sale.order.form.payment</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale_management.sale_order_form_quote"/>
@@ -363,12 +362,12 @@
                                 <create string="Add a note" context="{'default_display_type': 'line_note'}"/>
                             </control>
                             <field name="sequence" widget="handle"/>
-                            <field name="display_type" invisible="1"/>
+                            <field name="display_type" column_invisible="1"/>
                             <field name="product_id" required="not display_type"/>
                             <field name="name" widget="section_and_note_text"/>
                             <field name="quantity" required="not display_type"/>
                             <field name="uom_id" groups="uom.group_uom" required="not display_type"/>
-                            <field name="price_unit" required="not display_type"/>/>
+                            <field name="price_unit" required="not display_type"/>
                             <field name="discount" groups="sale.group_discount_per_so_line"/>
                             <button name="button_add_to_order"
                                     class="oe_link"

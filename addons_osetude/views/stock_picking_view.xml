@@ -106,7 +106,7 @@
         <field name="inherit_id" ref="stock.vpicktree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="after">
-                <field name="project_id" string="Réf. Affaire" optional="show"/>
+                <field name="project_id" string="Projet" optional="show"/>
             </xpath>
         </field>
     </record>
@@ -134,13 +134,21 @@
                 <field name="project_id"/>
             </xpath>
             
-            <!-- ############################# LE CHAMP NAME N'EST PLUS DANS LA VUE 
+            <!-- ############################# LE CHAMP NAME N'EST PLUS DANS LA VUE
             <xpath expr="//field[@name='move_ids']/list/field[@name='name']" position="replace"/>
             <xpath expr="//field[@name='move_ids']/list/field[@name='product_id']" position="after">
                 <field name="name" readonly="1"/>
             </xpath>
             -->
-            
+
+            <!-- Colonne "Description" (description_picking) affichée par défaut : nécessaire
+                 pour voir le texte repris automatiquement des produits génériques BL
+                 (cf. bl_generic_product / _fill_generic_product_delivery_description),
+                 sinon masquée par défaut nativement (optional="hide"). -->
+            <xpath expr="//field[@name='move_ids_without_package']/list/field[@name='description_picking']" position="attributes">
+                <attribute name="optional">show</attribute>
+            </xpath>
+
             <xpath expr="//notebook" position="before">
                 <group>
                     <field name="delivery_note"/>

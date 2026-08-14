@@ -185,12 +185,12 @@ msgstr ""
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.report_delivery_document_inherit_sale_stock_inherit
 msgid "<strong>Project reference: </strong>"
-msgstr "<strong>Affaire: </strong>"
+msgstr "<strong>Référence Affaire: </strong>"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.report_delivery_document_inherit_sale_stock_inherit
 msgid "<strong>Project: </strong>"
-msgstr "<strong>Notre référence: </strong>"
+msgstr "<strong>Affaire: </strong>"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.report_saleorder_document_inherit

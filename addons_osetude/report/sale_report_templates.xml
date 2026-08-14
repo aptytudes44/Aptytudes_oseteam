@@ -110,6 +110,19 @@
             <attribute name="t-if">False</attribute>
         </xpath>
 
+        <!-- "Echéance" (traduction native de "Expiration") -> "Date d'expiration" -->
+        <xpath expr="//div[@name='expiration_date']/strong" position="replace">
+            <strong>Date d'expiration</strong>
+        </xpath>
+
+        <!-- Conditions de paiement, juste apres "Date du devis"/"Date de la commande" -->
+        <xpath expr="//div[@name='informations_date']" position="after">
+            <div t-if="doc.payment_term_id" class="col" name="informations_payment_term">
+                <strong>Conditions de paiement</strong>
+                <div t-field="doc.payment_term_id"/>
+            </div>
+        </xpath>
+
         <!-- GESTION DU CARTOUCHE : ajouté APRES le cartouche standard d'Odoo (Votre référence /
              Date du devis / Echéance / Vendeur), pas en remplacement, pour garder ces champs
              natifs et compléter avec Vendeur/Contact client côte à côte, puis Affaire. Aucun
@@ -137,9 +150,13 @@
 
         <!-- Répète l'entête du tableau des articles sur chaque page : Odoo force
              "display: table-row-group" sur le thead (empêche la répétition), on remet
-             la valeur standard "table-header-group" qui la réactive. -->
+             la valeur standard "table-header-group" qui la réactive. Ligne de séparation
+             ajoutée juste avant les titres de colonnes (même style que le cartouche). -->
         <xpath expr="//table[contains(@class,'o_main_table')]/thead" position="attributes">
             <attribute name="style">display: table-header-group</attribute>
+        </xpath>
+        <xpath expr="//table[contains(@class,'o_main_table')]/thead/tr" position="attributes">
+            <attribute name="style">border-top: 2px solid #dde1e6</attribute>
         </xpath>
 
         <!-- Libellés des colonnes en gras (un xpath par colonne, un xpath multi-match
@@ -237,12 +254,22 @@
         </xpath>
         <xpath expr="//td[@name='td_option_name']" position="after">
             <td name="td_option_quantity" class="text-end">
-                <span t-field="option.quantity"/>
+                <span t-if="not option.display_type" t-field="option.quantity"/>
             </td>
+        </xpath>
+        <xpath expr="//td[@name='td_option_price_unit']/strong" position="replace">
+            <t t-if="not option.display_type">
+                <strong class="text-end">
+                    <div t-field="option.price_unit" t-options='{"widget": "monetary", "display_currency": doc.currency_id}' t-att-style="option.discount and 'text-decoration: line-through' or None" t-att-class="option.discount and 'text-danger' or None"/>
+                    <div t-if="option.discount">
+                        <t t-out="((1-option.discount / 100.0) * option.price_unit)" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                    </div>
+                </strong>
+            </t>
         </xpath>
         <xpath expr="//td[@name='td_option_price_unit']" position="after">
             <td name="td_option_total" class="text-end">
-                <strong>
+                <strong t-if="not option.display_type">
                     <t t-out="option.quantity * option.price_unit" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
                 </strong>
             </td>

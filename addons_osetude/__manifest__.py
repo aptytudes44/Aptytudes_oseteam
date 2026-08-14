@@ -47,7 +47,7 @@ Custom tools for OSETEAM projects and management
         'report/project_report.xml',
         'report/project_report_templates.xml',
         'report/sale_report_templates.xml',
-        #'report/invoice_report_template.xml',
+        'report/invoice_report_template.xml',
         'report/purchase_report_templates.xml',
         'report/report_deliveryslip.xml',
 

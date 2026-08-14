@@ -43,6 +43,13 @@ class PurchaseOrder(models.Model):
                 })
         return res
 
+    @api.onchange('project_id')
+    def _onchange_project_id_analytic_account(self):
+        # Pre-remplit l'analytique par defaut depuis le projet, seulement si
+        # elle n'est pas deja renseignee (ne pas ecraser une saisie manuelle).
+        if self.project_id and not self.account_analytic_id:
+            self.account_analytic_id = self.project_id.account_id
+
     account_analytic_id = fields.Many2one(
         'account.analytic.account', string="Default Analytic Account")
     technical_document = fields.Html('Technical document')

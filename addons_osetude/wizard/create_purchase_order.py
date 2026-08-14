@@ -45,6 +45,7 @@ class CreatePurchaseOrder(models.TransientModel):
             'origin': self.order_id.name,
             'partner_id': self.supplier_id.id,
             'account_analytic_id': analytic_id,
+            'project_id': self.order_id.project_id.id,
         })
         for line in self.order_purchase_product_line:
             existing_ids = line.sale_order_purchase_line_id.sale_purchase_lines.ids[:]
