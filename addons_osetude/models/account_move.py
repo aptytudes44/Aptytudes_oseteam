@@ -43,6 +43,25 @@ class AccountMoveLine(models.Model):
         readonly=True,
     )
 
+    # Champ non stocke, utilise uniquement par le PDF (invoice_report_template.xml) :
+    # retire le nom du produit en tete de la description quand elle est encore auto-
+    # generee ("Etudes\n...", "Usinage\n..."), sans jamais modifier le champ `name`
+    # reel (celui vu et modifie a l'ecran). Lignes personnalisees a la main inchangees.
+    print_name = fields.Text(compute='_compute_print_name')
+
+    @api.depends('name', 'product_id', 'display_type')
+    def _compute_print_name(self):
+        for line in self:
+            name = line.name
+            if line.display_type == 'product' and line.product_id and name:
+                product_name = line.product_id.display_name
+                if name != product_name:
+                    if name.startswith(product_name + '\n'):
+                        name = name[len(product_name) + 1:]
+                    elif name.startswith(product_name + ' '):
+                        name = name[len(product_name) + 1:]
+            line.print_name = name
+
 
 class AccountJournal(models.Model):
     _inherit = "account.journal"

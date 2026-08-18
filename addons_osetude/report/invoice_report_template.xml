@@ -33,9 +33,9 @@
                     <strong>Affaire :</strong>
                     <span t-field="o.project_id"/>
                 </div>
-                <div class="col" t-if="o.name" name="project_customer_reference">
+                <div class="col" t-if="o.ref" name="project_customer_reference">
                     <strong>Référence client :</strong>
-                    <span t-field="o.name"/>
+                    <span t-field="o.ref"/>
                 </div>
             </div>
             <div name="project_informations_2" class="row mb-4">
@@ -56,6 +56,38 @@
         <!-- POUR RETIRER "Adresse du client" (native module l10n_fr_account, customer_address) : absent en V12 a cet endroit -->
         <!-- // (descendant) car ce div est imbrique dans un <t t-if>, pas enfant direct de #informations -->
         <xpath expr="//div[@id='informations']//div[@name='customer_address']" position="replace"/>
+
+        <!-- Renomme le libelle "Invoice Date"/"Date de facturation" en "Date de facture" (factures clients et fournisseurs) -->
+        <xpath expr="//div[@id='informations']/div[@name='invoice_date']" position="replace">
+            <div class="col" t-if="o.invoice_date" name="invoice_date">
+                <t t-if="o.move_type in ('out_invoice', 'in_invoice')"><strong>Date de facture</strong></t>
+                <t t-elif="o.move_type == 'out_refund'"><strong>Credit Note Date</strong></t>
+                <t t-elif="o.move_type == 'out_receipt'"><strong>Receipt Date</strong></t>
+                <t t-else=""><strong>Date</strong></t>
+                <div t-field="o.invoice_date">2023-09-12</div>
+            </div>
+        </xpath>
+
+        <!-- Renomme le libelle "Source" en "Origine" (conforme V12, champ o.invoice_origin inchange) -->
+        <xpath expr="//div[@id='informations']/div[@name='origin']/strong" position="replace">
+            <strong>Origine</strong>
+        </xpath>
+
+        <!-- Le bloc natif "Reference" (o.ref) est deplace vers "Référence client" (cf xpath ci-dessus) -->
+        <!-- On reprend ici la logique V12 : "Référence" = la reference de paiement (o.payment_reference) -->
+        <xpath expr="//div[@id='informations']/div[@name='reference']" position="replace">
+            <div class="col" t-if="o.payment_reference" name="reference">
+                <strong>Référence</strong>
+                <div t-field="o.payment_reference">OSE/2026/00001</div>
+            </div>
+        </xpath>
+
+        <!-- N'affiche plus le nom du produit dans la description des lignes, uniquement sur le PDF -->
+        <!-- (le champ ecran `line.name` n'est pas touche, cf `line.print_name` non stocke dans account_move.py) -->
+        <xpath expr="//td[@name='account_invoice_line_name']/span" position="attributes">
+            <attribute name="t-if">line.print_name</attribute>
+            <attribute name="t-field">line.print_name</attribute>
+        </xpath>
 
         <!-- DESACTIVE (13/08/2026) : thead custom (libelles deja en francais nativement)
         <xpath expr="//table[@name='invoice_line_table']/thead" position="replace">
@@ -110,32 +142,23 @@
         </xpath>
         -->
         
-        <!-- DESACTIVE (13/08/2026) : coordonnees bancaires deja ok nativement
+        <!-- REACTIVE (18/08/2026), cas factor uniquement : affiche la mention factor (facture cedee) -->
+        <!-- Le cas non-factor est traite plus bas, formalisme texte identique a "Communication de paiement" -->
         <xpath expr="//div[@id='qrcode']" position="before">
-            <span t-if="o.move_type == 'out_invoice' and o.company_bank_id">
+            <span t-if="o.move_type == 'out_invoice' and o.company_bank_id and o.company_bank_id.is_factor == True">
                 <p style="font-size: 13px;"><i>Informations bancaires</i></p>
-                <span t-if="o.company_bank_id.is_factor == False">
-                    <table class="table table-sm o_main_table mb-6" style="width: 60%;">
-                        <thead>
-                            <th style="font-size: 12px;">Banque</th>
-                            <th style="font-size: 12px;">IBAN</th>
-                            <th style="font-size: 12px;">BIC</th>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th style="font-size: 12px;"><p t-field="o.company_bank_id.bank_id.name"/></th>
-                                <th style="font-size: 12px;"><p t-field="o.company_bank_id.bank_account_id.acc_number"/></th>
-                                <th style="font-size: 12px;"><p t-field="o.company_bank_id.bank_id.bic"/></th>
-                            </tr>
-                        </tbody>
-                    </table>
-                </span>
-                <span t-if="o.company_bank_id.is_factor == True">
-                    <div t-field="o.company_bank_id.factor_note" style="border: 1px solid #dde1e6; font-size: 12px; width: 50%; padding: 5px;"/>
-                </span>
+                <div t-field="o.company_bank_id.factor_note" style="border: 1px solid #dde1e6; font-size: 12px; width: 50%; padding: 5px;"/>
             </span>
         </xpath>
-        -->
+
+        <!-- Remplace "sur ce compte" natif (o.partner_bank_id, compte par defaut errone - cf Correction 6, -->
+        <!-- 1044 factures concernees) par le compte choisi par facture (o.company_bank_id), cas non-factor. -->
+        <!-- Formalisme texte identique au natif, pas de tableau. -->
+        <xpath expr="//p[@name='payment_communication']/t[@t-if='o.partner_bank_id']" position="replace">
+            <t t-if="o.company_bank_id and o.company_bank_id.is_factor == False">
+                <br/> sur ce compte : <span t-field="o.company_bank_id.bank_account_id.acc_number" class="fw-bold"/><t t-if="o.company_bank_id.bank_account_id.bank_id.bic"> - <span t-field="o.company_bank_id.bank_account_id.bank_id.bic" class="fw-bold"/></t>
+            </t>
+        </xpath>
 
         <!-- DESACTIVE (13/08/2026) : taille texte conditions de paiement, pas mentionne comme manquant
         <xpath expr="//span[@name='payment_term']" position="replace">
