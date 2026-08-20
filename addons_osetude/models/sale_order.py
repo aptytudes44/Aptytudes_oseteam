@@ -94,10 +94,12 @@ class SaleOrder(models.Model):
             }
 
     def _compute_sale_order_purchase_ids(self):
+        # v17 : account_analytic_id retire de purchase.order.line, remplace par
+        # analytic_distribution (JSON) — meme correction que project.py.
         for sale in self:
             if sale.project_id and sale.state not in ('draft', 'sent'):
                 purchase_orders = self.env['purchase.order'].search(
-                    [('account_analytic_id', '=', sale.project_id.account_id.id)])
+                    [('order_line.analytic_distribution', 'in', sale.project_id.account_id.ids)])
                 sale.sale_order_purchase_ids = purchase_orders
             else:
                 sale.sale_order_purchase_ids = False
@@ -112,10 +114,17 @@ class SaleOrder(models.Model):
                     'name': data.id,
                 })
 
+    def action_print_quotation(self):
+        # Réintroduit le bouton "Print" présent en V12 (méthode print_quotation) :
+        # imprime le devis et le passe à l'état "sent" s'il était encore en brouillon.
+        self.filtered(lambda s: s.state == 'draft').write({'state': 'sent'})
+        return self.env.ref('sale.action_report_saleorder').report_action(self)
+
     def action_confirm(self):
         res = super(SaleOrder, self).action_confirm()
         for pick in self.picking_ids:
             pick.write({'project_id': self.project_id.id})
+        self._fill_generic_product_delivery_description()
         self.env['sale.order.progress'].create({'order_id': self.id, 'name': 'customer_waiting'})
         self.env['sale.order.progress'].create({'order_id': self.id, 'name': 'study_to_be_done'})
         self.env['sale.order.progress'].create({'order_id': self.id, 'name': 'study_in_progress'})
@@ -125,9 +134,28 @@ class SaleOrder(models.Model):
         self.env['sale.order.progress'].create({'order_id': self.id, 'name': 'to_bill'})
         return res
 
+    def _fill_generic_product_delivery_description(self):
+        """Reprend sur le mouvement de stock (description_picking, affichée
+        sous le produit sur le BL) le champ description de la ligne du devis
+        (sale.order.line.name) pour les lignes utilisant un produit générique
+        (product.template.bl_generic_product) — le nom du produit lui-même
+        n'étant pas parlant, c'est la description saisie sur la ligne qui
+        doit apparaître sur le bon de livraison."""
+        for order in self:
+            for line in order.order_line:
+                if line.display_type or not line.product_id.product_tmpl_id.bl_generic_product:
+                    continue
+                if not line.name or line.name == line.product_id.name:
+                    continue
+                moves = self.env['stock.move'].search([('sale_line_id', '=', line.id)])
+                moves.write({'description_picking': line.name})
+
     # --- Fields ---
     # EXISTE DEJA"
-    project_id = fields.Many2one('project.project', string="Project", domain="[]", check_company=False)
+    # copy=True explicite : le module core sale_project met ce champ en copy=False
+    # (évite de dupliquer le projet auto-créé lors d'une simple duplication de devis) ;
+    # ici une révision doit au contraire conserver le projet lié.
+    project_id = fields.Many2one('project.project', string="Project", domain="[]", check_company=False, copy=True)
     project_task_ids = fields.One2many(
         related='project_id.task_ids', string='Project tasks', readonly=False)
     checklist_line_project = fields.One2many(
@@ -138,8 +166,11 @@ class SaleOrder(models.Model):
         related='project_id.name_auditor', string="Name of auditor", readonly=False)
     noncompliance_line_project = fields.One2many(
         related='project_id.noncompliance_line', string='Noncompliance Lines', readonly=False)
-    title_project = fields.Char(related="project_id.name", string='Business reference')
+    title_project = fields.Char(related="project_id.title_project", string='Business reference')
     comment_not = fields.Text('Comment')
+    # Le cœur Odoo met client_order_ref en copy=False (une référence client est censée
+    # être propre à chaque document) ; ici une révision doit au contraire la conserver.
+    client_order_ref = fields.Char(copy=True)
     responsible_business_id = fields.Many2one('res.partner', string="Responsible business")
     phone_responsible_business = fields.Char(
         related='responsible_business_id.mobile', string="Phone responsible")
@@ -184,6 +215,82 @@ class SaleOrderLine(models.Model):
                 self.price_unit - self.purchase_price) / self.purchase_price * 100
 
     margin_sale_line = fields.Integer('Margin %')
+
+    @api.depends('product_id', 'linked_line_id', 'linked_line_ids')
+    def _compute_name(self):
+        # Si une description existe déjà (saisie à la main), on la garde telle quelle.
+        lines_with_name = self.filtered('name')
+        for line in lines_with_name:
+            line.name = line.name
+        super(SaleOrderLine, self - lines_with_name)._compute_name()
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        lines = super().create(vals_list)
+        lines._strip_leaked_product_name()
+        return lines
+
+    def write(self, vals):
+        res = super().write(vals)
+        if 'product_id' in vals or 'name' in vals:
+            self._strip_leaked_product_name()
+        return res
+
+    def _strip_leaked_product_name(self):
+        # Filet de sécurité : le navigateur peut parfois envoyer une sauvegarde avec une
+        # description dont le début est le nom d'un produit (résidu d'un décalage de timing
+        # entre le changement de produit et l'enregistrement). On le retire, qu'il soit collé
+        # avec un saut de ligne ("Nom\nReste") ou juste un espace ("Nom Reste").
+        Product = self.env['product.product']
+        for line in self:
+            name = line.name or ''
+            if not name:
+                continue
+            first_segment = name.split('\n', 1)[0]
+            words = first_segment.split(' ')
+            matched_len = None
+            for nb_words in range(min(len(words), 6), 0, -1):
+                candidate = ' '.join(words[:nb_words])
+                if Product.search([('display_name', '=', candidate)], limit=1):
+                    matched_len = len(candidate)
+                    break
+            if matched_len is None:
+                continue
+            remainder = name[matched_len:].lstrip('\n').lstrip(' ')
+            if remainder != name:
+                line.name = remainder
+
+
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
+
+    def get_product_multiline_description_sale(self):
+        # Ne jamais préfixer par le nom du produit : uniquement la description de vente.
+        return self.description_sale or ''
+
+
+class SaleOrderOption(models.Model):
+    _inherit = "sale.order.option"
+
+    product_id = fields.Many2one('product.product', 'Product', required=False, domain=[('sale_ok', '=', True)])
+    price_unit = fields.Float('Unit Price', required=False)
+    uom_id = fields.Many2one('uom.uom', 'Unit of Measure', required=False)
+    quantity = fields.Float('Quantity', default=1, required=False)
+    display_type = fields.Selection([
+        ('line_section', "Section"),
+        ('line_note', "Note")], default=False, help="Technical field for UX purpose.")
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('display_type', self.default_get(['display_type'])['display_type']):
+                vals.update(product_id=False, price_unit=0, discount=0, uom_id=False, quantity=0)
+        return super().create(vals_list)
+
+    def write(self, values):
+        if 'display_type' in values and self.filtered(lambda line: line.display_type != values.get('display_type')):
+            raise UserError(_("You cannot change the type of an optional product line. Instead you should delete the current line and create a new line of the proper type."))
+        return super().write(values)
 
 
 class SaleOrderPurchaseLine(models.Model):

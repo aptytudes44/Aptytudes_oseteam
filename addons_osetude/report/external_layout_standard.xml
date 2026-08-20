@@ -14,7 +14,7 @@
             <div class="col-9" name="company_address">
                 <div>
                     <div>OSETEAM</div>
-                    <span t-field="company.street" style="font-size: 12px;"/> - <span t-field="company.zip" style="font-size: 12px;"/> <span t-field="company.city" style="font-size: 12px;"/>
+                    <span t-field="company.street" style="font-size: 12px;"/> - <span t-if="company.street2" t-field="company.street2" style="font-size: 12px;"/> - <span t-field="company.zip" style="font-size: 12px;"/> <span t-field="company.city" style="font-size: 12px;"/>
                 </div>
                 <div>
                     <i class="fa fa-phone"></i> <span t-field="company.phone" style="font-size: 12px;"/>

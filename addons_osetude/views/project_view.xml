@@ -198,12 +198,19 @@
                             icon="fa-book" title="Analytic" invisible="account_analytic_count==0">
                         <field string="Analytic" name="account_analytic_count" widget="statinfo"/>
                     </button>
+                    <!-- Ajoute (18/08/2026) : natif en V12 (sale_timesheet.project_project_view_form),
+                         disparu du button_box natif en V18 (deplace vers le menu Kanban uniquement).
+                         Reutilise la methode Python native action_project_timesheets(). -->
+                    <button class="btn-secondary" type="object" name="action_project_timesheets"
+                            icon="fa-clock-o" title="Feuille de temps" invisible="not allow_timesheets">
+                        <field string="Feuille de temps" name="total_timesheet_time" widget="statinfo"/>
+                    </button>
                     <button class="btn-secondary" type="object" name="action_view_pickings"
                             icon="fa-truck" title="Delivery Orders" invisible="picking_count==0">
                         <field string="Delivery" name="picking_count" widget="statinfo"/>
                     </button>
                     <button name="re_create_folder" type="object" class="btn-secondary"
-                            icon="fa-folder-open" string="Re Create folder"
+                            icon="fa-plus-circle" string="Re Create folder"
                             groups="addons_osetude.group_recreate_folder_project"/>
                     <button class="btn-secondary" type="action"
                             name="%(addons_osetude.action_report_project)d"
@@ -217,7 +224,11 @@
                 <xpath expr="//page[@name='settings']" position="before">
                     <page string="Project description">
                         <separator string="Business reference"/>
-                        <field name="title_project" placeholder="Business reference ..."/>
+                        <group>
+                            <group>
+                                <field name="title_project" nolabel="1" placeholder="Business reference ..."/>
+                            </group>
+                        </group>
                         <group>
                             <group>
                                 <separator string="Company information"/>
@@ -420,6 +431,17 @@
                 <xpath expr="//field[@name='tag_ids']" position="after">
                     <field name="type_ressource" readonly="type_ressource==False"/>
                     <field name="type_task" readonly="type_task==False"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_project_list_customer_reference_inherit" model="ir.ui.view">
+            <field name="name">project.project.list.customer.reference.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.view_project"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="customer_reference" optional="hide"/>
                 </xpath>
             </field>
         </record>

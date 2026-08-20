@@ -20,6 +20,66 @@
                 <xpath expr="//field[@name='name']" position="before">
                     <field name="account_analytic_id" invisible="1"/>
                 </xpath>
+                <!-- Référence fournisseur déplacée après la colonne Fournisseur (partner_id) -->
+                <xpath expr="//field[@name='partner_ref']" position="replace"/>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="partner_ref" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Vue utilisée par le menu "Demandes de prix" (action purchase_rfq) -->
+        <record id="purchase_order_kpis_tree_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.kpis.tree.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_ref']" position="replace"/>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="partner_ref" optional="show"/>
+                </xpath>
+                <!-- date_planned masqué en permanence dans cette vue (column_invisible
+                     lié à quotation_only, toujours vrai ici) : on la remplace par une
+                     version sans cette restriction pour la rendre disponible. -->
+                <xpath expr="//field[@name='date_planned']" position="replace"/>
+                <xpath expr="//field[@name='partner_ref']" position="after">
+                    <field name="date_planned" optional="show"/>
+                </xpath>
+
+                <!-- Idem pour date_approve (Date de confirmation) : même blocage
+                     column_invisible lié à quotation_only, rendue masquable.
+                     Positionnée juste après la colonne "Référence" (name). -->
+                <xpath expr="//field[@name='date_approve']" position="replace"/>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="date_approve" optional="show"/>
+                </xpath>
+
+                <!-- Colonne Projet après Acheteur (user_id) -->
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="project_id" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Vue utilisée par le menu "Commandes" (action purchase_form_action) -->
+        <record id="purchase_order_view_tree_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.view.tree.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_ref']" position="replace"/>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="partner_ref" optional="show"/>
+                </xpath>
+                <xpath expr="//field[@name='date_planned']" position="replace"/>
+                <xpath expr="//field[@name='partner_ref']" position="after">
+                    <field name="date_planned" optional="show"/>
+                </xpath>
+
+                <!-- Colonne Projet après Acheteur (user_id) -->
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="project_id" optional="show"/>
+                </xpath>
             </field>
         </record>
 
@@ -34,8 +94,13 @@
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="dest_address_id"/>
                 </xpath>
-                <xpath expr="//field[@name='origin']" position="after">
+                <!-- Analytique par défaut déplacé après "Arrivée prévue", Projet juste après -->
+                <xpath expr="//div[@name='date_planned_div']" position="after">
                     <field name="account_analytic_id" options="{'no_create': True, 'no_open': True}"/>
+                </xpath>
+                <xpath expr="//field[@name='project_id']" position="replace"/>
+                <xpath expr="//field[@name='account_analytic_id']" position="after">
+                    <field name="project_id"/>
                 </xpath>
 
                 <xpath expr="//field[@name='partner_ref']" position="after">

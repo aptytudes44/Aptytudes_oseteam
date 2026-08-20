@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- bubble, striped et wave centrent déjà nativement le texte du footer -->
+
+    <template id="external_layout_standard_footer_center" inherit_id="web.external_layout_standard">
+        <xpath expr="//div[hasclass('o_footer_content')]" position="replace">
+            <div class="o_footer_content border-top pt-1 d-flex justify-content-between align-items-center">
+                <div class="flex-grow-1 text-center" t-field="company.report_footer"/>
+                <div t-if="report_type == 'pdf'" class="text-muted text-nowrap ms-2">Page <span class="page"/> / <span class="topage"/></div>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="external_layout_folder_footer_center" inherit_id="web.external_layout_folder">
+        <xpath expr="//div[hasclass('o_footer_content')]" position="replace">
+            <div class="o_footer_content border-top pt-1 d-flex justify-content-between align-items-center">
+                <div class="flex-grow-1 text-center" t-field="company.report_footer"/>
+                <div t-if="report_type == 'pdf'" class="text-muted text-nowrap ms-2">Page <span class="page"/> / <span class="topage"/></div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- boxed et bold : le slogan société ne s'affiche nativement qu'en pied de page (pas de doublon).
+         On le retire du pied de page (remplacé par un footer centré comme les autres thèmes)
+         et on l'ajoute en en-tête près du logo, comme les autres thèmes. -->
+    <template id="external_layout_boxed_footer_no_tagline" inherit_id="web.external_layout_boxed">
+        <xpath expr="//div[hasclass('o_footer_content')]" position="replace">
+            <div class="o_footer_content border-top pt-1 d-flex justify-content-between align-items-center">
+                <div class="flex-grow-1 text-center" t-field="company.report_footer"/>
+                <div t-if="report_type == 'pdf'" class="text-muted text-nowrap ms-2">Page <span class="page"/> / <span class="topage"/></div>
+            </div>
+        </xpath>
+        <xpath expr="//img[hasclass('o_company_logo_big')]" position="after">
+            <div t-if="company.report_header" t-field="company.report_header" class="o_company_tagline fw-bold mt-2"/>
+        </xpath>
+    </template>
+
+    <template id="external_layout_bold_footer_no_tagline" inherit_id="web.external_layout_bold">
+        <xpath expr="//div[hasclass('o_footer_content')]" position="replace">
+            <div class="o_footer_content border-top pt-1 d-flex justify-content-between align-items-center">
+                <div class="flex-grow-1 text-center" t-field="company.report_footer"/>
+                <div t-if="report_type == 'pdf'" class="text-muted text-nowrap ms-2">Page <span class="page"/> / <span class="topage"/></div>
+            </div>
+        </xpath>
+        <xpath expr="//img[hasclass('o_company_logo_big')]" position="after">
+            <div t-if="company.report_header" t-field="company.report_header" class="o_company_tagline fw-bold mt-2"/>
+        </xpath>
+    </template>
+</odoo>

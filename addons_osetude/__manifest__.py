@@ -40,14 +40,15 @@ Custom tools for OSETEAM projects and management
         'datas/ir_sequence_data.xml',
 
         # Rapports
-        #'report/external_layout_standard.xml',  # DISABLED: xpaths V12 incompatibles V18
+        #'report/external_layout_standard.xml',  # DISABLED: structure core web.external_layout_standard incompatible (adresse société recalculée via company.company_details, classes moto/o_standard_footer absentes) — nécessite réécriture complète, pas juste l'ajout de street2
         'report/footer_logo_iso.xml',
+        'report/footer_text_center.xml',
         'report/report_paper_format.xml',
         'report/project_report.xml',
         'report/project_report_templates.xml',
-        #'report/sale_report_templates.xml',
-        #'report/invoice_report_template.xml',
-        #'report/purchase_report_templates.xml',
+        'report/sale_report_templates.xml',
+        'report/invoice_report_template.xml',
+        'report/purchase_report_templates.xml',
         'report/report_deliveryslip.xml',
 
         # Vues
@@ -64,15 +65,18 @@ Custom tools for OSETEAM projects and management
         'views/res_company_view.xml',
         'views/hr_leave_view.xml',
         'views/satisfaction_survey_view.xml',
+        'views/product_view.xml',
 
         # Assistants
         'wizard/create_purchase_order_view.xml',
+        'wizard/add_purchase_lines_bulk_view.xml',
     ],
     'assets': {
         'web.assets_backend': [
             ('prepend', 'addons_osetude/static/src/css/style.css'),  # Utilisation de tuple pour spécifier l'ordre
             ('prepend', 'addons_osetude/static/src/css/style_analyse.css'),
             'addons_osetude/static/src/js/user_menu_preferences.js',
+            'addons_osetude/static/src/js/no_product_name_in_description.js',
         ],
         'web.assets_qweb': [
             'addons_osetude/static/src/xml/*.xml',  # Décommentez si vous avez des templates QWeb

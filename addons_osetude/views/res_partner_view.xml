@@ -46,10 +46,11 @@
         <record id="view_partner_form_inherit" model="ir.ui.view">
             <field name="name">res.partner.form</field>
             <field name="model">res.partner</field>
-            <field name="priority" eval="1"/>
+            <!-- priority > 36 (purchase.view_partner_form) : buyer_id doit déjà être dans l'arbre pour que le xpath ci-dessous le trouve -->
+            <field name="priority" eval="40"/>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='company_type']" position="after">
+                <xpath expr="//field[@name='buyer_id']" position="before">
                     <field name="is_subcontractor"/>
                 </xpath>
             </field>

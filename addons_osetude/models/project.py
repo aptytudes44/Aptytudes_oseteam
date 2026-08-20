@@ -109,14 +109,48 @@ class Project(models.Model):
             [('key', '=', 'path_url_model_folder')]).value
         return path_model
 
+    def _get_folder_size(self, path):
+        if not os.path.isdir(path):
+            return 0
+        total = 0
+        for root, dirs, files in os.walk(path):
+            for name in files:
+                try:
+                    total += os.path.getsize(os.path.join(root, name))
+                except OSError:
+                    pass
+        return total
+
     def re_create_folder(self):
         url = self.url_folder_project()
         url_model = self.url_model_folder_project()
         date_val = self.create_date
+        dest = url + str(date_val.year) + '/' + self.name
+        template_size = self._get_folder_size(url_model)
+        dest_size = self._get_folder_size(dest)
+        if dest_size > template_size:
+            self.env.user._bus_send('simple_notification', {
+                'type': 'warning',
+                'message': _(
+                    "Dossier du projet %s non recréé : des documents sont déjà présents (%.1f Mo)."
+                ) % (self.name, dest_size / (1024 * 1024)),
+            })
+            return
+        if os.path.isdir(dest):
+            shutil.rmtree(dest)
         try:
-            shutil.copytree(url_model, url + str(date_val.year) + '/' + self.name)
+            shutil.copytree(url_model, dest)
         except OSError as error:
-            raise UserError(_("Directory %s can not be created %s") % (url, error))
+            self.env.user._bus_send('simple_notification', {
+                'type': 'danger',
+                'message': _("Dossier du projet %s non créé : %s") % (self.name, error),
+            })
+            return
+        else:
+            self.env.user._bus_send('simple_notification', {
+                'type': 'success',
+                'message': _("Dossier du projet %s recréé avec succès.") % self.name,
+            })
 
     def create_folder(self, date_val, project):
         url = self.url_folder_project()
@@ -125,6 +159,12 @@ class Project(models.Model):
             shutil.copytree(url_model, url + str(date_val.year) + '/' + project.name)
         except OSError as error:
             _logger.info("ERROR ########## %s - %s", url, error)
+            raise UserError(_("Le dossier du projet %s n'a pas pu être créé : %s") % (project.name, error))
+        else:
+            self.env.user._bus_send('simple_notification', {
+                'type': 'success',
+                'message': _("Dossier du projet %s créé avec succès.") % project.name,
+            })
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -160,12 +200,12 @@ class Project(models.Model):
             project.url_folder = str(url) + str(project.name)
 
     def _compute_purchase_line_count(self):
-        # v17 : account_analytic_id removed from purchase.order.line
-        # → search via purchase.order header's account_analytic_id (custom field)
+        # v17 : account_analytic_id retire de purchase.order.line, remplace par
+        # analytic_distribution (JSON {analytic_account_id: pourcentage}).
         for project in self:
             amount = 0.0
             purchase_lines = self.env['purchase.order.line'].search(
-                [('order_id.account_analytic_id', '=', project.account_id.id)])
+                [('analytic_distribution', 'in', project.account_id.ids)])
             for line in purchase_lines:
                 if line.order_id.state in ('purchase', 'done'):
                     amount += line.price_subtotal
@@ -173,7 +213,7 @@ class Project(models.Model):
 
     def action_view_purchase_line(self):
         purchase_lines = self.env['purchase.order.line'].search(
-            [('order_id.account_analytic_id', '=', self.account_id.id)])
+            [('analytic_distribution', 'in', self.account_id.ids)])
         ids = [l.id for l in purchase_lines if l.order_id.state in ('purchase', 'done')]
         if ids:
             return {

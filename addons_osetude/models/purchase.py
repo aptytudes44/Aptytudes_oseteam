@@ -43,6 +43,13 @@ class PurchaseOrder(models.Model):
                 })
         return res
 
+    @api.onchange('project_id')
+    def _onchange_project_id_analytic_account(self):
+        # Pre-remplit l'analytique par defaut depuis le projet, seulement si
+        # elle n'est pas deja renseignee (ne pas ecraser une saisie manuelle).
+        if self.project_id and not self.account_analytic_id:
+            self.account_analytic_id = self.project_id.account_id
+
     account_analytic_id = fields.Many2one(
         'account.analytic.account', string="Default Analytic Account")
     technical_document = fields.Html('Technical document')
@@ -65,3 +72,35 @@ class PurchaseOrderLine(models.Model):
         if self.order_id.account_analytic_id:
             analytic_id = self.order_id.account_analytic_id.id
             self.analytic_distribution = {str(analytic_id): 100}
+
+    analytic_account_display_name = fields.Char(
+        compute='_compute_analytic_account_display_name',
+        string="Analytic Account")
+
+    @api.depends('analytic_distribution')
+    def _compute_analytic_account_display_name(self):
+        AnalyticAccount = self.env['account.analytic.account']
+        for line in self:
+            ids = []
+            for key in (line.analytic_distribution or {}):
+                if key.isdigit():
+                    ids.append(int(key))
+            line.analytic_account_display_name = ', '.join(AnalyticAccount.browse(ids).mapped('name'))
+
+    def _get_product_purchase_description(self, product_lang):
+        # Ne jamais préfixer par le nom du produit : uniquement la description d'achat.
+        return product_lang.description_purchase or ''
+
+    description_only = fields.Text(
+        string='Description only', compute='_compute_description_only')
+
+    @api.depends('name', 'product_id')
+    def _compute_description_only(self):
+        for line in self:
+            name = line.name or ''
+            product_name = line.product_id.display_name if line.product_id else False
+            if product_name and name.split('\n', 1)[0] == product_name:
+                parts = name.split('\n', 1)
+                line.description_only = parts[1] if len(parts) > 1 else ''
+            else:
+                line.description_only = name
