@@ -26,3 +26,11 @@
 .o_form_view .o_kanban_view .o_field_widget .o_input {
     border-bottom: none !important;
 }
+
+/* Many2many (tags) : le widget imbrique un input de recherche (classe
+   o_input) dans son conteneur (classe o_input aussi) -> 2 traits affiches.
+   On retire le trait de l'input imbrique, seul le conteneur exterieur le
+   garde. */
+.o_form_view .o_tags_input.o_input .o_input {
+    border-bottom: none !important;
+}

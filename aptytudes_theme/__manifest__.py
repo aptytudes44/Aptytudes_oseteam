@@ -17,6 +17,7 @@ Thème backend custom pour OSETEAM.
     'assets': {
         'web.assets_backend': [
             'aptytudes_theme/static/src/css/form_inputs.css',
+            'aptytudes_theme/static/src/css/list_view.css',
             'aptytudes_theme/static/src/js/required_field_empty.js',
         ],
     },

@@ -1,0 +1,18 @@
+/* Alternance de couleur des lignes dans les vues liste, comme sur Odoo v12 */
+/* Bootstrap 5 peint le fond de chaque cellule via un box-shadow inset qui lit
+   la variable CSS --table-bg-type (web/static/lib/bootstrap/scss/_tables.scss).
+   Sur les listes non groupees, Odoo ajoute la classe table-striped, dont la
+   regle Bootstrap (.table-striped > tbody > tr:nth-of-type(even) > *) fixe
+   --table-bg-type DIRECTEMENT sur chaque <td>, avec une couleur quasi
+   invisible (rgba(...,0.01)). Une regle definie seulement sur la <tr> est
+   alors ignoree car une valeur posee directement sur l'element (le <td>)
+   prime toujours sur une valeur heritee du parent. On cible donc nous aussi
+   directement les cellules (> *), avec une specificite superieure a la regle
+   Bootstrap pour etre certain de gagner, que la liste soit groupee ou non
+   (en groupe, la classe table-striped est absente, donc aucune regle
+   Bootstrap ne rentre meme en concurrence). La ligne en cours d'edition ou
+   selectionnee est exclue pour ne pas ecraser sa mise en surbrillance
+   native. */
+.o_list_renderer .o_list_table > tbody > tr.o_data_row:not(.o_selected_row):nth-of-type(even) > * {
+    --table-bg-type: #f0f0f0;
+}
