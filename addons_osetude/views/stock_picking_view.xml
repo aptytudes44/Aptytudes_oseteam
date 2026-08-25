@@ -6,6 +6,13 @@
         <field name="view_mode">calendar,list,kanban,form,activity</field>
     </record>
 
+    <!-- Meme logique pour le lien "Ready" de la tuile Reception en Vue d'ensemble
+         (get_action_picking_tree_ready -> stock.action_picking_tree_ready), qui ouvrait
+         la vue liste par defaut au lieu du calendrier. -->
+    <record id="stock.action_picking_tree_ready" model="ir.actions.act_window">
+        <field name="view_mode">calendar,list,kanban,form</field>
+    </record>
+
     <record id="stock_picking_calendar_inherit" model="ir.ui.view">
         <field name="name">stock.picking.calendar</field>
         <field name="model">stock.picking</field>
