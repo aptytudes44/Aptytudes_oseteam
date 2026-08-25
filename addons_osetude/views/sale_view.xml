@@ -163,7 +163,7 @@
                         <button name="action_create_purchase_order" string="Create purchase order"
                                 type="object"
                                 icon="fa-ambulance"
-                                groups="addons_osetude.group_osetude_create_purchase_sale"/>
+                                groups="addons_osetude.group_create_purchase_in_sale"/>
                         <button name="open_sale_purchase" string="Open purchases orders"
                                 type="object"
                                 icon="fa-folder-open-o"
