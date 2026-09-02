@@ -115,6 +115,14 @@
                         <field name="technical_document"/>
                     </page>
                 </xpath>
+
+                <!-- Bouton "Imprimer" (Bon de commande fournisseur) sur les commandes
+                     confirmées : le rapport purchase.action_report_purchase_order est
+                     déjà accessible via le menu Imprimer (⚙), mais pas via un bouton
+                     visible dans l'en-tête (contrairement à "Print RFQ" sur les devis). -->
+                <xpath expr="//button[@name='button_done']" position="before">
+                    <button name="%(purchase.action_report_purchase_order)d" string="Imprimer" type="action" invisible="state not in ('purchase', 'done')" data-hotkey="k"/>
+                </xpath>
             </field>
         </record>
         
