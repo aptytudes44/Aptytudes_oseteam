@@ -44,6 +44,67 @@
             </div>
         </xpath>
 
+        <!-- En-tête de colonne "Produit" -> "Description" (les 3 tableaux : brouillon, validé, backorder) -->
+        <xpath expr="//th[@name='th_sm_product']" position="replace">
+            <th name="th_sm_product"><strong>Description</strong></th>
+        </xpath>
+        <xpath expr="//th[@name='th_sml_product']" position="replace">
+            <th name="th_sml_product">Description</th>
+        </xpath>
+        <xpath expr="//th[@name='th_sb_product']" position="replace">
+            <th name="th_sb_product"><strong>Description</strong></th>
+        </xpath>
+
+        <!-- Tableau brouillon/confirmé (o.state != 'done') : ne plus imprimer le nom du produit
+             quand une description distincte existe, même logique que le tableau validé. -->
+        <xpath expr="//table[@name='stock_move_table']//td[1]" position="replace">
+            <td>
+                <span t-if="not (move.description_picking and move.description_picking != move.product_id.name and move._get_report_description_picking())" t-field="move.product_id">Customizable Desk</span>
+                <p t-if="move.description_picking and move.description_picking != move.product_id.name and move._get_report_description_picking()">
+                    <span t-out="move._get_report_description_picking()">Description on transfer</span>
+                </p>
+            </td>
+        </xpath>
+
+        <!-- Tableau "Quantités restantes non livrées" (backorders) : même logique. -->
+        <xpath expr="//table[@name='stock_backorder_table']//td[1]" position="replace">
+            <td class="w-auto">
+                <span t-if="not (bo_line.description_picking and bo_line.description_picking != bo_line.product_id.name and bo_line._get_report_description_picking())" t-field="bo_line.product_id">Office Chair</span>
+                <p t-if="bo_line.description_picking and bo_line.description_picking != bo_line.product_id.name and bo_line._get_report_description_picking()">
+                    <span t-out="bo_line._get_report_description_picking()">Description on transfer</span>
+                </p>
+            </td>
+        </xpath>
+
+    </template>
+
+    <!-- Ne plus jamais imprimer le nom du produit quand une description existe (idem factures) :
+         'description' = description_picking avec le nom produit déjà retiré en préfixe par Odoo.
+         Si vide (aucune description distincte), on garde le nom produit en repli. -->
+    <template id="stock_report_delivery_aggregated_move_lines_inherit" inherit_id="stock.stock_report_delivery_aggregated_move_lines">
+        <xpath expr="//tr/td[1]" position="replace">
+            <td>
+                <span t-if="not aggregated_lines[line]['description']" t-esc="aggregated_lines[line]['name']"/>
+                <span t-if="aggregated_lines[line]['description']" t-esc="aggregated_lines[line]['description']" t-options="{'widget': 'text'}"/>
+            </td>
+        </xpath>
+    </template>
+
+    <template id="stock_report_delivery_has_serial_move_line_inherit" inherit_id="stock.stock_report_delivery_has_serial_move_line">
+        <xpath expr="//td[1]" position="replace">
+            <td>
+                <t t-if="not description and description != ''">
+                    <t t-set="description" t-value="move_line.move_id.description_picking"/>
+                </t>
+                <span t-if="description == '' or description == move_line.product_id.display_name or description == move_line.product_id.name" t-field="move_line.product_id"/>
+                <p t-if="description != '' and
+                         description != move_line.product_id.display_name and
+                         description != move_line.product_id.name"
+                >
+                    <span t-esc="description"/>
+                </p>
+            </td>
+        </xpath>
     </template>
 </odoo>
 

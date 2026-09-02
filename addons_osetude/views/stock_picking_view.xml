@@ -148,12 +148,15 @@
             </xpath>
             -->
 
-            <!-- Colonne "Description" (description_picking) affichée par défaut : nécessaire
-                 pour voir le texte repris automatiquement des produits génériques BL
-                 (cf. bl_generic_product / _fill_generic_product_delivery_description),
-                 sinon masquée par défaut nativement (optional="hide"). -->
-            <xpath expr="//field[@name='move_ids_without_package']/list/field[@name='description_picking']" position="attributes">
-                <attribute name="optional">show</attribute>
+            <!-- Colonne "Description" affichée par défaut : nécessaire pour voir le texte
+                 repris automatiquement des produits génériques BL (cf. bl_generic_product /
+                 _fill_generic_product_delivery_description). Remplacée par le champ
+                 description_picking_display (models/stock_move.py) : reste éditable, mais
+                 n'affiche/ne réécrit jamais le nom du produit tout seul quand il n'y a
+                 aucune description distincte (sinon "Produit" et "Description" affichaient
+                 le même texte en double sur l'écran). -->
+            <xpath expr="//field[@name='move_ids_without_package']/list/field[@name='description_picking']" position="replace">
+                <field name="description_picking_display" string="Description" optional="show"/>
             </xpath>
 
             <xpath expr="//notebook" position="before">

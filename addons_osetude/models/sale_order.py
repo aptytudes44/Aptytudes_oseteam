@@ -137,13 +137,13 @@ class SaleOrder(models.Model):
     def _fill_generic_product_delivery_description(self):
         """Reprend sur le mouvement de stock (description_picking, affichée
         sous le produit sur le BL) le champ description de la ligne du devis
-        (sale.order.line.name) pour les lignes utilisant un produit générique
-        (product.template.bl_generic_product) — le nom du produit lui-même
-        n'étant pas parlant, c'est la description saisie sur la ligne qui
-        doit apparaître sur le bon de livraison."""
+        (sale.order.line.name) — quel que soit le produit (générique ou non,
+        cf. product.template.bl_generic_product qui ne sert plus à filtrer
+        ici) — dès que cette description apporte une information distincte
+        du nom du produit."""
         for order in self:
             for line in order.order_line:
-                if line.display_type or not line.product_id.product_tmpl_id.bl_generic_product:
+                if line.display_type:
                     continue
                 if not line.name or line.name == line.product_id.name:
                     continue
@@ -259,6 +259,27 @@ class SaleOrderLine(models.Model):
             remainder = name[matched_len:].lstrip('\n').lstrip(' ')
             if remainder != name:
                 line.name = remainder
+
+    # Filet de sécurité à l'IMPRESSION (contrairement à _strip_leaked_product_name
+    # ci-dessus, qui n'agit qu'à la création/écriture via l'ORM) : retire le nom du
+    # produit s'il est dupliqué en tête de description, y compris sur des lignes déjà
+    # en base (données migrées, importées, ou tapées à la main par l'utilisateur) sans
+    # jamais modifier le champ "name" réel. Même pattern que account_move.py (facture,
+    # correction 7) et stock_move.py (BR/BL, _get_report_description_picking).
+    print_name = fields.Text(compute='_compute_print_name')
+
+    @api.depends('name', 'product_id', 'display_type')
+    def _compute_print_name(self):
+        for line in self:
+            name = line.name
+            if not line.display_type and line.product_id and name:
+                product_name = line.product_id.display_name
+                if name != product_name:
+                    if name.startswith(product_name + '\n'):
+                        name = name[len(product_name) + 1:]
+                    elif name.startswith(product_name + ' '):
+                        name = name[len(product_name) + 1:]
+            line.print_name = name
 
 
 class ProductProduct(models.Model):

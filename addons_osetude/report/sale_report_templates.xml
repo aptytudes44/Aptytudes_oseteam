@@ -148,6 +148,14 @@
             </div>
         </xpath>
 
+        <!-- N'imprime jamais le nom du produit en doublon en tête de la description
+             (données migrées V12, imports, ou saisie manuelle incluant le nom du
+             produit) : le champ réel "name" n'est pas touché, seul l'affichage PDF
+             passe par "print_name" (même pattern que factures/BR-BL). -->
+        <xpath expr="//td[@name='td_name']/span[@t-field='line.name']" position="attributes">
+            <attribute name="t-field">line.print_name</attribute>
+        </xpath>
+
         <!-- Répète l'entête du tableau des articles sur chaque page : Odoo force
              "display: table-row-group" sur le thead (empêche la répétition), on remet
              la valeur standard "table-header-group" qui la réactive. Ligne de séparation
