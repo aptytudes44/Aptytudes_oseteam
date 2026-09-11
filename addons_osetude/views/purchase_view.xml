@@ -57,6 +57,7 @@
                 <!-- Colonne Projet après Acheteur (user_id) -->
                 <xpath expr="//field[@name='user_id']" position="after">
                     <field name="project_id" optional="show"/>
+                    <field name="title_project" optional="show"/>
                 </xpath>
             </field>
         </record>
@@ -79,6 +80,7 @@
                 <!-- Colonne Projet après Acheteur (user_id) -->
                 <xpath expr="//field[@name='user_id']" position="after">
                     <field name="project_id" optional="show"/>
+                    <field name="title_project" optional="show"/>
                 </xpath>
             </field>
         </record>
@@ -121,7 +123,7 @@
                      déjà accessible via le menu Imprimer (⚙), mais pas via un bouton
                      visible dans l'en-tête (contrairement à "Print RFQ" sur les devis). -->
                 <xpath expr="//button[@name='button_done']" position="before">
-                    <button name="%(purchase.action_report_purchase_order)d" string="Imprimer" type="action" invisible="state not in ('purchase', 'done')" data-hotkey="k"/>
+                    <button name="%(purchase.action_report_purchase_order)d" string="Imprimer" icon="fa-print" type="action" invisible="state not in ('purchase', 'done')" data-hotkey="k"/>
                 </xpath>
             </field>
         </record>
