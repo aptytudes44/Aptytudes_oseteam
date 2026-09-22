@@ -21,3 +21,14 @@ class StockMove(models.Model):
     def _inverse_description_picking_display(self):
         for move in self:
             move.description_picking = move.description_picking_display
+
+    analytic_distribution = fields.Json(
+        related='purchase_line_id.analytic_distribution',
+        string='Répartition analytique')
+    # Requis par le widget "analytic_distribution" (fieldDependencies JS), non
+    # fourni par stock.move nativement (contrairement aux modèles héritant de
+    # analytic.mixin, ex. purchase.order.line) : provoque une RPC_ERROR
+    # ("Invalid field 'analytic_precision'") sans ce champ.
+    analytic_precision = fields.Integer(
+        store=False,
+        default=lambda self: self.env['decimal.precision'].precision_get("Percentage Analytic"))

@@ -52,6 +52,8 @@ class PurchaseOrder(models.Model):
 
     account_analytic_id = fields.Many2one(
         'account.analytic.account', string="Default Analytic Account")
+    title_project = fields.Char(
+        related="project_id.title_project", string="Référence projet")
     technical_document = fields.Html('Technical document')
     print_technical_document = fields.Boolean(
         'Print Technical document with the price request')
