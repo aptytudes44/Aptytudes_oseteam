@@ -70,9 +70,10 @@ class Picking(models.Model):
 
     def action_update_description_picking(self):
         """Recopie la description de la ligne de commande d'achat sur le mouvement
-        de stock quand elle n'a jamais été récupérée (BR antérieurs à la correction
-        du bug natif de copie figée à la validation, cf. purchase_stock). Ne touche
-        jamais une ligne déjà correctement renseignée (différente du nom produit)."""
+        de stock quand elle ne correspond pas (ou plus) au texte actuel de la ligne
+        (BR antérieurs à la correction du bug natif de copie figée à la validation,
+        cf. purchase_stock, ou ligne de commande modifiée après la validation du BR).
+        Ne touche jamais une ligne déjà à jour par rapport à la commande d'achat."""
         self.ensure_one()
         updated = 0
         for move in self.move_ids:
@@ -80,10 +81,10 @@ class Picking(models.Model):
                 continue
             product_name = move.product_id.display_name
             current = (move.description_picking or '').strip()
-            if current and current != product_name:
-                continue
             source = (move.purchase_line_id.name or '').strip()
             if not source or source == product_name:
+                continue
+            if current == source:
                 continue
             move.description_picking = source
             updated += 1
