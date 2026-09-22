@@ -68,6 +68,40 @@ class Picking(models.Model):
                 _('You cannot validate a transfer if check-list is not OK !'))
         return super(Picking, self).button_validate()
 
+    def action_update_description_picking(self):
+        """Recopie la description de la ligne de commande d'achat sur le mouvement
+        de stock quand elle n'a jamais été récupérée (BR antérieurs à la correction
+        du bug natif de copie figée à la validation, cf. purchase_stock). Ne touche
+        jamais une ligne déjà correctement renseignée (différente du nom produit)."""
+        self.ensure_one()
+        updated = 0
+        for move in self.move_ids:
+            if not move.purchase_line_id:
+                continue
+            product_name = move.product_id.display_name
+            current = (move.description_picking or '').strip()
+            if current and current != product_name:
+                continue
+            source = (move.purchase_line_id.name or '').strip()
+            if not source or source == product_name:
+                continue
+            move.description_picking = source
+            updated += 1
+        message = (
+            _('%s ligne(s) de description mise(s) à jour.') % updated
+            if updated else _('Aucune ligne à corriger : les descriptions sont déjà à jour.')
+        )
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Mise à jour description'),
+                'message': message,
+                'type': 'success' if updated else 'info',
+                'sticky': False,
+            },
+        }
+
     project_id = fields.Many2one('project.project', string="Project")
     delivery_note = fields.Char(string='Note')
     print_deliveryslip_ok = fields.Boolean(

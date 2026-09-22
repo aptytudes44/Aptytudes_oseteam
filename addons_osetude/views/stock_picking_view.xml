@@ -128,9 +128,14 @@
                     string="Set to draft"
                     type="object"
                     class="oe_highlight"
-                    invisible="state=='done'" 
+                    invisible="state=='done'"
                     groups="addons_osetude.group_osetude_set_picking_draft"
                     confirm="Are you sure you want to draft the document?"/>
+                <button name="action_update_description_picking"
+                    string="Mettre à jour la description"
+                    type="object"
+                    invisible="picking_type_code != 'incoming'"
+                    confirm="Recopier la description de la commande d'achat sur les lignes dont la description n'a pas été récupérée ? Les lignes déjà renseignées correctement ne seront pas modifiées."/>
             </xpath>
             <xpath expr="//label[@for='partner_id']/parent::div" position="before">
                 <div class="alert alert-warning" role="alert" colspan="2" invisible="print_deliveryslip_ok or not project_id">
@@ -157,6 +162,14 @@
                  le même texte en double sur l'écran). -->
             <xpath expr="//field[@name='move_ids_without_package']/list/field[@name='description_picking']" position="replace">
                 <field name="description_picking_display" string="Description" optional="show"/>
+            </xpath>
+
+            <!-- Répartition analytique de la ligne d'achat liée (lecture seule,
+                 related purchase_line_id.analytic_distribution, cf models/stock_move.py) -->
+            <xpath expr="//field[@name='move_ids_without_package']/list/field[@name='description_picking_display']" position="after">
+                <field name="analytic_distribution" widget="analytic_distribution" string="Répartition analytique"
+                       optional="show" groups="analytic.group_analytic_accounting"
+                       options="{'product_field': 'product_id', 'business_domain': 'purchase_order'}"/>
             </xpath>
 
             <xpath expr="//notebook" position="before">
