@@ -354,7 +354,7 @@
             <field name="inherit_id" ref="sale_management.sale_order_form_quote"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='sale_order_option_ids']" position="replace">
-                    <field name="sale_order_option_ids" widget="section_and_note_one2many">
+                    <field name="sale_order_option_ids" widget="product_label_section_and_note_field_o2m">
                         <list string="Sales Quotation Template Lines" editable="bottom">
                             <control>
                                 <create string="Add a product"/>
@@ -363,7 +363,7 @@
                             </control>
                             <field name="sequence" widget="handle"/>
                             <field name="display_type" column_invisible="1"/>
-                            <field name="product_id" required="not display_type"/>
+                            <field name="product_id" required="not display_type" widget="product_label_section_and_note_field"/>
                             <field name="name" widget="section_and_note_text"/>
                             <field name="quantity" required="not display_type"/>
                             <field name="uom_id" groups="uom.group_uom" required="not display_type"/>

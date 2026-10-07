@@ -26,3 +26,5 @@ access_quality_control_parameters_manager,quality.control.parameters,model_quali
 access_satisfaction_survey_parameters_user,satisfaction.survey.parameters,model_satisfaction_survey_parameters,group_quality_control_user,1,1,1,0
 access_satisfaction_survey_parameters_manager,satisfaction.survey.parameters,model_satisfaction_survey_parameters,group_quality_control_manager,1,1,1,1
 access_purchase_order_add_lines_bulk,purchase.order.add.lines.bulk,model_purchase_order_add_lines_bulk,base.group_user,1,1,1,1
+access_project_obx_history_user,project.obx.history,model_project_obx_history,project.group_project_user,1,1,0,0
+access_project_obx_history_manager,project.obx.history,model_project_obx_history,project.group_project_manager,1,1,1,1

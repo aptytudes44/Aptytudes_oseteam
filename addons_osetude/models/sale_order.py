@@ -243,6 +243,8 @@ class SaleOrderLine(models.Model):
         # avec un saut de ligne ("Nom\nReste") ou juste un espace ("Nom Reste").
         Product = self.env['product.product']
         for line in self:
+            if line.display_type:
+                continue
             name = line.name or ''
             if not name:
                 continue
