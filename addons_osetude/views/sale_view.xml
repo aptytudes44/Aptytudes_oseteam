@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- Le menu "Devis" affiche par défaut tous les états (le filtre "My Quotations"
-             ne filtre que par vendeur, pas par état) : on restreint aux devis (draft/sent)
-             pour ne plus voir les commandes confirmées dans ce menu. -->
+        <!-- Comme en V12 : le menu "Devis" affiche devis ET commandes (pas de filtre sur
+             l'état, seul le filtre par défaut "Mes devis" par vendeur s'applique).
+             domain=False explicite pour effacer le domaine draft/sent posé auparavant en base. -->
         <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
-            <field name="domain">[('state', 'in', ('draft', 'sent'))]</field>
+            <field name="domain" eval="False"/>
         </record>
         <record id="sale.action_quotations" model="ir.actions.act_window">
-            <field name="domain">[('state', 'in', ('draft', 'sent'))]</field>
+            <field name="domain" eval="False"/>
         </record>
 
         <record id="view_sales_order_filter_inherit" model="ir.ui.view">
@@ -22,6 +22,11 @@
                 </xpath>
                 <xpath expr="//filter[@name='customer']" position="after">
                     <filter string="Project" name="project" domain="[]" context="{'group_by':'project_id'}"/>
+                </xpath>
+                <!-- Devis archivés (anciennes révisions, champ active de sale_order_revision) -->
+                <xpath expr="//search" position="inside">
+                    <separator/>
+                    <filter string="Archivés" name="archived" domain="[('active', '=', False)]"/>
                 </xpath>
             </field>
         </record>
