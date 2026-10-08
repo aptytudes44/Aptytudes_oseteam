@@ -239,8 +239,9 @@ class SaleOrderLine(models.Model):
     def _strip_leaked_product_name(self):
         # Filet de sécurité : le navigateur peut parfois envoyer une sauvegarde avec une
         # description dont le début est le nom d'un produit (résidu d'un décalage de timing
-        # entre le changement de produit et l'enregistrement). On le retire, qu'il soit collé
-        # avec un saut de ligne ("Nom\nReste") ou juste un espace ("Nom Reste").
+        # entre le changement de produit et l'enregistrement). On ne le retire que s'il occupe
+        # toute la première ligne ("Nom\nReste") : avec un simple espace ("Etudes pour test")
+        # c'est un texte saisi par l'utilisateur, à conserver tel quel.
         Product = self.env['product.product']
         for line in self:
             if line.display_type:
@@ -248,17 +249,12 @@ class SaleOrderLine(models.Model):
             name = line.name or ''
             if not name:
                 continue
-            first_segment = name.split('\n', 1)[0]
-            words = first_segment.split(' ')
-            matched_len = None
-            for nb_words in range(min(len(words), 6), 0, -1):
-                candidate = ' '.join(words[:nb_words])
-                if Product.search([('display_name', '=', candidate)], limit=1):
-                    matched_len = len(candidate)
-                    break
-            if matched_len is None:
+            if '\n' not in name:
                 continue
-            remainder = name[matched_len:].lstrip('\n').lstrip(' ')
+            first_segment = name.split('\n', 1)[0]
+            if not Product.search([('display_name', '=', first_segment)], limit=1):
+                continue
+            remainder = name[len(first_segment):].lstrip('\n')
             if remainder != name:
                 line.name = remainder
 
@@ -277,9 +273,9 @@ class SaleOrderLine(models.Model):
             if not line.display_type and line.product_id and name:
                 product_name = line.product_id.display_name
                 if name != product_name:
+                    # Uniquement "Nom\nTexte" : "Etudes pour test" est un texte saisi
+                    # par l'utilisateur, on ne doit pas en retirer "Etudes".
                     if name.startswith(product_name + '\n'):
-                        name = name[len(product_name) + 1:]
-                    elif name.startswith(product_name + ' '):
                         name = name[len(product_name) + 1:]
             line.print_name = name
 
