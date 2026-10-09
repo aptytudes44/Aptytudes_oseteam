@@ -37,10 +37,19 @@
             <t t-if="o.picking_type_code=='incoming'">Receipt # </t>
         </xpath>
 
-        <!-- Mention réclamations sous 15 jours (bons de livraison sortants) -->
+        <!-- Mention réclamations sous 15 jours (bons de livraison sortants), suivie en dessous,
+             à droite, du cadre de réception à remplir par le client. Textes en anglais, traduits dans i18n/fr.po. -->
         <xpath expr="//div[hasclass('page')]" position="inside">
-            <div style="font-size: 13px;" t-if="o.picking_type_code=='outgoing'">
-                <p><i>Complaints can only be accepted within 15 days of receipt of this delivery note.</i></p>
+            <div class="mt-3" style="page-break-inside: avoid;" t-if="o.picking_type_code=='outgoing'" name="delivery_reception">
+                <div style="font-size: 13px;">
+                    <p><i>Complaints can only be accepted within 15 days of receipt of this delivery note.</i></p>
+                </div>
+                <div style="width: 60%; margin-left: 40%;">
+                    <div>Received in good order on:</div>
+                    <div>Full name of the recipient (legible):</div>
+                    <div>Position / Job title:</div>
+                    <div style="padding-bottom: 50px;">Company signature and stamp:</div>
+                </div>
             </div>
         </xpath>
 

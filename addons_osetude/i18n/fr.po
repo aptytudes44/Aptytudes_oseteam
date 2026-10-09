@@ -98,6 +98,26 @@ msgid ""
 msgstr "<i>Les réclamations ne pourront être acceptées que dans un délai de 15 jours après réception du présent bon de livraison.</i>"
 
 #. module: addons_osetude
+#: model_terms:ir.ui.view,arch_db:addons_osetude.report_delivery_document_inherit_sale_stock_inherit
+msgid "Received in good order on:"
+msgstr "Reçu conforme le :"
+
+#. module: addons_osetude
+#: model_terms:ir.ui.view,arch_db:addons_osetude.report_delivery_document_inherit_sale_stock_inherit
+msgid "Full name of the recipient (legible):"
+msgstr "Nom et Prénom (lisible) du réceptionnaire :"
+
+#. module: addons_osetude
+#: model_terms:ir.ui.view,arch_db:addons_osetude.report_delivery_document_inherit_sale_stock_inherit
+msgid "Position / Job title:"
+msgstr "Qualité / Fonction :"
+
+#. module: addons_osetude
+#: model_terms:ir.ui.view,arch_db:addons_osetude.report_delivery_document_inherit_sale_stock_inherit
+msgid "Company signature and stamp:"
+msgstr "Signature et cachet de l'entreprise :"
+
+#. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_partner_property_form_inherit
 msgid "<span class=\"o_stat_text\">Global mark</span>"
 msgstr "<span class=\"o_stat_text\">Note Globale</span>"
