@@ -57,11 +57,10 @@
         <!-- // (descendant) car ce div est imbrique dans un <t t-if>, pas enfant direct de #informations -->
         <xpath expr="//div[@id='informations']//div[@name='customer_address']" position="replace"/>
 
-        <!-- Renomme le libelle "Invoice Date"/"Date de facturation" en "Date de facture" (factures clients et fournisseurs) -->
+        <!-- Renomme le libelle "Invoice Date"/"Date de facturation" en "Date de facture" (factures clients et fournisseurs, avoirs clients comme en V12) -->
         <xpath expr="//div[@id='informations']/div[@name='invoice_date']" position="replace">
             <div class="col" t-if="o.invoice_date" name="invoice_date">
-                <t t-if="o.move_type in ('out_invoice', 'in_invoice')"><strong>Date de facture</strong></t>
-                <t t-elif="o.move_type == 'out_refund'"><strong>Credit Note Date</strong></t>
+                <t t-if="o.move_type in ('out_invoice', 'in_invoice', 'out_refund')"><strong>Date de facture</strong></t>
                 <t t-elif="o.move_type == 'out_receipt'"><strong>Receipt Date</strong></t>
                 <t t-else=""><strong>Date</strong></t>
                 <div t-field="o.invoice_date">2023-09-12</div>
