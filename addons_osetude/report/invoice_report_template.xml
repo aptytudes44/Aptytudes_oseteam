@@ -67,6 +67,11 @@
             </div>
         </xpath>
 
+        <!-- Date d'echeance aussi sur les avoirs clients (natif : factures clients seulement), juste apres la date de facture -->
+        <xpath expr="//div[@id='informations']/div[@name='due_date']" position="attributes">
+            <attribute name="t-if">o.invoice_date_due and o.move_type in ('out_invoice', 'out_refund') and o.state == 'posted'</attribute>
+        </xpath>
+
         <!-- Renomme le libelle "Source" en "Origine" (conforme V12, champ o.invoice_origin inchange) -->
         <xpath expr="//div[@id='informations']/div[@name='origin']/strong" position="replace">
             <strong>Origine</strong>
