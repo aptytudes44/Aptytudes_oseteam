@@ -53,6 +53,7 @@ Custom tools for OSETEAM projects and management
 
         # Vues
         'views/project_view.xml',
+        'views/project_obx_history_view.xml',
         'views/sale_view.xml',
         'views/purchase_view.xml',
         'views/account_move_view.xml',

@@ -57,7 +57,7 @@ class PurchaseOrder(models.Model):
     technical_document = fields.Html('Technical document')
     print_technical_document = fields.Boolean(
         'Print Technical document with the price request')
-    partner_ref_note = fields.Char('Supplier information')
+    partner_ref_note = fields.Text('Supplier information')
     qty_ordered = fields.Float('Qty ordered', compute="_compute_qty_ordered")
     qty_received = fields.Float('Qty received', compute="_compute_qty_received")
     qty_to_receive = fields.Float('Qty to receive', compute="_compute_qty_to_receive")

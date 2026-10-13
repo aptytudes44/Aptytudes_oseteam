@@ -85,6 +85,18 @@
             </field>
         </record>
 
+        <!-- Historique d'achat (lignes de commande) : colonne Description après la référence commande -->
+        <record id="purchase_history_tree_inherit" model="ir.ui.view">
+            <field name="name">purchase.history.list.inherit</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="purchase.purchase_history_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_id']" position="after">
+                    <field name="name" string="Description"/>
+                </xpath>
+            </field>
+        </record>
+
         <record id="purchase_order_form_inherit" model="ir.ui.view">
             <field name="name">purchase.order.form</field>
             <field name="model">purchase.order</field>

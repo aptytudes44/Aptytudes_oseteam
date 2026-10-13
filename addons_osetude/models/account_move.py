@@ -56,9 +56,9 @@ class AccountMoveLine(models.Model):
             if line.display_type == 'product' and line.product_id and name:
                 product_name = line.product_id.display_name
                 if name != product_name:
+                    # Uniquement "Nom\nTexte" : "Etudes pour test" est un texte saisi
+                    # par l'utilisateur, on ne doit pas en retirer "Etudes".
                     if name.startswith(product_name + '\n'):
-                        name = name[len(product_name) + 1:]
-                    elif name.startswith(product_name + ' '):
                         name = name[len(product_name) + 1:]
             line.print_name = name
 
