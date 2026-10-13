@@ -129,7 +129,7 @@
                     type="object"
                     class="oe_highlight"
                     invisible="state=='done'"
-                    groups="addons_osetude.group_osetude_set_picking_draft"
+                    groups="addons_osetude.group_set_picking_to_draft"
                     confirm="Are you sure you want to draft the document?"/>
                 <button name="action_update_description_picking"
                     string="Mettre à jour la description"
