@@ -11,15 +11,13 @@ import { SaleOrderLineProductField } from "@sale/js/sale_product_field";
 // A l'affichage, le natif retire le nom du produit N'IMPORTE OU dans la description
 // (label.replace(productName, "")) : "Etudes pour test" devenait "pour test" et, comme
 // updateLabel() ci-dessous sauvegarde le texte affiche tel quel, la troncature finissait
-// en base. On ne retire le nom que s'il constitue toute la description ou s'il est en tete
-// suivi d'un saut de ligne (ancien format auto-genere "Nom\nTexte").
+// en base. On ne retire le nom que s'il est en tete suivi d'un saut de ligne (ancien format
+// auto-genere "Nom\nTexte") : une description egale au nom du produit est un texte saisi
+// par l'utilisateur, elle reste affichee (comme a l'impression).
 function stripProductName(label, productName) {
     label = label || "";
     if (!productName) {
         return label;
-    }
-    if (label === productName) {
-        return "";
     }
     if (label.startsWith(productName + "\n")) {
         return label.slice(productName.length + 1);
