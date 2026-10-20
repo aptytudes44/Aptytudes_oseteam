@@ -33,7 +33,7 @@ msgstr "Référence affaire :"
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.report_project_document
 msgid "<b>Buyer :</b>"
-msgstr ""
+msgstr "<b>Acheteur :</b>"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.report_project_document
@@ -95,7 +95,9 @@ msgstr "<b>N°d’outillage :</b>"
 msgid ""
 "<i>Complaints can only be accepted within 15 days of receipt of this "
 "delivery note.</i>"
-msgstr "<i>Les réclamations ne pourront être acceptées que dans un délai de 15 jours après réception du présent bon de livraison.</i>"
+msgstr ""
+"<i>Les réclamations ne pourront être acceptées que dans un délai de 15 jours"
+" après réception du présent bon de livraison.</i>"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.report_delivery_document_inherit_sale_stock_inherit
@@ -195,7 +197,7 @@ msgstr ""
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.report_delivery_document_inherit_sale_stock_inherit
 msgid "<strong>Note: </strong>"
-msgstr ""
+msgstr "<strong>Note : </strong>"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.report_delivery_document_inherit_sale_stock_inherit
@@ -268,7 +270,7 @@ msgstr "Libellé du type de compte"
 #. odoo-python
 #: code:addons/addons_osetude/models/project.py:0
 msgid "Accounts invoices"
-msgstr ""
+msgstr "Factures"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality__message_needaction
@@ -286,7 +288,7 @@ msgstr "Activités"
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality__activity_exception_decoration
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality_noncompliance__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Décoration d'exception d'activité"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality__activity_state
@@ -298,7 +300,7 @@ msgstr "Status de l'Activité"
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality__activity_type_icon
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality_noncompliance__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "Icône du type d'activité"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.sale_order_form_quote_inherit
@@ -512,7 +514,7 @@ msgstr "Caractérisation du problème et recherche des causes racines"
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Check List"
-msgstr ""
+msgstr "Check-list"
 
 #. module: addons_osetude
 #: model:ir.actions.act_window,name:addons_osetude.action_check_list_data
@@ -525,13 +527,13 @@ msgstr "Données Check List"
 #: model:ir.model.fields,field_description:addons_osetude.field_project_project__checklist_line
 #: model:ir.model.fields,field_description:addons_osetude.field_sale_order__checklist_line_project
 msgid "Check List Lines"
-msgstr ""
+msgstr "Lignes de check-list"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Check list"
-msgstr ""
+msgstr "Check-list"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality_cheklist__checked
@@ -653,7 +655,7 @@ msgstr "Créer la commande d'achat"
 #. module: addons_osetude
 #: model:ir.model,name:addons_osetude.model_create_purchase_order_line
 msgid "Create Purchase Order Line"
-msgstr ""
+msgstr "Ligne de création de commande d'achat"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
@@ -757,7 +759,7 @@ msgstr "Attente client"
 #: model:ir.model.fields,field_description:addons_osetude.field_report_resource_planning_osetude_setting__date_end
 #: model:ir.model.fields,field_description:addons_osetude.field_report_ressource_planning_osetude_periode__date_end
 msgid "Date end"
-msgstr ""
+msgstr "Date de fin"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality_noncompliance__date_of_issue
@@ -774,7 +776,7 @@ msgstr "Date de vérification"
 #: model:ir.model.fields,field_description:addons_osetude.field_report_resource_planning_osetude_setting__date_start
 #: model:ir.model.fields,field_description:addons_osetude.field_report_ressource_planning_osetude_periode__date_start
 msgid "Date start"
-msgstr ""
+msgstr "Date de début"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality__deadlines
@@ -799,7 +801,7 @@ msgstr "Tâches par défaut"
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_project_default_task_tree
 msgid "Default Tasks"
-msgstr ""
+msgstr "Tâches par défaut"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_partner_property_form_inherit
@@ -869,7 +871,7 @@ msgstr "Description de la correction immédiate"
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_purchase_order_line__description_only
 msgid "Description only"
-msgstr ""
+msgstr "Description seule"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_quality_control_quality_form
@@ -968,7 +970,7 @@ msgstr "Externe"
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_account_journal__factor_note
 msgid "Factor"
-msgstr ""
+msgstr "Affacturage"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality_noncompliance__root_causes_binary
@@ -996,7 +998,7 @@ msgstr "Abonnés (Partenaires)"
 #: model:ir.model.fields,help:addons_osetude.field_quality_control_quality__activity_type_icon
 #: model:ir.model.fields,help:addons_osetude.field_quality_control_quality_noncompliance__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr ""
+msgstr "Icône Font Awesome, ex. fa-tasks"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality_noncompliance__user_id
@@ -1041,7 +1043,7 @@ msgstr "Regrouper par"
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality__has_message
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality_noncompliance__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "A un message"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_report_resource_planning_osetude_setting__default_hours_montage
@@ -1089,13 +1091,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality__activity_exception_icon
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality_noncompliance__activity_exception_icon
 msgid "Icon"
-msgstr ""
+msgstr "Icône"
 
 #. module: addons_osetude
 #: model:ir.model.fields,help:addons_osetude.field_quality_control_quality__activity_exception_icon
 #: model:ir.model.fields,help:addons_osetude.field_quality_control_quality_noncompliance__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr ""
+msgstr "Icône pour indiquer une activité d'exception."
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
@@ -1268,12 +1270,12 @@ msgstr "Gestionnaire"
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_hr_expense__manual_tax_amount
 msgid "Manual Tax Amount"
-msgstr ""
+msgstr "Montant de taxe manuel"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_sale_order_line__margin_sale_line
 msgid "Margin %"
-msgstr ""
+msgstr "Marge %"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality_noncompliance__measure_effectiveness_correction
@@ -1290,7 +1292,7 @@ msgstr "Erreur d'envoi du message"
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality__message_ids
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality_noncompliance__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Messages"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality__supplier_contact_mobile
@@ -1316,7 +1318,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality__my_activity_date_deadline
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality_noncompliance__my_activity_date_deadline
 msgid "My Activity Deadline"
-msgstr ""
+msgstr "Échéance de mon activité"
 
 #. module: addons_osetude
 #: model:ir.model.fields.selection,name:addons_osetude.selection__quality_control_quality__is_supplier_selection__notation
@@ -1349,13 +1351,13 @@ msgstr "Nouveau"
 #. odoo-python
 #: code:addons/addons_osetude/models/project.py:0
 msgid "New project"
-msgstr ""
+msgstr "Nouveau projet"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality__activity_calendar_event_id
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality_noncompliance__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr ""
+msgstr "Prochain événement d'activité"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality__activity_date_deadline
@@ -1536,7 +1538,7 @@ msgstr "Avancement de la commande"
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_create_purchase_epdm
 msgid "Order purchase lines"
-msgstr ""
+msgstr "Lignes d'achat à commander"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_create_purchase_order_line__product_order_qty
@@ -1661,7 +1663,7 @@ msgstr "Impression BL OK ?"
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_stock_picking__print_satisfaction_ok
 msgid "Print satisfaction_ok ?"
-msgstr ""
+msgstr "Imprimer l'enquête de satisfaction ?"
 
 #. module: addons_osetude
 #: model:ir.model.fields,help:addons_osetude.field_satisfaction_survey_parameters__report_print_sequence
@@ -1777,12 +1779,12 @@ msgstr "Bien"
 #: model:ir.model.fields,field_description:addons_osetude.field_create_purchase_order__order_purchase_product_line
 #: model:ir.model.fields,field_description:addons_osetude.field_sale_order_purchase_line__sale_purchase_lines
 msgid "Purchase Lines"
-msgstr ""
+msgstr "Lignes d'achat"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_project_project__purchase_lines_count
 msgid "Purchase Lines Amount"
-msgstr ""
+msgstr "Montant des lignes d'achat"
 
 #. module: addons_osetude
 #: model:ir.model,name:addons_osetude.model_purchase_order
@@ -1812,7 +1814,7 @@ msgstr "Commande d'achat"
 #. odoo-python
 #: code:addons/addons_osetude/models/project.py:0
 msgid "Purchase order line"
-msgstr ""
+msgstr "Lignes de commande d'achat"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
@@ -1861,12 +1863,12 @@ msgstr "Contrôle qualité"
 #. module: addons_osetude
 #: model:ir.model,name:addons_osetude.model_quality_control_quality_cheklist
 msgid "Quality control Check List"
-msgstr ""
+msgstr "Check-list contrôle qualité"
 
 #. module: addons_osetude
 #: model:ir.model,name:addons_osetude.model_quality_control_quality_cheklist_data
 msgid "Quality control Check List Data"
-msgstr ""
+msgstr "Données check-list contrôle qualité"
 
 #. module: addons_osetude
 #: model:ir.model,name:addons_osetude.model_quality_control_quality_noncompliance
@@ -1910,7 +1912,7 @@ msgstr "Contrôles qualités"
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_quality_control_quality_form
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_quality_control_quality_tree
 msgid "Quality controls notation"
-msgstr ""
+msgstr "Notation des contrôles qualité"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_quality_control_parameters_form
@@ -1941,7 +1943,7 @@ msgstr "Nom de fichier du barême de notation"
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality__rating_ids
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality_noncompliance__rating_ids
 msgid "Ratings"
-msgstr ""
+msgstr "Évaluations"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
@@ -2016,22 +2018,22 @@ msgstr "Séquence"
 #. module: addons_osetude
 #: model:ir.model,name:addons_osetude.model_report_resource_planning_osetude
 msgid "Report Resource Planning Osetude"
-msgstr ""
+msgstr "Rapport planning des ressources Osetude"
 
 #. module: addons_osetude
 #: model:ir.model,name:addons_osetude.model_report_resource_planning_osetude_setting
 msgid "Report Resource Planning Osetude Setting"
-msgstr ""
+msgstr "Paramètres du rapport planning des ressources Osetude"
 
 #. module: addons_osetude
 #: model:ir.model,name:addons_osetude.model_report_resource_planning_osetude_setting_lines
 msgid "Report Resource Planning Osetude Setting Lines"
-msgstr ""
+msgstr "Lignes de paramètres du rapport planning des ressources Osetude"
 
 #. module: addons_osetude
 #: model:ir.model,name:addons_osetude.model_report_ressource_planning_osetude_periode
 msgid "Report Timesheet Analyse Osetude Periode"
-msgstr ""
+msgstr "Période du rapport d'analyse des feuilles de temps Osetude"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_report_ressource_planning_osetude_periode__report_type
@@ -2046,13 +2048,13 @@ msgstr "Demande de prix N°"
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_report_resource_planning_osetude_setting_lines__resource_planning_id
 msgid "Resource Planning"
-msgstr ""
+msgstr "Planning des ressources"
 
 #. module: addons_osetude
 #. odoo-python
 #: code:addons/addons_osetude/analyse/report_timesheet_analyse_osetude.py:0
 msgid "Resource planning"
-msgstr ""
+msgstr "Planning des ressources"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_project_project__response_date
@@ -2086,7 +2088,7 @@ msgstr "Cause racine"
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.edit_project_inherit
 msgid "Root causes file"
-msgstr ""
+msgstr "Fichier des causes racines"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality_noncompliance__root_causes_filename
@@ -2107,7 +2109,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality__message_has_sms_error
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality_noncompliance__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "Erreur d'envoi SMS"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.report_saleorder_document_inherit
@@ -2133,22 +2135,22 @@ msgstr "Avancement de la commande"
 #: model:ir.model.fields,field_description:addons_osetude.field_sale_order__sale_order_purchase_ids
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 msgid "Sale Order Purchase"
-msgstr ""
+msgstr "Achats de la commande"
 
 #. module: addons_osetude
 #: model:ir.model,name:addons_osetude.model_sale_order_purchase_line
 msgid "Sale Order Purchase Line"
-msgstr ""
+msgstr "Ligne d'achat de commande de vente"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_project_project__sale_orders_count
 msgid "Sale Orders Count"
-msgstr ""
+msgstr "Nombre de commandes"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_project_project__sale_quotations_count
 msgid "Sale Quotations Count"
-msgstr ""
+msgstr "Nombre de devis"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality_noncompliance__sale_id
@@ -2163,12 +2165,12 @@ msgstr "Références commandes liées"
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_sale_order__sale_purchase_create
 msgid "Sale purchase create"
-msgstr ""
+msgstr "Achats créés depuis la vente"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_create_purchase_order_line__purchase_line_id
 msgid "Sale purchase lines"
-msgstr ""
+msgstr "Lignes d'achat de la vente"
 
 #. module: addons_osetude
 #: model:ir.model,name:addons_osetude.model_sale_advance_payment_inv
@@ -2239,7 +2241,7 @@ msgstr "Fichers de barême"
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality__scale_filename
 msgid "Scale filename"
-msgstr ""
+msgstr "Nom du fichier de barème"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality__access_token
@@ -2291,7 +2293,7 @@ msgstr "Mettre en brouillon"
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_report_resource_planning_osetude_setting__setting_line
 msgid "Setting Lines"
-msgstr ""
+msgstr "Lignes de paramétrage"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_quality_control_quality_noncompliance__severity_level
@@ -2410,18 +2412,18 @@ msgstr "Tâche"
 #. module: addons_osetude
 #: model:ir.model,name:addons_osetude.model_project_task_hours
 msgid "Task Hours"
-msgstr ""
+msgstr "Heures de tâche"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_project_task_hours__name
 msgid "Task date"
-msgstr ""
+msgstr "Date de la tâche"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_task_form2_inherit
 msgid "Task finished"
-msgstr ""
+msgstr "Tâche terminée"
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_project_task_hours__task_hours__id
@@ -2476,7 +2478,7 @@ msgstr ""
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_project_project__total_invoiced
 msgid "Total invoiced"
-msgstr ""
+msgstr "Total facturé"
 
 #. module: addons_osetude
 #: model:ir.model.fields.selection,name:addons_osetude.selection__report_ressource_planning_osetude_periode__type_ressource__toutes
@@ -2502,7 +2504,7 @@ msgstr ""
 #: model:ir.model.fields,help:addons_osetude.field_quality_control_quality__activity_exception_decoration
 #: model:ir.model.fields,help:addons_osetude.field_quality_control_quality_noncompliance__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "Type de l'activité d'exception sur l'enregistrement."
 
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_project_default_task__type_ressource
@@ -2576,6 +2578,8 @@ msgstr "Année"
 #: code:addons/addons_osetude/models/sale_order.py:0
 msgid "You cannot delete a purchase line with a pending order!"
 msgstr ""
+"Vous ne pouvez pas supprimer une ligne d'achat liée à une commande en cours "
+"!"
 
 #. module: addons_osetude
 #. odoo-python
@@ -2634,3 +2638,54 @@ msgstr "Paramètres enquête de satisfaction"
 #: model:ir.model.fields,field_description:addons_osetude.field_account_move_line__account_wording
 msgid "wording account"
 msgstr "Type compte"
+
+#. module: addons_osetude
+#: model_terms:ir.ui.view,arch_db:addons_osetude.report_invoice_document_inherit
+msgid "<strong>Receipt Date</strong>"
+msgstr "<strong>Date du reçu</strong>"
+
+#. module: addons_osetude
+#: model:ir.model.fields,field_description:addons_osetude.field_stock_move__analytic_precision
+msgid "Analytic Precision"
+msgstr "Précision analytique"
+
+#. module: addons_osetude
+#: model:ir.model.fields,field_description:addons_osetude.field_stock_picking__calendar_display_name
+msgid "Calendar title"
+msgstr "Titre calendrier"
+
+#. module: addons_osetude
+#: model:ir.model.fields,field_description:addons_osetude.field_sale_order_option__display_type
+msgid "Display Type"
+msgstr "Type d'affichage"
+
+#. module: addons_osetude
+#: model:ir.model.fields,field_description:addons_osetude.field_account_move_line__print_name
+#: model:ir.model.fields,field_description:addons_osetude.field_sale_order_line__print_name
+msgid "Print Name"
+msgstr "Libellé d'impression"
+
+#. module: addons_osetude
+#: model:ir.model,name:addons_osetude.model_project_obx_history
+msgid "Project OBX History"
+msgstr "Historique projets OBX"
+
+#. module: addons_osetude
+#: model:ir.model.fields,field_description:addons_osetude.field_project_obx_history__ref_customer
+msgid "Reference"
+msgstr "Référence"
+
+#. module: addons_osetude
+#: model:ir.model.fields,help:addons_osetude.field_sale_order_option__display_type
+msgid "Technical field for UX purpose."
+msgstr "Champ technique pour l'ergonomie."
+
+#. module: addons_osetude
+#. odoo-python
+#: code:addons/addons_osetude/models/sale_order.py:0
+msgid ""
+"You cannot change the type of an optional product line. Instead you should "
+"delete the current line and create a new line of the proper type."
+msgstr ""
+"Vous ne pouvez pas changer le type d'une ligne de produit optionnel. "
+"Supprimez la ligne actuelle et créez une nouvelle ligne du type souhaité."

@@ -43,9 +43,6 @@
                     <field name="project_id"/>
                     <field name="title_project"/>
                 </xpath>
-                <xpath expr="//field[@name='amount_total']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
                 <xpath expr="//field[@name='amount_untaxed']" position="attributes">
                     <attribute name="optional">show</attribute>
                 </xpath>
@@ -64,9 +61,6 @@
                 <xpath expr="//field[@name='name']" position="before">
                     <field name="project_id"/>
                     <field name="title_project"/>
-                </xpath>
-                <xpath expr="//field[@name='amount_total']" position="attributes">
-                    <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_status']" position="before">
                     <field name="amount_untaxed" sum="Total"/>
