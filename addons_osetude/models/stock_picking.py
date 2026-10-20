@@ -100,6 +100,8 @@ class Picking(models.Model):
                 'message': message,
                 'type': 'success' if updated else 'info',
                 'sticky': False,
+                # recharge le formulaire pour afficher les descriptions sans F5
+                'next': {'type': 'ir.actions.client', 'tag': 'soft_reload'},
             },
         }
 
