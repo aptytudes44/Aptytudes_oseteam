@@ -351,6 +351,8 @@
             <field name="name">sale.order.form.payment</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale_management.sale_order_form_quote"/>
+            <!-- desactivee en base par le passe : un -u ne la reactive pas sans ce champ -->
+            <field name="active" eval="True"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='sale_order_option_ids']" position="replace">
                     <field name="sale_order_option_ids" widget="product_label_section_and_note_field_o2m">
