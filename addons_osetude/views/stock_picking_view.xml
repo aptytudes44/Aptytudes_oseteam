@@ -149,6 +149,7 @@
                 <button name="action_update_description_picking"
                     string="Mettre à jour la description"
                     type="object"
+                    class="oe_highlight"
                     invisible="picking_type_code != 'incoming'"
                     confirm="Recopier la description de la commande d'achat sur les lignes dont la description n'a pas été récupérée ? Les lignes déjà renseignées correctement ne seront pas modifiées."/>
             </xpath>
