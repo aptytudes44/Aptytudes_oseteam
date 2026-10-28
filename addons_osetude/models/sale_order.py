@@ -171,6 +171,10 @@ class SaleOrder(models.Model):
     # Le cœur Odoo met client_order_ref en copy=False (une référence client est censée
     # être propre à chaque document) ; ici une révision doit au contraire la conserver.
     client_order_ref = fields.Char(copy=True)
+    # sale_order_revision le met en copy=True : dupliquer une ancienne revision rattachait
+    # le nouveau devis a la revision courante (compte dans "Revision prec."). La creation
+    # d'une revision n'en a pas besoin (la revision courante n'a jamais de current_revision_id).
+    current_revision_id = fields.Many2one(copy=False)
     responsible_business_id = fields.Many2one('res.partner', string="Responsible business")
     phone_responsible_business = fields.Char(
         related='responsible_business_id.mobile', string="Phone responsible")

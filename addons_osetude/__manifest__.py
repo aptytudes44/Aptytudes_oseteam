@@ -28,6 +28,7 @@ Custom tools for OSETEAM projects and management
         'purchase',
         'contacts',
         'base_import',
+        'sale_order_revision',  # surcharge de current_revision_id (copy=False)
         'web',  # Ajout recommandé pour les modules utilisant des assets web
     ],
     'data': [
