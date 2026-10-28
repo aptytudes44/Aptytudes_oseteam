@@ -28,3 +28,13 @@ def migrate(cr, version):
          WHERE s.id = b.id AND s.current_revision_id = b.current_revision_id
     """)
     _logger.info("addons_osetude: %s devis detaches d'une revision qui n'est pas la leur", cr.rowcount)
+
+    # Coquille du libelle fr_FR "Non-conrormité/Réclamation" (Projet / Commande) : le .po
+    # est corrige, mais le -u n'ecrase pas une traduction deja presente en base.
+    cr.execute("""
+        UPDATE ir_model_fields
+           SET field_description = jsonb_set(field_description, '{fr_FR}',
+               to_jsonb(replace(field_description->>'fr_FR', 'Non-conrormité', 'Non-conformité')))
+         WHERE field_description->>'fr_FR' LIKE '%Non-conrormité%'
+    """)
+    _logger.info("addons_osetude: %s libelle(s) 'Non-conrormité' corrige(s)", cr.rowcount)

@@ -1398,7 +1398,7 @@ msgstr "Non-conformités / Réclamations"
 #: model:ir.model.fields,field_description:addons_osetude.field_project_project__noncompliance_line
 #: model:ir.model.fields,field_description:addons_osetude.field_sale_order__noncompliance_line_project
 msgid "Noncompliance Lines"
-msgstr "Non-conrormité/Réclamation"
+msgstr "Non-conformité/Réclamation"
 
 #. module: addons_osetude
 #: model:ir.actions.act_window,name:addons_osetude.action_noncompliance_cause
