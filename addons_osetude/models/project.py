@@ -389,6 +389,10 @@ class Project(models.Model):
         compute='_compute_account_invoice_amount', string="Total invoiced")
     picking_count = fields.Integer(
         compute='_compute_picking_count', string="Delivery Orders Count")
+    # V18 ne met plus de societe par defaut sur un projet (deduite seulement du compte
+    # analytique ou de la societe du client) et le champ est masque dans le formulaire :
+    # sans societe, plus de logo sur l'etiquette projet. Comme en V12 : societe courante.
+    company_id = fields.Many2one(default=lambda self: self.env.company)
     currency_id = fields.Many2one(
         related='company_id.currency_id', string="Currency")
     checklist_line = fields.One2many(

@@ -6,7 +6,9 @@
             <div class="oe_structure"/>
 
             <div class="col-3">
-                <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" style="max-height: 55px;" alt="Logo"/>
+                <!-- Projet sans societe : logo de la societe courante -->
+                <t t-set="logo_company" t-value="doc.company_id or res_company"/>
+                <img t-if="logo_company.logo" t-att-src="image_data_uri(logo_company.logo)" style="max-height: 55px;" alt="Logo"/>
             </div>
             <h2>
                 Project : <span t-field="doc.name"/>
