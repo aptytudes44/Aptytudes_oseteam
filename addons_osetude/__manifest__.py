@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Tools for OSETEAM',
-    'version': '18.0.1.0.0',  # Format recommandé : odoo_series.addon_major.addon_minor.addon_patch.addon_build
+    'version': '18.0.1.0.1',  # Format recommandé : odoo_series.addon_major.addon_minor.addon_patch.addon_build
     'website': 'https://www.applylog.com',
     'category': 'Project/Tools',
     'sequence': 10,
