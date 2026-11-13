@@ -299,24 +299,21 @@
                                             <field name="imputation"/>
                                             <field name="partner_id"
                                                    invisible="imputation=='internal' or imputation==False"
-                                                   options="{'no_open': true, 'no_create': true}"
-                                                   readonly="imputation in ('customer', 'supplier')"/>
+                                                   options="{'no_open': true, 'no_create': true}"/>
                                             <field name="project_id" invisible="1"/>
                                             <field name="sale_id"
                                                    invisible="imputation!='customer'"
                                                    domain="[('project_id','=',project_id)]"
-                                                   options="{'no_open': true, 'no_create': true}"
-                                                   readonly="imputation!='customer'"/>
+                                                   options="{'no_open': true, 'no_create': true}"/>
                                             <field name="purchase_id"
                                                    invisible="imputation!='supplier'"
-                                                   options="{'no_open': true, 'no_create': true}"
-                                                   readonly="imputation!='supplier'"/>
+                                                   options="{'no_open': true, 'no_create': true}"/>
                                         </group>
                                         <group string="Responsible">
                                             <field name="state"/>
-                                            <field name="user_id" readonly="1"
+                                            <field name="user_id"
                                                    options="{'no_open': true, 'no_create': true}"/>
-                                            <field name="date_of_issue" readonly="1"/>
+                                            <field name="date_of_issue"/>
                                             <field name="close_date"/>
                                             <field name="company_id"
                                                    invisible="1"
@@ -327,10 +324,9 @@
                                     <group>
                                         <group string="Description">
                                             <field name="noncompliance_cause_id"
-                                                   options="{'no_open': true, 'no_create': true}"
-                                                   readonly="1"/>
-                                            <field name="severity_level" readonly="1"/>
-                                            <field name="noncompliant_note" readonly="1"/>
+                                                   options="{'no_open': true, 'no_create': true}"/>
+                                            <field name="severity_level"/>
+                                            <field name="noncompliant_note"/>
                                             <field name="immediate_correction_note"/>
                                         </group>
                                         <group string="Quality control">

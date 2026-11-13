@@ -25,3 +25,23 @@
 .o_list_renderer .o_list_table > tbody > tr.o_data_row.o_is_line_section:not(.o_selected_row) > * {
     --table-bg-type: #e5e5e5;
 }
+
+/* Alternance de couleur des lignes de regroupement (listes groupees) : un
+   groupe sur deux garde le gris natif d'Odoo ($gray-200 via --table-bg), l'autre
+   prend le meme gris que les lignes de donnees (#f0f0f0 ci-dessus). Toutes les lignes (groupes et donnees) sont dans
+   le meme <tbody> : le selecteur "of" ne compte que les lignes de groupe entre
+   elles, l'alternance reste donc reguliere que les groupes soient ouverts ou
+   fermes. --table-bg-type est prioritaire sur --table-bg dans le box-shadow
+   des cellules. */
+.o_list_renderer .o_list_table > tbody > tr.o_group_header:nth-child(even of .o_group_header) > * {
+    --table-bg-type: #f0f0f0;
+}
+
+/* Survol d'une ligne plus marque. Bootstrap (.table-hover) peint le survol via
+   --table-bg-state, prioritaire sur --table-bg-type : le gris de l'alternance
+   est donc remplace (pas cumule) par cette couleur au survol. La couleur
+   native (noir a 5.5%) donnait un gris quasi identique a #f0f0f0, d'ou un
+   survol presque invisible sur les lignes grises. */
+.o_list_renderer .o_list_table.table-hover {
+    --table-hover-bg: rgba(0, 0, 0, 0.12);
+}

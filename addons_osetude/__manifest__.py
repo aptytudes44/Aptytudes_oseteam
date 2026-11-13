@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Tools for OSETEAM',
-    'version': '18.0.1.0.0',  # Format recommandé : odoo_series.addon_major.addon_minor.addon_patch.addon_build
+    'version': '18.0.1.0.1',  # Format recommandé : odoo_series.addon_major.addon_minor.addon_patch.addon_build
     'website': 'https://www.applylog.com',
     'category': 'Project/Tools',
     'sequence': 10,
@@ -28,6 +28,7 @@ Custom tools for OSETEAM projects and management
         'purchase',
         'contacts',
         'base_import',
+        'sale_order_revision',  # surcharge de current_revision_id (copy=False)
         'web',  # Ajout recommandé pour les modules utilisant des assets web
     ],
     'data': [

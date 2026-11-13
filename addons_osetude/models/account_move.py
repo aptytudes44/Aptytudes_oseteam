@@ -24,6 +24,16 @@ class AccountMove(models.Model):
     def _onchange_partner_bank(self):
         self.company_bank_id = self.partner_id.company_bank_id.id
 
+    # Banque destinataire (partner_bank_id) = compte du journal "Banque societe" sur les
+    # factures/avoirs clients. Via le compute natif (et non un simple onchange) pour couvrir
+    # aussi les factures creees depuis la commande (company_bank_id passe dans les vals).
+    @api.depends('bank_partner_id', 'company_bank_id')
+    def _compute_partner_bank_id(self):
+        super()._compute_partner_bank_id()
+        for move in self:
+            if move.is_sale_document(include_receipts=True) and move.company_bank_id.bank_account_id:
+                move.partner_bank_id = move.company_bank_id.bank_account_id
+
     project_id = fields.Many2one('project.project', string="Project")
     title_project = fields.Char(related="project_id.title_project", string='Business reference')
     company_bank_id = fields.Many2one('account.journal', string="Company Bank",
