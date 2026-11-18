@@ -389,7 +389,7 @@ msgstr ""
 #. module: addons_osetude
 #: model:ir.model.fields,field_description:addons_osetude.field_sale_order__approval_deadline
 msgid "Approval deadline"
-msgstr "Date limite d'appro"
+msgstr "Date de livraison"
 
 #. module: addons_osetude
 #: model_terms:ir.ui.view,arch_db:addons_osetude.view_order_form_custom_inherit

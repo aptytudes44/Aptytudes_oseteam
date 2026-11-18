@@ -123,6 +123,14 @@
             </div>
         </xpath>
 
+        <!-- Date de livraison (approval_deadline), juste avant "Conditions de paiement" (devis et commandes) -->
+        <xpath expr="//div[@name='informations_payment_term']" position="before">
+            <div t-if="doc.approval_deadline" class="col" name="informations_approval_deadline">
+                <strong>Date de livraison</strong>
+                <div t-field="doc.approval_deadline"/>
+            </div>
+        </xpath>
+
         <!-- GESTION DU CARTOUCHE : ajouté APRES le cartouche standard d'Odoo (Votre référence /
              Date du devis / Echéance / Vendeur), pas en remplacement, pour garder ces champs
              natifs et compléter avec Vendeur/Contact client côte à côte, puis Affaire. Aucun
