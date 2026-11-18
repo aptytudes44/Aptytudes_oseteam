@@ -80,6 +80,14 @@
                            invisible="move_type != 'out_invoice' or not invoice_date_due or not invoice_payment_term_id"/>
                 </xpath>
 
+                <!-- Idem pour les factures et avoirs fournisseurs : avec des conditions de paiement, Odoo masque
+                     la date d'échéance (remplacée par le champ conditions) -> affichée calculée sous la date de facture -->
+                <xpath expr="//field[@name='invoice_date'][@invisible=&quot;move_type not in ('in_invoice', 'in_refund', 'in_receipt')&quot;]" position="after">
+                    <label for="invoice_date_due" string="Date d'échéance" invisible="move_type not in ('in_invoice', 'in_refund') or not invoice_date_due or not invoice_payment_term_id"/>
+                    <field name="invoice_date_due" nolabel="1" readonly="1" force_save="1"
+                           invisible="move_type not in ('in_invoice', 'in_refund') or not invoice_date_due or not invoice_payment_term_id"/>
+                </xpath>
+
                 <!-- Masque toujours la "Date comptable" sur les factures/avoirs (clients et fournisseurs).
                      Reste visible sur les écritures comptables (move_type 'entry'), où c'est la seule date.
                      Affichage uniquement : le calcul Odoo est inchangé. -->
