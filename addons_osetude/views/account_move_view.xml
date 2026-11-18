@@ -79,6 +79,13 @@
                     <field name="invoice_date_due" nolabel="1" readonly="1" force_save="1"
                            invisible="move_type != 'out_invoice' or not invoice_date_due or not invoice_payment_term_id"/>
                 </xpath>
+
+                <!-- Masque toujours la "Date comptable" sur les factures/avoirs (clients et fournisseurs).
+                     Reste visible sur les écritures comptables (move_type 'entry'), où c'est la seule date.
+                     Affichage uniquement : le calcul Odoo est inchangé. -->
+                <xpath expr="//field[@name='date'][contains(@invisible, 'quick_edit_mode')]" position="attributes">
+                    <attribute name="invisible">move_type != 'entry'</attribute>
+                </xpath>
             </field>
         </record>
 
