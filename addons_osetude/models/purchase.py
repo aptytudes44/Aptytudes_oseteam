@@ -106,3 +106,16 @@ class PurchaseOrderLine(models.Model):
                 line.description_only = parts[1] if len(parts) > 1 else ''
             else:
                 line.description_only = name
+
+    def _update_move_date_deadline(self, new_date):
+        """ Comportement V12 : quand "Arrivée prévue" (date_planned) change sur une ligne d'achat,
+        Odoo V18 ne met à jour que la "Date limite" (date_deadline) des mouvements de réception.
+        On met aussi à jour la "Date planifiée" (date) des mouvements de réception de la ligne
+        non terminés (la date planifiée du bon de réception est calculée depuis ces mouvements).
+        Seuls les mouvements de la ligne (move_ids) sont concernés, pas les mouvements
+        destination (move_dest_ids, ex. livraison client en MTO). """
+        res = super()._update_move_date_deadline(new_date)
+        moves = self.move_ids.filtered(lambda m: m.state not in ('done', 'cancel'))
+        if moves:
+            moves.date = new_date
+        return res

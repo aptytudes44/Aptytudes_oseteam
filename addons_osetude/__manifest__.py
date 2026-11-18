@@ -26,6 +26,7 @@ Custom tools for OSETEAM projects and management
         #'hr_holidays',VOIR SI NECESSAIRE
         'hr_expense',
         'purchase',
+        'purchase_stock',  # surcharge de _update_move_date_deadline (date planifiée réception)
         'contacts',
         'base_import',
         'sale_order_revision',  # surcharge de current_revision_id (copy=False)
