@@ -243,7 +243,7 @@
                             <group>
                                 <separator string="Customer information"/>
                                 <field name="customer_reference" placeholder="Customer reference ..."/>
-                                <field name="partner_id"/>
+                                <field name="partner_id" required="1"/>
                                 <field name="buyer_id"/>
                                 <field name="phone_buyer" widget="phone"/>
                                 <field name="mail_buyer"/>
@@ -361,7 +361,7 @@
                     <field name="name" string="Project Name" placeholder="e.g. Office Party" readonly="1"/>
                 </xpath>
                 <xpath expr="//field[@name='name']" position="after">
-                    <field name="partner_id"/>
+                    <field name="partner_id" required="1"/>
                 </xpath>
                 <xpath expr="//field[@name='user_id']" position="attributes">
                     <attribute name="invisible">0</attribute>
